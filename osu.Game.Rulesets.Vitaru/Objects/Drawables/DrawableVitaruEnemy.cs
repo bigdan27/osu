@@ -93,7 +93,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         {
             if (CharacterHealth <= 0)
             {
-                PlaySamples();
+                if(!hasShot)
+                    PlaySamples();
                 Judgement.Result = HitResult.Hit;
             }
         }
