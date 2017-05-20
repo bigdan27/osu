@@ -47,12 +47,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         protected override void Update()
         {
-            if(patternID == -1)
-                getPatternID();
-
             enemy.EnemyPosition = enemy.Position;
 
-            int bulletPattern = RNG.Next(1, 6); // could be remplaced by map seed, with stackleniency
+            if(patternID == -1)
+                getPatternID();
 
             HitDetect();
 
@@ -81,12 +79,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             if (snipe)
                 return patternID = 1;
-            if (wave)
-                return patternID = 2;
             if (circle)
                 return patternID = 3;
             if (line)
                 return patternID = 4;
+            if (wave)
+                return patternID = 2;
             else
                 return patternID = 0;
         }
@@ -232,7 +230,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private void enemyShoot(int patternID)
         {
-            //int pattern = RNG.Next(1, 6);
             playerRelativePositionAngle();
             PlaySamples();
             switch (patternID)

@@ -82,6 +82,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Characters
         public override HitObjectType Type => HitObjectType.Enemy;
         public bool IsSlider { get; set; } = false;
         public bool IsSpinner { get; set; } = false;
-        public SampleInfoList Pattern { get; internal set; }
+        public List<SampleInfoList> RepeatSamples { get; set; } = new List<SampleInfoList>();
     }
 }

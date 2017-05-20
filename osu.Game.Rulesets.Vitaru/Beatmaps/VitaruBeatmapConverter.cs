@@ -50,7 +50,7 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
                     ControlPoints = curveData.ControlPoints,
                     CurveType = curveData.CurveType,
                     Distance = curveData.Distance,
-                    //RepeatSamples = curveData.RepeatSamples,
+                    RepeatSamples = curveData.RepeatSamples,
                     RepeatCount = curveData.RepeatCount,
                     Position = positionData?.Position ?? Vector2.Zero,
                     NewCombo = comboData?.NewCombo ?? false,
