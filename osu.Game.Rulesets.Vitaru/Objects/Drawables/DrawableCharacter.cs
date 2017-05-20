@@ -36,13 +36,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public int Team { get; set; } = 0; // 0 = Player, 1 = Ememies + Boss(s) in Singleplayer
         public int ProjectileDamage { get; set; }
 
-        public int BPM { get; set; } = (180);
-        //private SampleChannel sampleShoot;
-        //private SampleChannel sampleDeath;
+        public int BPM { get; set; } = (200);
 
         public static ResourceStore<byte[]> VitaruResources;
         public static TextureStore VitaruTextures;
-        //public SampleManager Audio;
 
         protected Hitbox Hitbox;
 
@@ -76,7 +73,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             if (CharacterHealth <= 0)
             {
                 Dispose();
-                //sampleDeath.Play();
                 return true;
             }
             return false;
@@ -109,7 +105,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 timeSinceLastShoot += Clock.ElapsedFrameTime;
                 if (timeSinceLastShoot / 1000.0 > 1 / BPM / 30.0)
                 {
-                    //sampleShoot.Play();
                     CharacterShoot?.Invoke();
                     timeSinceLastShoot -= 1 / (BPM / 30.0) * 1000.0;
                 }
@@ -131,14 +126,16 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                             float distance = (float)Math.Sqrt(Math.Pow(bulletPos.X, 2) + Math.Pow(bulletPos.Y, 2));
                             float minDist = Hitbox.HitboxWidth + bullet.BulletWidth;
                             float signDist = ((CharacterSign.Size.Y / 2) - 14) + bullet.BulletWidth;
+
+                            if (CharacterSign.Alpha >= 0.1f && distance < signDist)
+                                bullet.DeleteBullet();
+
                             if (distance < minDist)
                             {
                                 bullet.DeleteBullet();
                                 if (TakeDamage(bullet.BulletDamage))
                                     break;
                             }
-                            if (CharacterSign.Alpha >= 0.1f && distance < signDist)
-                                bullet.DeleteBullet();
                         }
                     }
                     if(draw is Laser)
@@ -171,9 +168,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
                 VitaruTextures = new TextureStore(new RawTextureLoaderStore(new NamespacedResourceStore<byte[]>(VitaruResources, @"Textures")));
                 VitaruTextures.AddStore(new RawTextureLoaderStore(new OnlineStore()));
-
-                //This is wrong, but I am unsure how to add the audio files
-                //Audio = Dependencies.Cache(new SampleManager(new NamespacedResourceStore<byte[]>(Resources, @"Audio/Samples")));
             }
 
             //Drawable stuff loading for each individual Character
@@ -221,14 +215,15 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     break;
             }
 
-            //sampleDeath = audio.Sample.Get(@"deathSound");
-            //sampleShoot = audio.Sample.Get(@"shootSound");
             CharacterSprite.Texture = VitaruTextures.Get(characterType);
             CharacterKiaiSprite.Texture = VitaruTextures.Get(characterType + "Kiai");
             CharacterSign.Texture = VitaruTextures.Get(characterType + "Sign");
         }
     }
 }
+
+
+
 
 //Stuff for when lasers are implemented properly
 
