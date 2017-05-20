@@ -105,6 +105,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.BottomCentre,
                     Colour = Color4.YellowGreen,
+                    Size = new Vector2(512 , 10),
                 },
                 friendlyBar = new Container
                 {
@@ -112,6 +113,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Anchor = Anchor.BottomCentre,
                     Origin = Anchor.TopCentre,
                     Colour = Color4.Red,
+                    Size = new Vector2(512 , 10),
                 },
             };
         }
