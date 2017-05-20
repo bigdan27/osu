@@ -1,7 +1,4 @@
-﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
-
-using OpenTK;
+﻿using OpenTK;
 using osu.Framework.Audio.Sample;
 using osu.Game.Beatmaps.Timing;
 using osu.Game.Database;
@@ -10,6 +7,7 @@ using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
 using System;
 using System.Collections.Generic;
+using osu.Game.Audio;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Characters
 {
@@ -18,7 +16,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Characters
         public bool Shoot = false;
         public Vector2 EnemyPosition;
         public Vector2 EnemySpeed { get; set; } = new Vector2(0.5f, 0.5f);
-        public BulletPattern Pattern { get; set; }
         public double kill30 = 30;
         public double HitWindowMiss = 1000;
         
@@ -82,5 +79,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Characters
         public override HitObjectType Type => HitObjectType.Enemy;
         public bool IsSlider { get; set; } = false;
         public bool IsSpinner { get; set; } = false;
+        public List<SampleInfoList> RepeatSamples { get; set; } = new List<SampleInfoList>();
     }
 }

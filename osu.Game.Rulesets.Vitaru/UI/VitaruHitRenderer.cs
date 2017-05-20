@@ -1,7 +1,4 @@
-﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
-
-using osu.Game.Rulesets.UI;
+﻿using osu.Game.Rulesets.UI;
 using osu.Game.Rulesets.Vitaru.Judgements;
 using osu.Game.Rulesets.Vitaru.Objects;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;

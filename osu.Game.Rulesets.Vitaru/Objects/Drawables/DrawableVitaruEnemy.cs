@@ -9,6 +9,8 @@ using osu.Game.Rulesets.Objects.Types;
 using osu.Framework.MathUtils;
 using System.Collections.Generic;
 using osu.Game.Rulesets.Vitaru.UI;
+using osu.Game.Audio;
+using System.Linq;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
@@ -18,6 +20,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public bool Shoot = false;
         private float playerPos;
         private Color4 enemyColor = Color4.Green;
+        private int patternID = -1;
 
         private readonly List<ISliderProgress> components = new List<ISliderProgress>();
         private int currentRepeat;
@@ -34,23 +37,28 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             HitboxWidth = 24;
             HitboxColor = Color4.Cyan;
             Alpha = 1;
+
+
         }
 
         private bool hasShot = false;
         private bool sliderDone = false;
+        
 
         protected override void Update()
         {
             enemy.EnemyPosition = enemy.Position;
-            int bulletPattern = RNG.Next(1, 6); // could be remplaced by map seed, with stackleniency
+
+            if(patternID == -1)
+                getPatternID();
 
             HitDetect();
 
             if (!enemy.IsSlider && !enemy.IsSpinner)
-                hitcircle();
+                hitcircle(patternID);
 
             if (enemy.IsSlider)
-                slider();
+                slider(patternID);
 
             if (enemy.IsSpinner)
                 spinner();
@@ -60,6 +68,27 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         /// <summary>
         /// Generic Enemy stuff
         /// </summary>
+
+        private int getPatternID()
+        {
+            SampleInfoList samples = enemy.Samples;
+            bool snipe = samples.Any(s => s.Name == SampleInfo.HIT_WHISTLE);
+            bool wave = samples.Any(s => s.Name == SampleInfo.HIT_NORMAL);
+            bool circle = samples.Any(s => s.Name == SampleInfo.HIT_FINISH);
+            bool line = samples.Any(s => s.Name == SampleInfo.HIT_CLAP);
+
+            if (snipe)
+                return patternID = 1;
+            if (circle)
+                return patternID = 3;
+            if (line)
+                return patternID = 4;
+            if (wave)
+                return patternID = 2;
+            else
+                return patternID = 0;
+        }
+
         protected override void CheckJudgement(bool userTriggered)
         {
             if (CharacterHealth <= 0)
@@ -122,11 +151,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         /// <summary>
         /// All the hitcircle stuff
         /// </summary>
-        private void hitcircle()
+        private void hitcircle(int patternID)
         {
             if (HitObject.StartTime <= Time.Current && hasShot == false)
             {
-                enemyShoot();
+                enemyShoot(patternID);
                 leave();
                 hasShot = true;
             }
@@ -139,17 +168,17 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         /// <summary>
         /// All The Slider Stuff
         /// </summary>
-        private void slider()
+        private void slider(int patternID)
         {
             if (HitObject.StartTime <= Time.Current && hasShot == false)
             {
-                enemyShoot();
+                enemyShoot(patternID);
                 hasShot = true;
             }
 
             if (enemy.EndTime <= Time.Current && hasShot == true && sliderDone == false)
             {
-                enemyShoot();
+                enemyShoot(patternID);
                 leave();
                 sliderDone = true;
             }
@@ -168,7 +197,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             {
                 if (repeat < enemy.RepeatCount)
                 {
-                    enemyShoot();
+                    enemyShoot(patternID);
                 }
                 currentRepeat = repeat;
             }
@@ -199,14 +228,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         /// All the shooting stuff
         /// </summary>
 
-        private void enemyShoot()
+        private void enemyShoot(int patternID)
         {
-            int pattern = RNG.Next(1, 6);
             playerRelativePositionAngle();
             PlaySamples();
-            switch (pattern)
+            switch (patternID)
             {
-                case 1: // Wave
+                case 2: // Wave
                     Wave w;
                     VitaruPlayfield.vitaruPlayfield.Add(w = new Wave(Team)
                     {
@@ -222,7 +250,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     w.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), w));
                     break;
 
-                case 2: // Line
+                case 4: // Line
                     Line l;
                     VitaruPlayfield.vitaruPlayfield.Add(l = new Line(Team)
                     {
@@ -238,7 +266,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     l.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), l));
                     break;
 
-                case 3: // Cool wave
+                case 0: // Cool wave
                     CoolWave cw;
                     VitaruPlayfield.vitaruPlayfield.Add(cw = new CoolWave(Team)
                     {
@@ -254,7 +282,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     cw.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), cw));
                     break;
 
-                case 4: // Circle
+                case 3: // Circle
                     Circle c;
                     VitaruPlayfield.vitaruPlayfield.Add(c = new Circle(Team)
                     {
@@ -270,7 +298,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     c.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), c));
                     break;
 
-                case 5: // Snipe!
+                case 1: // Snipe!
                     Wave f;
                     VitaruPlayfield.vitaruPlayfield.Add(f = new Wave(Team)
                     {

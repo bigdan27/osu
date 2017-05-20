@@ -15,8 +15,6 @@ namespace osu.Game.Rulesets.Vitaru.UI
     public class VitaruPlayfield : Playfield<VitaruHitObject, VitaruJudgement>
     {
         public static Container vitaruPlayfield;
-        private Container visablePlayfield;
-        private Box cover;
 
         public override bool ProvidingUserCursor => true;
 
@@ -43,6 +41,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
             {
                 vitaruUI = new VitaruUI
                 {
+                    Masking = false,
                     //Magic numbers, srry in advance
                     Position = new Vector2(-20),
                     RelativeSizeAxes = Axes.Both,
@@ -57,22 +56,6 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     RelativeSizeAxes = Axes.Both,
                     Depth = 2,
                 },
-                /*
-                visablePlayfield = new Container
-                {
-                    Masking = true,
-                    //Not so magic, border thickness
-                    Position = new Vector2(-10),
-                    Origin = Anchor.TopLeft,
-                    Anchor = Anchor.TopLeft,
-                    //Magic numbers, srry in advance
-                    Size = new Vector2(1.48f , 1.46f),
-                    RelativeSizeAxes = Axes.Both,
-                    Depth = 1,
-                    BorderColour = Color4.Red,
-                    BorderThickness = 10,
-                },
-                */
             });
         }
 

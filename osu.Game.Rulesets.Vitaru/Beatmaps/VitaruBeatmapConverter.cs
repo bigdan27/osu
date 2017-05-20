@@ -1,7 +1,4 @@
-﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
-
-using OpenTK;
+﻿using OpenTK;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.Vitaru.Objects;
@@ -12,6 +9,8 @@ using osu.Game.Rulesets.Vitaru.UI;
 using osu.Game.Rulesets.Beatmaps;
 using osu.Game.Rulesets.Vitaru.Objects.Characters;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
+using osu.Game.Audio;
+using System.Linq;
 
 namespace osu.Game.Rulesets.Vitaru.Beatmaps
 {
@@ -38,6 +37,7 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
                     StartTime = 0f,
                 };
             }
+
             if (curveData != null)
             {
                 yield return new Enemy
@@ -47,7 +47,7 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
                     ControlPoints = curveData.ControlPoints,
                     CurveType = curveData.CurveType,
                     Distance = curveData.Distance,
-                    //RepeatSamples = curveData.RepeatSamples,
+                    RepeatSamples = curveData.RepeatSamples,
                     RepeatCount = curveData.RepeatCount,
                     Position = positionData?.Position ?? Vector2.Zero,
                     NewCombo = comboData?.NewCombo ?? false,
@@ -76,6 +76,18 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
                     NewCombo = comboData?.NewCombo ?? false,
                 };
             }
+        }
+        private void enemySlider()
+        {
+
+        }
+        private void enemySpinner()
+        {
+
+        }
+        private void enemyHitcircle()
+        {
+
         }
     }
 }
