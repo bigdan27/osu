@@ -12,6 +12,8 @@ using osu.Game.Rulesets.Vitaru.UI;
 using osu.Game.Rulesets.Beatmaps;
 using osu.Game.Rulesets.Vitaru.Objects.Characters;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
+using osu.Game.Audio;
+using System.Linq;
 
 namespace osu.Game.Rulesets.Vitaru.Beatmaps
 {
@@ -38,6 +40,7 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
                     StartTime = 0f,
                 };
             }
+
             if (curveData != null)
             {
                 yield return new Enemy
@@ -76,6 +79,18 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
                     NewCombo = comboData?.NewCombo ?? false,
                 };
             }
+        }
+        private void enemySlider()
+        {
+
+        }
+        private void enemySpinner()
+        {
+
+        }
+        private void enemyHitcircle()
+        {
+
         }
     }
 }
