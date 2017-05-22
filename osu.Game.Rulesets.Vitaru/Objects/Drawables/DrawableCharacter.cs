@@ -239,7 +239,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
 
 
-//Stuff for when lasers are implemented properly
+//Stuff for when lasers are implemented properly, should wait until new hitbox system is ready
 
 /*bool intersects(CircleType circle, RectType rect)
 {

@@ -14,10 +14,16 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private Box helperBody;
         private CircularContainer helperContainer;
 
-        public int HelperWidth { get; set; } = 4;
+        public float HelperWidth { get; set; } = 4;
+        public int HelperTeam { get; set; }
         public Color4 HelperColor { get; set; } = Color4.Red;
 
         public Helper()
+        {
+
+        }
+
+        public void shoot()
         {
 
         }

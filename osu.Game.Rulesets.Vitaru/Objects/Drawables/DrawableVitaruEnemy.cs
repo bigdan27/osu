@@ -22,6 +22,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private Color4 enemyColor = Color4.Green;
         private int patternID = -1;
 
+        public static int EnemyIDCount = 0;
+        public int EnemyID = 0;
+
         private readonly List<ISliderProgress> components = new List<ISliderProgress>();
         private int currentRepeat;
 
@@ -37,8 +40,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             HitboxWidth = 24;
             HitboxColor = Color4.Cyan;
             Alpha = 1;
-
-
+            EnemyIDCount++;
+            EnemyID = EnemyIDCount;
         }
 
         private bool hasShot = false;

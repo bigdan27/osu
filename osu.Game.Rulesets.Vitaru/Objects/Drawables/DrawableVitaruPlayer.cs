@@ -1,11 +1,8 @@
-﻿using osu.Framework.Graphics.Containers;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Input;
-using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 using osu.Framework.Graphics;
 using osu.Framework.Input;
 using System.Collections.Generic;
-using System;
 using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
 using OpenTK.Graphics;
 using osu.Game.Rulesets.Objects.Drawables;
@@ -133,8 +130,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             {
                 helper1.Alpha = 1;
                 helper2.Alpha = 1;
-                helper1.Position = new Vector2(20,-25);
-                helper2.Position = new Vector2(-20,-25);
+                helper1.Position = new Vector2(20,-30);
+                helper2.Position = new Vector2(-20,-30);
                 CharacterSign.Colour = Color4.Red;
                 CharacterEnergy = CharacterEnergy - healEnergy;
                 if((healEnergy + 5) <= maxEnergy)
@@ -147,6 +144,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private void shoot()
         {
+            helper1.shoot();
+            helper2.shoot();
             Wave a;
             VitaruPlayfield.vitaruPlayfield.Add(a = new Wave(Team)
             {

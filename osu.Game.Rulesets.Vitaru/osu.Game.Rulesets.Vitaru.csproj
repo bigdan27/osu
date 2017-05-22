@@ -50,6 +50,7 @@
     <Compile Include="Judgements\VitaruJudgement.cs" />
     <Compile Include="Objects\AccurateHitbox.cs" />
     <Compile Include="Objects\OsuMonLogo.cs" />
+    <Compile Include="Objects\Projectiles\SeekingBullet.cs" />
     <Compile Include="UI\VitaruUI.cs" />
     <Compile Include="VitaruAutoReplay.cs" />
     <Compile Include="Mods\VitaruMod.cs" />
@@ -60,7 +61,7 @@
     <Compile Include="Objects\Drawables\DrawableVitaruEnemy.cs" />
     <Compile Include="Objects\Drawables\DrawableVitaruHitObject.cs" />
     <Compile Include="Objects\Drawables\DrawableVitaruPlayer.cs" />
-    <Compile Include="Objects\Drawables\Helper.cs" />
+    <Compile Include="Objects\Helper.cs" />
     <Compile Include="Objects\Hitbox.cs" />
     <Compile Include="Objects\HitObjectType.cs" />
     <Compile Include="Objects\VitaruHitObjectDifficulty.cs" />
