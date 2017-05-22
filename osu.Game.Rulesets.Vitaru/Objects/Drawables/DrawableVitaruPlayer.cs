@@ -18,8 +18,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
     public class DrawableVitaruPlayer : DrawableCharacter
     {
         private readonly VitaruPlayer player;
+
         private Dictionary<Key, bool> keys = new Dictionary<Key, bool>();
+
         private double savedTime = -10000;
+
         private int healEnergy = 10;
         private int maxEnergy = 100;
 
@@ -128,6 +131,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         {
             if(CharacterEnergy >= healEnergy)
             {
+                helper1.Alpha = 1;
+                helper2.Alpha = 1;
+                helper1.Position = new Vector2(20,-25);
+                helper2.Position = new Vector2(-20,-25);
                 CharacterSign.Colour = Color4.Red;
                 CharacterEnergy = CharacterEnergy - healEnergy;
                 if((healEnergy + 5) <= maxEnergy)

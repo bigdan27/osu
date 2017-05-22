@@ -1,11 +1,63 @@
-﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
-
+﻿using OpenTK;
+using OpenTK.Graphics;
+using osu.Framework.Extensions.Color4Extensions;
+using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
+using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Sprites;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
-    class Helper
+    public class Helper : Container
     {
-        
+        private Container helperRing;
+        private Box helperBody;
+        private CircularContainer helperContainer;
+
+        public int HelperWidth { get; set; } = 4;
+        public Color4 HelperColor { get; set; } = Color4.Red;
+
+        public Helper()
+        {
+
+        }
+
+        protected override void LoadComplete()
+        {
+            Children = new Drawable[]
+            {
+                helperRing = new Container
+                {
+                    Masking = true,
+                    AutoSizeAxes = Axes.Both,
+                    Origin = Anchor.Centre,
+                    Anchor = Anchor.Centre,
+                    BorderThickness = 2,
+                    Depth = 1,
+                    BorderColour = HelperColor,
+                    Alpha = 1f,
+                    CornerRadius = HelperWidth,
+                    Children = new[]
+                    {
+                        helperBody = new Box
+                        {
+                            Colour = Color4.White,
+                            Alpha = 1,
+                            Width = HelperWidth * 2,
+                            Height = HelperWidth * 2,
+                        },
+                    },
+                },
+                helperContainer = new CircularContainer
+                {
+                        Origin = Anchor.Centre,
+                        Anchor = Anchor.Centre,
+                        RelativeSizeAxes = Axes.Both,
+                        Scale = new Vector2(HelperWidth * 2),
+                        Depth = 2,
+                        Masking = true,
+                }
+            };
+        }
     }
 }

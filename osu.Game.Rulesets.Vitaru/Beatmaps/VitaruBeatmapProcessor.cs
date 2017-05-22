@@ -6,7 +6,7 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
 {
     internal class VitaruBeatmapProcessor : BeatmapProcessor<VitaruHitObject>
     {
-        public void PostProcess(Beatmap<VitaruHitObject> beatmap)
+        public override void PostProcess(Beatmap<VitaruHitObject> beatmap)
         {
             if (beatmap.ComboColors.Count == 0)
                 return;

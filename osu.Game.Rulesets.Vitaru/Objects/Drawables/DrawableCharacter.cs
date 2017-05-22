@@ -55,6 +55,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public Action CharacterShoot { get; set; }
 
         public static bool AssetsLoaded = false;
+        protected Helper helper1;
+        protected Helper helper2;
 
         public bool Kiai { get; set; }
 
@@ -198,7 +200,19 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     Alpha = 0,
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                }
+                },
+                helper1 = new Helper
+                {
+                    Alpha = 0,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                },
+                helper2 = new Helper
+                {
+                    Alpha = 0,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                },
             };
 
             string characterType = "null";
