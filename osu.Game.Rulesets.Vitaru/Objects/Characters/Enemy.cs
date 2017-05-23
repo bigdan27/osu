@@ -26,7 +26,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Characters
 
         private const float base_scoring_distance = 100;
         public readonly SliderCurve Curve = new SliderCurve();
-        public double EndTime => StartTime + RepeatCount * Curve.Distance / Velocity;
+        public double EndTime;
         public double Duration => EndTime - StartTime;
         public int RepeatCount { get; set; } = 1;
         public double Velocity;

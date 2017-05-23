@@ -105,6 +105,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         protected override void UpdateInitialState()
         {
             base.UpdateInitialState();
+
+            if(enemy.IsSlider)
+                enemy.EndTime = enemy.StartTime + enemy.RepeatCount * enemy.Curve.Distance / enemy.Velocity;
+
             Alpha = 0f;
             Scale = new Vector2(0.5f);
         }
