@@ -5,6 +5,8 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
+using osu.Game.Rulesets.Vitaru.UI;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
@@ -25,7 +27,14 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         public void shoot()
         {
-
+            SeekingBullet s;
+            VitaruPlayfield.vitaruPlayfield.Add(s = new SeekingBullet(Team)
+            {
+                Origin = Anchor.Centre,
+                Depth = 5,
+                BulletSpeed = 1,
+            });
+            s.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, -30), s));
         }
 
         protected override void LoadComplete()

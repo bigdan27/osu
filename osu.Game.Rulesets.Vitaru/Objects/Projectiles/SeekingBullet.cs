@@ -2,6 +2,9 @@
 using OpenTK;
 using System;
 using osu.Framework.Graphics.Sprites;
+using osu.Game.Rulesets.Vitaru.UI;
+using osu.Game.Rulesets.Vitaru.Objects.Characters;
+using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {
@@ -9,6 +12,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
     {
         private Vector2 seekingBulletVelocity;
         private Sprite seekingBulletSprite;
+        public DrawableVitaruEnemy NearestEnemy;
+        private float enemyPos;
 
         public SeekingBullet(int team) : base(team)
         {
@@ -17,6 +22,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void LoadComplete()
         {
+            DynamicBulletVelocity = true;
+            nearestEnemy();
+            enemyRelativePositionAngle();
             Children = new Drawable[]
             {
                 seekingBulletSprite = new Sprite
@@ -26,23 +34,54 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             };
         }
 
-        public int SeekingBulletTarget()
+        private void nearestEnemy()
         {
-            return 0;
+            if (VitaruPlayfield.vitaruPlayfield != null)
+            {
+                foreach (Drawable draw in VitaruPlayfield.vitaruPlayfield.Children)
+                {
+                    if (draw is DrawableVitaruEnemy)
+                    {
+                        DrawableVitaruEnemy drawableVitaruEnemy = draw as DrawableVitaruEnemy;
+
+                        if(drawableVitaruEnemy.Alpha > 0)
+                        {
+                            float minDist = 9999;
+                            float dist = Vector2.Distance(drawableVitaruEnemy.Position, Position);
+                            if (dist < minDist)
+                            {
+                                NearestEnemy = drawableVitaruEnemy;
+                                minDist = dist;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+                throw new Exception();
         }
 
-        public Vector2 SeekingBulletVelocity()
+        public float enemyRelativePositionAngle()
         {
-            seekingBulletVelocity.X = BulletSpeed * (((float)Math.Cos(BulletAngleRadian)));
-            seekingBulletVelocity.Y = BulletSpeed * ((float)Math.Sin(BulletAngleRadian));
+            //Returns a Radian
+            if(NearestEnemy != null)
+                enemyPos = (float)Math.Atan2((NearestEnemy.Position.Y - Position.Y), (NearestEnemy.Position.X - Position.X));
+            return enemyPos;
+        }
+
+        private Vector2 BulletVelocity()
+        {
+            seekingBulletVelocity.X = BulletSpeed * (((float)Math.Cos(enemyPos)));
+            seekingBulletVelocity.Y = BulletSpeed * ((float)Math.Sin(enemyPos));
             return seekingBulletVelocity;
         }
 
         protected override void Update()
         {
             base.Update();
-            SeekingBulletTarget();
-            SeekingBulletVelocity();
+            nearestEnemy();
+            enemyRelativePositionAngle();
+            BulletVelocity();
             MoveToOffset(new Vector2(seekingBulletVelocity.X * (float)Clock.ElapsedFrameTime, seekingBulletVelocity.Y * (float)Clock.ElapsedFrameTime));
         }
     }

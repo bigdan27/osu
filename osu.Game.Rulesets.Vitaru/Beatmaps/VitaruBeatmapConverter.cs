@@ -28,7 +28,6 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
             
             if (playerLoaded == false)
             {
-                DrawableCharacter.AssetsLoaded = false;
                 playerLoaded = true;
                 VitaruPlayer.PlayerPosition = new Vector2(256, 700);
                 yield return new VitaruPlayer
