@@ -17,6 +17,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public float BulletWidth { get; set; } = 12f;
         public float BulletAngleRadian { get; set; } = -10;
         public bool DynamicBulletVelocity { get; set; } = false;
+        public bool Piercing { get; set; } = false;
 
         //This is an extra 10 outside of playerbounds intentionally. There is No escape.
         private Vector4 BulletBounds = new Vector4(-10, -10, 522, 830);

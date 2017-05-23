@@ -76,17 +76,5 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
                 };
             }
         }
-        private void enemySlider()
-        {
-
-        }
-        private void enemySpinner()
-        {
-
-        }
-        private void enemyHitcircle()
-        {
-
-        }
     }
 }

@@ -128,10 +128,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         {
             if(CharacterEnergy >= healEnergy)
             {
+                /*
                 helper1.Alpha = 1;
                 helper2.Alpha = 1;
                 helper1.Position = new Vector2(20,-30);
                 helper2.Position = new Vector2(-20,-30);
+                */
                 CharacterSign.Colour = Color4.Red;
                 CharacterEnergy = CharacterEnergy - healEnergy;
                 if((healEnergy + 5) <= maxEnergy)
@@ -144,8 +146,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private void shoot()
         {
+            /*
             helper1.shoot();
             helper2.shoot();
+            */
             Wave a;
             VitaruPlayfield.vitaruPlayfield.Add(a = new Wave(Team)
             {
