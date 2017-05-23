@@ -134,7 +134,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
                             if (distance < minDist)
                             {
-                                bullet.DeleteBullet();
+                                if(!bullet.Piercing)
+                                    bullet.DeleteBullet();
                                 if (TakeDamage(bullet.BulletDamage))
                                     break;
                             }
