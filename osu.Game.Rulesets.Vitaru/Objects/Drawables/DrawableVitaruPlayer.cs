@@ -157,7 +157,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 PatternBulletWidth = 8,
                 PatternDifficulty = 1,
             });
-            a.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), a));
+            a.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, -30), a));
         }
 
         protected override bool OnKeyDown(InputState state, KeyDownEventArgs args)

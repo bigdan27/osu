@@ -43,10 +43,10 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 {
                     Masking = false,
                     //Magic numbers, srry in advance
-                    Position = new Vector2(-20),
+                    Position = new Vector2(-10),
                     RelativeSizeAxes = Axes.Both,
                     //Magic numbers, srry in advance
-                    Size = new Vector2(1.52f , 1.46f),
+                    Size = new Vector2(1.48f , 1.46f),
                     Origin = Anchor.TopLeft,
                     Anchor = Anchor.TopLeft,
                 },

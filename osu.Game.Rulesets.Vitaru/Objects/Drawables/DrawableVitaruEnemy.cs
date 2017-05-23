@@ -117,17 +117,18 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             ScaleTo(1f, TIME_PREEMPT, EasingTypes.OutQuart);
         }
 
+        double endTime;
         protected override void UpdateState(ArmedState state)
         {
             base.UpdateState(state);
 
-            double endTime = (HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime;
+            if(enemy.IsSlider)
+                endTime = (HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime;
             double duration = endTime - HitObject.StartTime;
-
-
 
             Delay(HitObject.StartTime - Time.Current + Judgement.TimeOffset, true);
 
+            //Does nothing atm
             switch (State)
             {
                 case ArmedState.Idle:

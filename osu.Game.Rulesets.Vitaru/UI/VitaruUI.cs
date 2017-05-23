@@ -44,7 +44,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 {
                     Anchor = Anchor.CentreRight,
                     Origin = Anchor.CentreLeft,
-                    Position = new Vector2(8 , 0),
+                    Position = new Vector2(10 , 0),
                     TextSize = textSize,
                     Colour = Color4.SkyBlue,
                     Text = "Energy Value Here",
@@ -53,7 +53,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 {
                     Anchor = Anchor.CentreLeft,
                     Origin = Anchor.CentreRight,
-                    Position = new Vector2(-8 , 0),
+                    Position = new Vector2(-10 , 0),
                     TextSize = textSize,
                     Colour = Color4.Green,
                     Text = "Health Value Here",
@@ -134,7 +134,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
                     Colour = Color4.YellowGreen,
-                    Size = new Vector2(548 , 10),
+                    Size = new Vector2(532 , 10),
                     Children = new Drawable[]
                     {
                         opponentBarBox = new Box
@@ -152,7 +152,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Anchor = Anchor.BottomCentre,
                     Origin = Anchor.BottomCentre,
                     Colour = Color4.Red,
-                    Size = new Vector2(548 , 10),
+                    Size = new Vector2(532 , 10),
                     Children = new Drawable[]
                     {
                         friendlyBarBox = new Box
@@ -180,6 +180,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
             if ((VitaruScoreProcessor.PlayerHealth * 100) <= 0)
                 health.Colour = Color4.Black;
 
+            healthBar.Colour = health.Colour;
             energyBar.ResizeTo(new Vector2(10 , VitaruScoreProcessor.PlayerEnergy * 820) , 0);
             healthBar.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerHealth * 820), 0);
             energyBarBox.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerEnergy * 820), 0);
