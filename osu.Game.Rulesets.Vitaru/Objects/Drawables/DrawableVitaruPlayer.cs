@@ -58,6 +58,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private const float playerSpeed = 0.4f;
         private Vector2 positionChange = Vector2.Zero;
+        private float savedTime2;
 
         protected override void Update()
         {
@@ -107,6 +108,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 VitaruPlayer.PlayerPosition.X += xTranslationDistance;
             }
 
+            if (Bullet.BulletSpeedModifier < 1)
+                Bullet.BulletSpeedModifier = (((float)Time.Current - savedTime2) / 2500);
+
             VitaruPlayer.PlayerPosition = Vector2.ComponentMin(VitaruPlayer.PlayerPosition, playerBounds.Yw);
             VitaruPlayer.PlayerPosition  = Vector2.ComponentMax(VitaruPlayer.PlayerPosition, playerBounds.Xz);
             Position = VitaruPlayer.PlayerPosition;
@@ -134,6 +138,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 helper1.Position = new Vector2(20,-30);
                 helper2.Position = new Vector2(-20,-30);
                 */
+                savedTime2 = (float)Time.Current;
+                Bullet.BulletSpeedModifier = 0;
                 CharacterSign.Colour = Color4.Red;
                 CharacterEnergy = CharacterEnergy - healEnergy;
                 if((healEnergy + 5) <= maxEnergy)

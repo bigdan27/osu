@@ -19,6 +19,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public bool DynamicBulletVelocity { get; set; } = false;
         public bool Piercing { get; set; } = false;
 
+        //Used like a multiple
+        public static float BulletSpeedModifier = 1;
+
         //This is an extra 10 outside of playerbounds intentionally. There is No escape.
         private Vector4 BulletBounds = new Vector4(-10, -10, 522, 830);
 
@@ -95,7 +98,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void Update()
         {
             base.Update();
-            MoveToOffset(new Vector2(bulletVelocity.X * (float)Clock.ElapsedFrameTime, bulletVelocity.Y * (float)Clock.ElapsedFrameTime));
+            MoveToOffset(new Vector2((bulletVelocity.X * BulletSpeedModifier) * (float)Clock.ElapsedFrameTime, (bulletVelocity.Y * BulletSpeedModifier) * (float)Clock.ElapsedFrameTime));
 
             //Will be useful for makin bullets stop, like if a certain character / boss could freeze time.
             if (DynamicBulletVelocity)
