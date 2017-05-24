@@ -23,12 +23,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public static float BulletSpeedModifier = 1;
 
         //This is an extra 10 outside of playerbounds intentionally. There is No escape.
-        private Vector4 BulletBounds = new Vector4(-10, -10, 522, 830);
+        public Vector4 BulletBounds = new Vector4(-10, -10, 522, 830);
 
         public static int BulletCount = 0;
 
         //Result of bulletSpeed + bulletAngle math, should never be modified outside of this class
-        private Vector2 bulletVelocity;
+        public Vector2 BulletVelocity;
 
         private Container bulletRing;
         private CircularContainer bulletCircle;
@@ -90,15 +90,14 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         public Vector2 GetBulletVelocity()
         {
-            bulletVelocity.X = BulletSpeed * (((float)Math.Cos(BulletAngleRadian)));
-            bulletVelocity.Y = BulletSpeed * ((float)Math.Sin(BulletAngleRadian));
-            return bulletVelocity;
+            BulletVelocity.X = BulletSpeed * (((float)Math.Cos(BulletAngleRadian)));
+            BulletVelocity.Y = BulletSpeed * ((float)Math.Sin(BulletAngleRadian));
+            return BulletVelocity;
         }
 
         protected override void Update()
         {
             base.Update();
-            MoveToOffset(new Vector2((bulletVelocity.X * BulletSpeedModifier) * (float)Clock.ElapsedFrameTime, (bulletVelocity.Y * BulletSpeedModifier) * (float)Clock.ElapsedFrameTime));
 
             //Will be useful for makin bullets stop, like if a certain character / boss could freeze time.
             if (DynamicBulletVelocity)
@@ -109,12 +108,18 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
             if (Position.Y < BulletBounds.Y | Position.X < BulletBounds.X | Position.Y > BulletBounds.W | Position.X > BulletBounds.Z)   
                 fadeOut();
+            MoveBullet();
         }
 
         private void fadeOut()
         {
             if(Alpha == 1)
-                FadeOut(300);
+                FadeOut(200);
+        }
+
+        public void MoveBullet()
+        {
+            MoveToOffset(new Vector2((BulletVelocity.X * BulletSpeedModifier) * (float)Clock.ElapsedFrameTime, (BulletVelocity.Y * BulletSpeedModifier) * (float)Clock.ElapsedFrameTime));
         }
 
         internal void DeleteBullet()

@@ -48,7 +48,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private float timeSaved;
         private double timeSinceLastShoot;
 
-        protected Color4 HitboxColor { get; set; }
+        protected Color4 CharacterColor { get; set; }
         protected float HitboxWidth { get; set; }
 
         public Action OnDeath { get; set; }
@@ -194,7 +194,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 {
                     Alpha = 0,
                     HitboxWidth = HitboxWidth,
-                    HitboxColor = HitboxColor,
+                    HitboxColor = CharacterColor,
                 },
                 CharacterSign = new Sprite()
                 {
@@ -202,17 +202,19 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                 },
-                helper1 = new Helper
+                helper1 = new Helper(Team)
                 {
                     Alpha = 0,
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
+                    HelperColor = CharacterColor,
                 },
-                helper2 = new Helper
+                helper2 = new Helper(Team)
                 {
                     Alpha = 0,
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
+                    HelperColor = CharacterColor,
                 },
             };
 

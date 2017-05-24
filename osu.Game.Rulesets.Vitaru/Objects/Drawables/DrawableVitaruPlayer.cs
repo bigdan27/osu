@@ -45,7 +45,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             CharacterType = HitObjectType.Player;
             CharacterHealth = 100;
             Team = 0;
-            HitboxColor = Color4.Yellow;
+            CharacterColor = Color4.Red;
             HitboxWidth = 4;
             CharacterShoot = shoot;
         }
@@ -66,7 +66,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             HitDetect();
 
-            if (savedTime < Time.Current - 1000 && CharacterEnergy < maxEnergy)
+            if (savedTime < Time.Current - 100 && CharacterEnergy < maxEnergy)
                 energyAdd();
             playerInput();
             playerMovement();

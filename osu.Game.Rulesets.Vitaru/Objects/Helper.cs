@@ -14,25 +14,27 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
     {
         private Container helperRing;
         private Box helperBody;
+        private int Team;
         private CircularContainer helperContainer;
 
         public float HelperWidth { get; set; } = 4;
         public int HelperTeam { get; set; }
-        public Color4 HelperColor { get; set; } = Color4.Red;
+        public Color4 HelperColor { get; set; }
 
-        public Helper()
+        public Helper(int team)
         {
-
+            Team = team;
         }
 
         public void shoot()
         {
             SeekingBullet s;
-            VitaruPlayfield.vitaruPlayfield.Add(s = new SeekingBullet(0)
+            VitaruPlayfield.vitaruPlayfield.Add(s = new SeekingBullet(Team)
             {
                 Origin = Anchor.Centre,
                 Depth = 5,
                 BulletSpeed = 1,
+                BulletColor = HelperColor,
             });
             s.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, -30), s));
         }
@@ -47,7 +49,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     AutoSizeAxes = Axes.Both,
                     Origin = Anchor.Centre,
                     Anchor = Anchor.Centre,
-                    BorderThickness = 2,
+                    BorderThickness = HelperWidth,
                     Depth = 1,
                     BorderColour = HelperColor,
                     Alpha = 1f,
