@@ -47,6 +47,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             {
                 bulletRing = new Container
                 {
+                    Scale = new Vector2(0.1f),
                     Masking = true,
                     AutoSizeAxes = Axes.Both,
                     Origin = Anchor.Centre,
@@ -55,7 +56,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                     Depth = 5,
                     AlwaysPresent = true,
                     BorderColour = BulletColor,
-                    Alpha = 1f,
+                    Alpha = 0f,
                     CornerRadius = BulletWidth,
                     Children = new[]
                     {
@@ -86,6 +87,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                         }
                 }
             };
+            bulletRing.FadeIn(100, EasingTypes.OutCubic);
+            bulletRing.ScaleTo(new Vector2(1), 100, EasingTypes.OutCubic);
         }
 
         public Vector2 GetBulletVelocity()

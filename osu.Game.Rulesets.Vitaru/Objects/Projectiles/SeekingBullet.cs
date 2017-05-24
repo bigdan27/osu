@@ -13,7 +13,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
     public class SeekingBullet : Bullet
     {
         public DrawableVitaruEnemy NearestEnemy;
-        private float enemyPos;
+        private float enemyPos = -10;
         private double startTime;
 
         private Container bulletRing;
@@ -62,8 +62,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                     },
                 },
             };
-            bulletRing.FadeIn(100, EasingTypes.OutCubic);
-            bulletRing.ScaleTo(new Vector2(1), 100, EasingTypes.OutCubic);
+            bulletRing.FadeIn(150, EasingTypes.OutCubic);
+            bulletRing.ScaleTo(new Vector2(1), 150, EasingTypes.OutCubic);
             enemyPos = MathHelper.DegreesToRadians(StartAngle - 90);
             GetBulletVelocity();
         }
@@ -72,7 +72,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         {
             if (VitaruPlayfield.vitaruPlayfield != null)
             {
-                foreach (Drawable draw in VitaruPlayfield.vitaruPlayfield.InternalChildren)
+                foreach (Drawable draw in VitaruPlayfield.vitaruPlayfield.Children)
                 {
                     if (draw is DrawableVitaruEnemy)
                     {
@@ -114,10 +114,17 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         {
             base.Update();
             Rotation = Rotation + 0.5f;
-            nearestEnemy();
-            enemyRelativePositionAngle();
+
+            //IdleTimer
             if(startTime + 300 <= Time.Current)
+            {
+                //This check should prevent the bullets from slaying CPUs
+                if(enemyPos == -10)
+                    nearestEnemy();
+                enemyRelativePositionAngle();
                 GetBulletVelocity();
+            }
+                
         }
     }
 }

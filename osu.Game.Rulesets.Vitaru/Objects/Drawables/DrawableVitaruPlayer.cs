@@ -66,7 +66,15 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             HitDetect();
 
-            if (savedTime < Time.Current - 100 && CharacterEnergy < maxEnergy)
+            if (helper1.Alpha == 0)
+            {
+                helper1.Position = new Vector2(20, -30);
+                helper2.Position = new Vector2(-20, -30);
+                helper1.Alpha = 1;
+                helper2.Alpha = 1;
+            }
+
+            if (savedTime < Time.Current - 1000 && CharacterEnergy < maxEnergy)
                 energyAdd();
             playerInput();
             playerMovement();
@@ -132,12 +140,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         {
             if(CharacterEnergy >= healEnergy)
             {
-                
-                helper1.Alpha = 1;
-                helper2.Alpha = 1;
-                helper1.Position = new Vector2(20,-30);
-                helper2.Position = new Vector2(-20,-30);
-                
                 savedTime2 = (float)Time.Current;
                 Bullet.BulletSpeedModifier = 0;
                 CharacterSign.Colour = Color4.Red;
@@ -152,7 +154,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private void shoot()
         {
-            
             helper1.shoot();
             helper2.shoot();
             
