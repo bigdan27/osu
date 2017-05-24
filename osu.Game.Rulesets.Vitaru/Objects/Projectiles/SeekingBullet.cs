@@ -3,17 +3,21 @@ using OpenTK;
 using System;
 using osu.Framework.Graphics.Sprites;
 using osu.Game.Rulesets.Vitaru.UI;
-using osu.Game.Rulesets.Vitaru.Objects.Characters;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
+using osu.Framework.Graphics.Containers;
+using OpenTK.Graphics;
+using osu.Framework.Extensions.Color4Extensions;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {
     public class SeekingBullet : Bullet
     {
         private Vector2 seekingBulletVelocity;
-        private Sprite seekingBulletSprite;
         public DrawableVitaruEnemy NearestEnemy;
         private float enemyPos;
+
+        private Container bulletRing;
+        private CircularContainer bulletCircle;
 
         public SeekingBullet(int team) : base(team)
         {
@@ -23,15 +27,51 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void LoadComplete()
         {
             DynamicBulletVelocity = true;
-            nearestEnemy();
-            enemyRelativePositionAngle();
             Children = new Drawable[]
             {
-                seekingBulletSprite = new Sprite
+                bulletRing = new Container
                 {
-                    //TODO: find a good sprite and load it here
+                    Masking = true,
+                    AutoSizeAxes = Axes.Both,
+                    Origin = Anchor.Centre,
+                    Anchor = Anchor.Centre,
+                    BorderThickness = 3,
+                    Depth = 5,
+                    AlwaysPresent = true,
+                    BorderColour = BulletColor,
+                    Alpha = 1f,
+                    CornerRadius = BulletWidth / 4,
+                    Children = new[]
+                    {
+                        new Box
+                        {
+                            Colour = Color4.White,
+                            Alpha = 1,
+                            Width = BulletWidth * 2,
+                            Height = BulletWidth * 2,
+                            Depth = 5,
+                        },
+                    },
                 },
-            };
+                bulletCircle = new CircularContainer
+                {
+                        Origin = Anchor.Centre,
+                        Anchor = Anchor.Centre,
+                        RelativeSizeAxes = Axes.Both,
+                        Scale = new Vector2(BulletWidth * 2),
+                        Depth = 6,
+                        AlwaysPresent = true,
+                        Masking = true,
+                        EdgeEffect = new EdgeEffect
+                        {
+                            Type = EdgeEffectType.Shadow,
+                            Colour = (BulletColor).Opacity(0.5f),
+                            Radius = 2f,
+                        }
+                }
+};
+            nearestEnemy();
+            enemyRelativePositionAngle();
         }
 
         private void nearestEnemy()
@@ -82,7 +122,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             nearestEnemy();
             enemyRelativePositionAngle();
             BulletVelocity();
-            MoveToOffset(new Vector2(seekingBulletVelocity.X * (float)Clock.ElapsedFrameTime, seekingBulletVelocity.Y * (float)Clock.ElapsedFrameTime));
+            MoveToOffset(new Vector2((seekingBulletVelocity.X) * (float)Clock.ElapsedFrameTime, (seekingBulletVelocity.Y) * (float)Clock.ElapsedFrameTime));
         }
     }
 }
