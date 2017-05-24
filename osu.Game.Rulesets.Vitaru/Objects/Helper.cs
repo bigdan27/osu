@@ -17,9 +17,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private int Team;
         private CircularContainer helperContainer;
 
-        public float HelperWidth { get; set; } = 4;
+        public float HelperWidth { get; set; } = 5;
         public int HelperTeam { get; set; }
         public Color4 HelperColor { get; set; }
+        public float StartAngle { get; set; } = 0;
 
         public Helper(int team)
         {
@@ -33,10 +34,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             {
                 Origin = Anchor.Centre,
                 Depth = 5,
-                BulletSpeed = 1,
+                BulletSpeed = 0.8f,
                 BulletColor = HelperColor,
+                StartAngle = StartAngle,
             });
-            s.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, -30), s));
+            s.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), s));
         }
 
         protected override void LoadComplete()
@@ -49,7 +51,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     AutoSizeAxes = Axes.Both,
                     Origin = Anchor.Centre,
                     Anchor = Anchor.Centre,
-                    BorderThickness = HelperWidth,
+                    BorderThickness = HelperWidth / 2,
                     Depth = 1,
                     BorderColour = HelperColor,
                     Alpha = 1f,

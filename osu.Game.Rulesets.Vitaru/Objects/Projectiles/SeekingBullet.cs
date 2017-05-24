@@ -14,8 +14,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
     {
         public DrawableVitaruEnemy NearestEnemy;
         private float enemyPos;
+        private double startTime;
 
         private Container bulletRing;
+
+        public float StartAngle { get; set; }
 
         public SeekingBullet(int team) : base(team)
         {
@@ -24,7 +27,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void LoadComplete()
         {
-            DynamicBulletVelocity = true;
+            startTime = Time.Current;
             Children = new Drawable[]
             {
                 bulletRing = new Container
@@ -61,15 +64,15 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             };
             bulletRing.FadeIn(100, EasingTypes.OutCubic);
             bulletRing.ScaleTo(new Vector2(1), 100, EasingTypes.OutCubic);
-            nearestEnemy();
-            enemyRelativePositionAngle();
+            enemyPos = MathHelper.DegreesToRadians(StartAngle - 90);
+            GetBulletVelocity();
         }
 
         private void nearestEnemy()
         {
             if (VitaruPlayfield.vitaruPlayfield != null)
             {
-                foreach (Drawable draw in VitaruPlayfield.vitaruPlayfield.Children)
+                foreach (Drawable draw in VitaruPlayfield.vitaruPlayfield.InternalChildren)
                 {
                     if (draw is DrawableVitaruEnemy)
                     {
@@ -113,7 +116,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             Rotation = Rotation + 0.5f;
             nearestEnemy();
             enemyRelativePositionAngle();
-            GetBulletVelocity();
+            if(startTime + 300 <= Time.Current)
+                GetBulletVelocity();
         }
     }
 }

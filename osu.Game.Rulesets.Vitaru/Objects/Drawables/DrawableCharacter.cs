@@ -208,6 +208,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     HelperColor = CharacterColor,
+                    StartAngle = 20,
                 },
                 helper2 = new Helper(Team)
                 {
@@ -215,6 +216,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     HelperColor = CharacterColor,
+                    StartAngle = -20,
                 },
             };
 
