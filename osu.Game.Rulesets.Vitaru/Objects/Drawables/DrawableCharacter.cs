@@ -74,7 +74,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             CharacterHealth -= damage;
             if (CharacterHealth <= 0)
             {
-                OnDeath();
+                OnDeath?.Invoke();
                 Dispose();
                 return true;
             }
