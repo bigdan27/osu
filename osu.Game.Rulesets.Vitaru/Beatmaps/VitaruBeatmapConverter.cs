@@ -30,6 +30,7 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
             
             if (playerLoaded == false)
             {
+                EnemyList = new List<DrawableVitaruEnemy>();
                 playerLoaded = true;
                 VitaruPlayer.PlayerPosition = new Vector2(256, 700);
                 yield return new VitaruPlayer
