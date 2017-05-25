@@ -38,7 +38,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             if (PatternAngleRadian == -10)
                 PatternAngleRadian = MathHelper.DegreesToRadians(PatternAngleDegree - 90);
 
-            createPattern();
+            CreatePattern();
             Dispose();
         }
 
@@ -66,7 +66,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             });
             bullet.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), bullet));
         }
-        protected abstract void createPattern();
+        protected abstract void CreatePattern();
     }
     public class Wave : BulletPattern
     {
@@ -77,7 +77,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             Team = team;
         }
 
-        protected override void createPattern()
+        protected override void CreatePattern()
         {
             float directionModifier = -0.1f * PatternDifficulty;
             for (int i = 1; i <= (3 * PatternDifficulty); i++)
@@ -96,7 +96,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             Team = team;
         }
 
-        protected override void createPattern()
+        protected override void CreatePattern()
         {
             for (int i = 1; i <= 3 * PatternDifficulty; i++)
             {
@@ -114,7 +114,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             Team = team;
         }
 
-        protected override void createPattern()
+        protected override void CreatePattern()
         {
             double timeSaved = Time.Current;
             int a = 0;
@@ -135,7 +135,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             Team = team;
         }
 
-        protected override void createPattern()
+        protected override void CreatePattern()
         {
             float directionModifier = (float)(90 / Math.Pow(2, PatternDifficulty));
             directionModifier = MathHelper.DegreesToRadians(directionModifier);
@@ -156,7 +156,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             Team = team;
         }
 
-        protected override void createPattern()
+        protected override void CreatePattern()
         {
             float speedModifier = 0.01f + 0.01f * (PatternDifficulty);
             float directionModifier = -0.075f - 0.075f * (PatternDifficulty);
