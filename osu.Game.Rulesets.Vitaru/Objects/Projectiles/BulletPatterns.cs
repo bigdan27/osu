@@ -37,6 +37,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
             if (PatternAngleRadian == -10)
                 PatternAngleRadian = MathHelper.DegreesToRadians(PatternAngleDegree - 90);
+
+            createPattern();
+            Dispose();
         }
 
         protected override void Update()
@@ -63,6 +66,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             });
             bullet.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), bullet));
         }
+        protected abstract void createPattern();
     }
     public class Wave : BulletPattern
     {
@@ -72,17 +76,15 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         {
             Team = team;
         }
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
 
+        protected override void createPattern()
+        {
             float directionModifier = -0.1f * PatternDifficulty;
             for (int i = 1; i <= (3 * PatternDifficulty); i++)
             {
                 bulletAddRad(PatternSpeed, PatternAngleRadian + directionModifier);
                 directionModifier += 0.1f;
             }
-            Dispose();
         }
     }
     public class Line : BulletPattern
@@ -93,16 +95,14 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         {
             Team = team;
         }
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
 
+        protected override void createPattern()
+        {
             for (int i = 1; i <= 3 * PatternDifficulty; i++)
             {
                 bulletAddRad(0.12f + PatternSpeed, PatternAngleRadian);
                 PatternSpeed += 0.025f;
             }
-            Dispose();
         }
     }
     public class Flower : BulletPattern
@@ -113,10 +113,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         {
             Team = team;
         }
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
 
+        protected override void createPattern()
+        {
             double timeSaved = Time.Current;
             int a = 0;
             for (int j = 1; j <= 16 * PatternDifficulty; j++)
@@ -125,13 +124,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 PatternAngleRadian = MathHelper.DegreesToRadians(a - 90);
                 bulletAddRad(PatternSpeed, a);
             }
-            Dispose();
-        }
-        protected override void Update()
-        {
-            base.Update();
-
-
         }
     }
     public class Circle : BulletPattern
@@ -142,10 +134,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         {
             Team = team;
         }
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
 
+        protected override void createPattern()
+        {
             float directionModifier = (float)(90 / Math.Pow(2, PatternDifficulty));
             directionModifier = MathHelper.DegreesToRadians(directionModifier);
             float circleAngle = 0;
@@ -154,7 +145,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 bulletAddRad(PatternSpeed, circleAngle);
                 circleAngle += directionModifier;
             }
-            Dispose();
         }
     }
     public class CoolWave : BulletPattern
@@ -165,10 +155,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         {
             Team = team;
         }
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
 
+        protected override void createPattern()
+        {
             float speedModifier = 0.01f + 0.01f * (PatternDifficulty);
             float directionModifier = -0.075f - 0.075f * (PatternDifficulty);
             for (int i = 1; i <= 3 + (PatternDifficulty * 2); i++)
@@ -180,7 +169,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 speedModifier -= 0.01f;
                 directionModifier += 0.075f;
             }
-            Dispose();
         }
     }
 }
