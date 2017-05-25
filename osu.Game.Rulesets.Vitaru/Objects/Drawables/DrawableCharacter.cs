@@ -141,6 +141,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                             }
                         }
                     }
+                    /*
                     if (draw is SeekingBullet)
                     {
                         SeekingBullet seekingBullet = draw as SeekingBullet;
@@ -168,12 +169,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         Laser laser = draw as Laser;
                         if (laser.Team != Team)
                         {
-                            /*
                             circleDistance.x = abs(circle.x - rect.x);
                             circleDistance.y = abs(circle.y - rect.y);
-                            */
                         }
                     }
+                    */
                 }
             }
             else
