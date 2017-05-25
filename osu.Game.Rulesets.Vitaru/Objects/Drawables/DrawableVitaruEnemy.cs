@@ -43,12 +43,17 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             Alpha = 1;
             EnemyIDCount++;
             EnemyID = EnemyIDCount;
+            OnDeath = death;
             VitaruBeatmapConverter.EnemyList.Add(this);
         }
 
         private bool hasShot = false;
         private bool sliderDone = false;
         
+        private void death()
+        {
+            VitaruBeatmapConverter.EnemyList.Remove(this);
+        }
 
         protected override void Update()
         {

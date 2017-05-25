@@ -121,10 +121,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             if(startTime + 300 <= Time.Current)
             {
                 nearestEnemy();
-                enemyRelativePositionAngle();
-                GetBulletVelocity();
+                if(NearestEnemy != null)
+                    if (NearestEnemy.CharacterHealth > 0)
+                    {
+                        enemyRelativePositionAngle();
+                        GetBulletVelocity();
+                    }
             }
-                
         }
     }
 }
