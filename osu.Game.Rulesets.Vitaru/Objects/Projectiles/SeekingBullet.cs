@@ -17,6 +17,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         private double startTime;
 
         private Container bulletRing;
+        private bool enemyFound = false;
 
         public float StartAngle { get; set; }
 
@@ -119,8 +120,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             if(startTime + 300 <= Time.Current)
             {
                 //This check should prevent the bullets from slaying CPUs
-                if(enemyPos == -10)
+                if (!enemyFound)
+                {
                     nearestEnemy();
+                    enemyFound = true;
+                }
                 enemyRelativePositionAngle();
                 GetBulletVelocity();
             }

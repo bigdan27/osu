@@ -141,7 +141,29 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                             }
                         }
                     }
-                    if(draw is Laser)
+                    if (draw is SeekingBullet)
+                    {
+                        SeekingBullet seekingBullet = draw as SeekingBullet;
+                        if (seekingBullet.Team != Team)
+                        {
+                            Vector2 bulletPos = seekingBullet.ToSpaceOfOtherDrawable(Vector2.Zero, this);
+                            float distance = (float)Math.Sqrt(Math.Pow(bulletPos.X, 2) + Math.Pow(bulletPos.Y, 2));
+                            float minDist = Hitbox.HitboxWidth + seekingBullet.BulletWidth;
+                            float signDist = ((CharacterSign.Size.Y / 2) - 14) + seekingBullet.BulletWidth;
+
+                            if (CharacterSign.Alpha >= 0.1f && distance < signDist)
+                                seekingBullet.DeleteBullet();
+
+                            if (distance < minDist)
+                            {
+                                if (!seekingBullet.Piercing)
+                                    seekingBullet.DeleteBullet();
+                                if (TakeDamage(seekingBullet.BulletDamage))
+                                    break;
+                            }
+                        }
+                    }
+                    if (draw is Laser)
                     {
                         Laser laser = draw as Laser;
                         if (laser.Team != Team)
