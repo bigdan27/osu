@@ -115,7 +115,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void Update()
         {
             base.Update();
-            Rotation = Rotation + 0.5f;
+            Rotation = Rotation + 1f;
 
             //IdleTimer
             if(startTime + 300 <= Time.Current)
