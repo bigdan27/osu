@@ -75,18 +75,18 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             {
                 foreach (DrawableVitaruEnemy enemy in VitaruBeatmapConverter.EnemyList.OfType<DrawableVitaruEnemy>())
                 {
-                    float minDist = 9999;
-                    float dist = Vector2.Distance(enemy.Position, Position);
-                    if (dist < minDist)
+                    if(enemy.Alpha > 0)
                     {
-                        NearestEnemy = enemy;
-                        minDist = dist;
+                        float minDist = 9999;
+                        float dist = Vector2.Distance(enemy.Position, Position);
+                        if (dist < minDist)
+                        {
+                            NearestEnemy = enemy;
+                            minDist = dist;
+                        }
                     }
-
                 }
             }
-            else
-                throw new Exception();
         }
 
         public float enemyRelativePositionAngle()

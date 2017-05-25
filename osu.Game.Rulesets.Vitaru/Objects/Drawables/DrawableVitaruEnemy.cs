@@ -53,6 +53,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private void death()
         {
             VitaruBeatmapConverter.EnemyList.Remove(this);
+            Dispose();
         }
 
         protected override void Update()
@@ -177,8 +178,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             }
             if (HitObject.StartTime <= Time.Current && hasShot == true && Position.Y <= -300)
             {
-                VitaruBeatmapConverter.EnemyList.Remove(this);
-                Dispose();
+                death();
             }
         }
 
@@ -202,8 +202,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             if (enemy.EndTime <= Time.Current && hasShot == true && Position.Y <= -300)
             {
-                VitaruBeatmapConverter.EnemyList.Remove(this);
-                Dispose();
+                death();
             }
 
             double progress = MathHelper.Clamp((Time.Current - enemy.StartTime) / enemy.Duration, 0, 1);
