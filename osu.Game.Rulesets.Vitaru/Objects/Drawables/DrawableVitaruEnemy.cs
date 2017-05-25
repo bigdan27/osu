@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using osu.Game.Rulesets.Vitaru.UI;
 using osu.Game.Audio;
 using System.Linq;
+using osu.Game.Rulesets.Vitaru.Beatmaps;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
@@ -35,13 +36,14 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             Origin = Anchor.Centre;
             Position = enemy.Position;
             CharacterType = HitObjectType.Enemy;
-            CharacterHealth = 20;
+            CharacterHealth = 50;
             Team = 1;
             HitboxWidth = 24;
             CharacterColor = Color4.Cyan;
             Alpha = 1;
             EnemyIDCount++;
             EnemyID = EnemyIDCount;
+            VitaruBeatmapConverter.EnemyList.Add(this);
         }
 
         private bool hasShot = false;
@@ -170,6 +172,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             }
             if (HitObject.StartTime <= Time.Current && hasShot == true && Position.Y <= -300)
             {
+                VitaruBeatmapConverter.EnemyList.Remove(this);
                 Dispose();
             }
         }
@@ -194,6 +197,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             if (enemy.EndTime <= Time.Current && hasShot == true && Position.Y <= -300)
             {
+                VitaruBeatmapConverter.EnemyList.Remove(this);
                 Dispose();
             }
 

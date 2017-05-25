@@ -9,6 +9,7 @@ using osu.Game.Rulesets.Objects.Drawables;
 using OpenTK.Graphics;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics.Sprites;
+using System.Collections.Generic;
 
 namespace osu.Game.Rulesets.Vitaru.UI
 {

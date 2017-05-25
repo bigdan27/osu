@@ -17,6 +17,8 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
     internal class VitaruBeatmapConverter : BeatmapConverter<VitaruHitObject>
     {
         private bool playerLoaded = false;
+        public static List<DrawableVitaruEnemy> EnemyList = new List<DrawableVitaruEnemy>();
+
         protected override IEnumerable<Type> ValidConversionTypes { get; } = new[] { typeof(IHasPosition) };
 
         protected override IEnumerable<VitaruHitObject> ConvertHitObject(HitObject original, Beatmap beatmap)

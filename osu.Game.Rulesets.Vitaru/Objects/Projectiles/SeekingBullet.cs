@@ -7,6 +7,7 @@ using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 using osu.Framework.Graphics.Containers;
 using OpenTK.Graphics;
 using osu.Framework.Extensions.Color4Extensions;
+using osu.Game.Rulesets.Vitaru.Beatmaps;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {
@@ -15,9 +16,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public DrawableVitaruEnemy NearestEnemy;
         private float enemyPos = -10;
         private double startTime;
+        private DrawableVitaruEnemy drawableVitaruEnemy;
 
         private Container bulletRing;
-        private bool enemyFound = false;
 
         public float StartAngle { get; set; }
 
@@ -71,13 +72,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         private void nearestEnemy()
         {
-            if (VitaruPlayfield.vitaruPlayfield != null)
+            if (VitaruPlayfield.vitaruPlayfield != null && VitaruBeatmapConverter.EnemyList != null)
             {
-                foreach (Drawable draw in VitaruPlayfield.vitaruPlayfield.Children)
+                foreach (Drawable draw in VitaruBeatmapConverter.EnemyList)
                 {
                     if (draw is DrawableVitaruEnemy)
                     {
-                        DrawableVitaruEnemy drawableVitaruEnemy = draw as DrawableVitaruEnemy;
+                        drawableVitaruEnemy = draw as DrawableVitaruEnemy;
 
                         if(drawableVitaruEnemy.Alpha > 0)
                         {
@@ -119,12 +120,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             //IdleTimer
             if(startTime + 300 <= Time.Current)
             {
-                //This check should prevent the bullets from slaying CPUs
-                if (!enemyFound)
-                {
-                    nearestEnemy();
-                    enemyFound = true;
-                }
+                nearestEnemy();
                 enemyRelativePositionAngle();
                 GetBulletVelocity();
             }
