@@ -8,6 +8,7 @@ using osu.Framework.Graphics.Containers;
 using OpenTK.Graphics;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Game.Rulesets.Vitaru.Beatmaps;
+using System.Linq;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {
@@ -16,7 +17,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public DrawableVitaruEnemy NearestEnemy;
         private float enemyPos = -10;
         private double startTime;
-        private DrawableVitaruEnemy drawableVitaruEnemy;
 
         private Container bulletRing;
 
@@ -43,7 +43,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                     Depth = 5,
                     AlwaysPresent = true,
                     BorderColour = BulletColor,
-                    Alpha = 0f,
                     CornerRadius = BulletWidth / 2,
                     Children = new[]
                     {
@@ -64,7 +63,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                     },
                 },
             };
-            bulletRing.FadeIn(150, EasingTypes.OutCubic);
+            bulletRing.FadeInFromZero(150, EasingTypes.OutCubic);
             bulletRing.ScaleTo(new Vector2(1), 150, EasingTypes.OutCubic);
             enemyPos = MathHelper.DegreesToRadians(StartAngle - 90);
             GetBulletVelocity();
@@ -72,23 +71,18 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         private void nearestEnemy()
         {
-            if (VitaruPlayfield.vitaruPlayfield != null && VitaruBeatmapConverter.EnemyList != null)
+            if (VitaruBeatmapConverter.EnemyList != null)
             {
-                foreach (Drawable draw in VitaruBeatmapConverter.EnemyList)
+                foreach (DrawableVitaruEnemy enemy in VitaruBeatmapConverter.EnemyList.OfType<DrawableVitaruEnemy>())
                 {
-                    if (draw is DrawableVitaruEnemy)
+                    if (enemy.Alpha > 0)
                     {
-                        drawableVitaruEnemy = draw as DrawableVitaruEnemy;
-
-                        if(drawableVitaruEnemy.Alpha > 0)
+                        float minDist = 9999;
+                        float dist = Vector2.Distance(enemy.Position, Position);
+                        if (dist < minDist)
                         {
-                            float minDist = 9999;
-                            float dist = Vector2.Distance(drawableVitaruEnemy.Position, Position);
-                            if (dist < minDist)
-                            {
-                                NearestEnemy = drawableVitaruEnemy;
-                                minDist = dist;
-                            }
+                            NearestEnemy = enemy;
+                            minDist = dist;
                         }
                     }
                 }
