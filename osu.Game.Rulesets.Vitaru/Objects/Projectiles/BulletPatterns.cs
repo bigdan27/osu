@@ -82,6 +82,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 bulletAddRad(PatternSpeed, PatternAngleRadian + directionModifier);
                 directionModifier += 0.1f;
             }
+            Dispose();
         }
     }
     public class Line : BulletPattern
@@ -101,6 +102,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 bulletAddRad(0.12f + PatternSpeed, PatternAngleRadian);
                 PatternSpeed += 0.025f;
             }
+            Dispose();
         }
     }
     public class Flower : BulletPattern
@@ -123,6 +125,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 PatternAngleRadian = MathHelper.DegreesToRadians(a - 90);
                 bulletAddRad(PatternSpeed, a);
             }
+            Dispose();
         }
         protected override void Update()
         {
@@ -151,6 +154,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 bulletAddRad(PatternSpeed, circleAngle);
                 circleAngle += directionModifier;
             }
+            Dispose();
         }
     }
     public class CoolWave : BulletPattern
@@ -176,6 +180,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 speedModifier -= 0.01f;
                 directionModifier += 0.075f;
             }
+            Dispose();
         }
     }
 }
