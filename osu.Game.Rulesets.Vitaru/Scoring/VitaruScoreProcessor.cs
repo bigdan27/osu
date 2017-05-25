@@ -55,9 +55,9 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
         {
             base.PopulateScore(score);
 
-            score.Statistics[@"300"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Kill30);
-            score.Statistics[@"100"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Kill20);
-            score.Statistics[@"50"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Kill10);
+            score.Statistics[@"30"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Kill30);
+            score.Statistics[@"20"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Kill20);
+            score.Statistics[@"10"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Kill10);
             score.Statistics[@"x"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Miss);
         }
 
@@ -74,12 +74,23 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
                 switch (judgement.Result)
                 {
                     case HitResult.Hit:
-                        Health.Value += 0.1f;
                         break;
                     case HitResult.Miss:
                         Health.Value -= 1f;
                         break;
                 }
+
+                int score = 0;
+                int maxScore = 0;
+
+                foreach (var j in Judgements)
+                {
+                    score += j.ScoreValue;
+                    maxScore += j.MaxScoreValue;
+                }
+
+                TotalScore.Value = score;
+                Accuracy.Value = (double)score / maxScore;
             }
         }
     }

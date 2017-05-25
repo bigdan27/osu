@@ -104,9 +104,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         {
             if (CharacterHealth <= 0)
             {
-                if(!hasShot)
+                if (!hasShot)
                     PlaySamples();
                 Judgement.Result = HitResult.Hit;
+                Judgement.Score = VitaruScoreResult.Kill10;
             }
         }
 
