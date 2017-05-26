@@ -12,6 +12,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
     public class Helper : Container
     {
+        /// <summary>
+        /// The "Helper" is basically a character that only shoots "SeekingBullet"s for the player (atm, however it will work for any character in the future)
+        /// </summary>
+
         private Container helperRing;
         private Box helperBody;
         private int Team;

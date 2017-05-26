@@ -60,19 +60,21 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private Vector2 positionChange = Vector2.Zero;
         private float savedTime2;
 
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+
+            helper1.Position = new Vector2(20, -30);
+            helper2.Position = new Vector2(-20, -30);
+            helper1.Alpha = 1;
+            helper2.Alpha = 1;
+        }
+
         protected override void Update()
         {
             base.Update();
 
             HitDetect();
-
-            if (helper1.Alpha == 0)
-            {
-                helper1.Position = new Vector2(20, -30);
-                helper2.Position = new Vector2(-20, -30);
-                helper1.Alpha = 1;
-                helper2.Alpha = 1;
-            }
 
             if (savedTime < Time.Current - 1000 && CharacterEnergy < maxEnergy)
                 energyAdd();

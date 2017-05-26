@@ -72,7 +72,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         private void nearestEnemy()
         {
             if (VitaruBeatmapConverter.EnemyList != null)
-            {
                 foreach (DrawableVitaruEnemy enemy in VitaruBeatmapConverter.EnemyList.OfType<DrawableVitaruEnemy>())
                 {
                     if(enemy.Alpha > 0)
@@ -86,7 +85,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                         }
                     }
                 }
-            }
         }
 
         public float enemyRelativePositionAngle()
@@ -107,18 +105,17 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void Update()
         {
             base.Update();
-            Rotation = Rotation + 1f;
+            Rotation = Rotation + 0.25f;
 
             //IdleTimer
             if(startTime + 300 <= Time.Current)
             {
                 nearestEnemy();
-                if(NearestEnemy != null)
-                    if (NearestEnemy.CharacterHealth > 0)
-                    {
-                        enemyRelativePositionAngle();
-                        GetBulletVelocity();
-                    }
+                if(NearestEnemy != null && NearestEnemy.CharacterHealth > 0)
+                {
+                    enemyRelativePositionAngle();
+                    GetBulletVelocity();
+                }
             }
         }
     }
