@@ -28,6 +28,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private readonly List<ISliderProgress> components = new List<ISliderProgress>();
         private int currentRepeat;
+        private bool returnJudge = false;
 
         public DrawableVitaruEnemy(Enemy enemy) : base(enemy)
         {
@@ -43,7 +44,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             Alpha = 1;
             EnemyIDCount++;
             EnemyID = EnemyIDCount;
-            OnDeath = death;
+            OnDeath = deathAnimation;
             VitaruBeatmapConverter.EnemyList.Add(this);
         }
 
@@ -52,8 +53,21 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         
         private void death()
         {
+            returnJudge = true;
             VitaruBeatmapConverter.EnemyList.Remove(this);
             Dispose();
+        }
+
+        private void deathAnimation()
+        {
+            if (leaving)
+                death();
+            double deathDuration = 1000;
+            Dead = true;
+            VitaruBeatmapConverter.EnemyList.Remove(this);
+            RotateTo(60 , deathDuration, EasingTypes.InExpo);
+            MoveTo(new Vector2(Position.X , Position.Y - 400) , deathDuration , EasingTypes.InBack);
+            ScaleTo(new Vector2 (0.25f) , deathDuration , EasingTypes.OutSine);
         }
 
         protected override void Update()
@@ -102,10 +116,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         protected override void CheckJudgement(bool userTriggered)
         {
-            if (CharacterHealth <= 0)
+            if (returnJudge)
             {
-                if (!hasShot)
-                    PlaySamples();
                 Judgement.Result = HitResult.Hit;
                 Judgement.Score = VitaruScoreResult.Kill10;
             }
@@ -131,6 +143,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         }
 
         double endTime;
+        private bool leaving = false;
+
         protected override void UpdateState(ArmedState state)
         {
             base.UpdateState(state);
@@ -141,7 +155,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             Delay(HitObject.StartTime - Time.Current + Judgement.TimeOffset, true);
 
-            //Does nothing atm
+            //Saves Performance atm
             switch (State)
             {
                 case ArmedState.Idle:
@@ -160,6 +174,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private void leave()
         {
+            leaving = true;
             int r = RNG.Next(-100, 612);
             MoveTo(new Vector2(r, -300), 2000, EasingTypes.InCubic);
             FadeOut(2000, EasingTypes.InCubic);
@@ -171,13 +186,20 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         /// </summary>
         private void hitcircle(int patternID)
         {
-            if (HitObject.StartTime <= Time.Current && hasShot == false)
+            if (HitObject.StartTime <= Time.Current && !hasShot && Dead)
+            {
+                PlaySamples();
+                death();
+            }
+
+            if (HitObject.StartTime <= Time.Current && !hasShot && !Dead)
             {
                 enemyShoot(patternID);
                 leave();
                 hasShot = true;
             }
-            if (HitObject.StartTime <= Time.Current && hasShot == true && Position.Y <= -300)
+
+            if (HitObject.StartTime <= Time.Current && hasShot && Position.Y <= -300)
             {
                 death();
             }
@@ -188,20 +210,32 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         /// </summary>
         private void slider(int patternID)
         {
-            if (HitObject.StartTime <= Time.Current && hasShot == false)
+            if (HitObject.StartTime <= Time.Current && !hasShot && Dead && !leaving)
+            {
+                PlaySamples();
+                death();
+            }
+
+            if (HitObject.StartTime <= Time.Current && !hasShot && Dead && !leaving)
+            {
+                PlaySamples();
+                death();
+            }
+
+            if (HitObject.StartTime <= Time.Current && !hasShot && !Dead)
             {
                 enemyShoot(patternID);
                 hasShot = true;
             }
 
-            if (enemy.EndTime <= Time.Current && hasShot == true && sliderDone == false)
+            if (enemy.EndTime <= Time.Current && hasShot && !sliderDone && !Dead)
             {
                 enemyShoot(patternID);
                 leave();
                 sliderDone = true;
             }
 
-            if (enemy.EndTime <= Time.Current && hasShot == true && Position.Y <= -300)
+            if (enemy.EndTime <= Time.Current && hasShot && Position.Y <= -300)
             {
                 death();
             }

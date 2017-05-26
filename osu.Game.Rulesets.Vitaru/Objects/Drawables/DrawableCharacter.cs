@@ -43,6 +43,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         protected Hitbox Hitbox;
 
+        public bool Dead { get; set; } = false;
         public bool Shooting { get; set; } = false;
 
         private float timeSaved;
@@ -75,7 +76,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             if (CharacterHealth <= 0)
             {
                 OnDeath?.Invoke();
-                Dispose();
+                if(OnDeath == null)
+                    Dispose();
                 return true;
             }
             return false;
@@ -133,7 +135,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                             if (CharacterSign.Alpha >= 0.1f && distance < signDist)
                                 bullet.DeleteBullet();
 
-                            if (distance < minDist)
+                            if (distance < minDist && !Dead)
                             {
                                 if(!bullet.Piercing)
                                     bullet.DeleteBullet();
@@ -177,9 +179,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     */
                 }
             }
-            else
-                throw new Exception();
-
         }
 
         [BackgroundDependencyLoader]
