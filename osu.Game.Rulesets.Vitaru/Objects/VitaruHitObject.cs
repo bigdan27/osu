@@ -1,13 +1,9 @@
-﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
-
-using osu.Game.Rulesets.Objects;
+﻿using osu.Game.Rulesets.Objects;
 using OpenTK;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
-using osu.Game.Rulesets.Vitaru.Objects;
 using OpenTK.Graphics;
 using osu.Game.Database;
-using osu.Game.Beatmaps.Timing;
+using osu.Game.Beatmaps.ControlPoints;
 
 namespace osu.Game.Rulesets.Vitaru.Objects
 {
@@ -60,9 +56,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects
             }
         }
 
-        public override void ApplyDefaults(TimingInfo timing, BeatmapDifficulty difficulty)
+        public override void ApplyDefaults(ControlPointInfo controlPointInfo, BeatmapDifficulty difficulty)
         {
-            base.ApplyDefaults(timing, difficulty);
+            base.ApplyDefaults(controlPointInfo, difficulty);
 
             Scale = (1.0f - 0.7f * (difficulty.CircleSize - 5) / 5) / 2;
         }

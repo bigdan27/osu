@@ -36,13 +36,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public int Team { get; set; } = 0; // 0 = Player, 1 = Ememies + Boss(s) in Singleplayer
         public int ProjectileDamage { get; set; }
 
-        public int BPM { get; set; } = (180);
-        //private SampleChannel sampleShoot;
-        //private SampleChannel sampleDeath;
+        public int BPM { get; set; } = (200);
 
         public static ResourceStore<byte[]> VitaruResources;
         public static TextureStore VitaruTextures;
-        //public SampleManager Audio;
 
         protected Hitbox Hitbox;
 
@@ -51,13 +48,15 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private float timeSaved;
         private double timeSinceLastShoot;
 
-        protected Color4 HitboxColor { get; set; }
+        protected Color4 CharacterColor { get; set; }
         protected float HitboxWidth { get; set; }
 
         public Action OnDeath { get; set; }
         public Action CharacterShoot { get; set; }
 
         public static bool AssetsLoaded = false;
+        protected Helper helper1;
+        protected Helper helper2;
 
         public bool Kiai { get; set; }
 
@@ -75,8 +74,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             CharacterHealth -= damage;
             if (CharacterHealth <= 0)
             {
+                OnDeath?.Invoke();
                 Dispose();
-                //sampleDeath.Play();
                 return true;
             }
             return false;
@@ -109,7 +108,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 timeSinceLastShoot += Clock.ElapsedFrameTime;
                 if (timeSinceLastShoot / 1000.0 > 1 / BPM / 30.0)
                 {
-                    //sampleShoot.Play();
                     CharacterShoot?.Invoke();
                     timeSinceLastShoot -= 1 / (BPM / 30.0) * 1000.0;
                 }
@@ -131,27 +129,52 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                             float distance = (float)Math.Sqrt(Math.Pow(bulletPos.X, 2) + Math.Pow(bulletPos.Y, 2));
                             float minDist = Hitbox.HitboxWidth + bullet.BulletWidth;
                             float signDist = ((CharacterSign.Size.Y / 2) - 14) + bullet.BulletWidth;
+
+                            if (CharacterSign.Alpha >= 0.1f && distance < signDist)
+                                bullet.DeleteBullet();
+
                             if (distance < minDist)
                             {
-                                bullet.DeleteBullet();
+                                if(!bullet.Piercing)
+                                    bullet.DeleteBullet();
                                 if (TakeDamage(bullet.BulletDamage))
                                     break;
                             }
-                            if (CharacterSign.Alpha >= 0.1f && distance < signDist)
-                                bullet.DeleteBullet();
                         }
                     }
-                    if(draw is Laser)
+                    /*
+                    if (draw is SeekingBullet)
+                    {
+                        SeekingBullet seekingBullet = draw as SeekingBullet;
+                        if (seekingBullet.Team != Team)
+                        {
+                            Vector2 bulletPos = seekingBullet.ToSpaceOfOtherDrawable(Vector2.Zero, this);
+                            float distance = (float)Math.Sqrt(Math.Pow(bulletPos.X, 2) + Math.Pow(bulletPos.Y, 2));
+                            float minDist = Hitbox.HitboxWidth + seekingBullet.BulletWidth;
+                            float signDist = ((CharacterSign.Size.Y / 2) - 14) + seekingBullet.BulletWidth;
+
+                            if (CharacterSign.Alpha >= 0.1f && distance < signDist)
+                                seekingBullet.DeleteBullet();
+
+                            if (distance < minDist)
+                            {
+                                if (!seekingBullet.Piercing)
+                                    seekingBullet.DeleteBullet();
+                                if (TakeDamage(seekingBullet.BulletDamage))
+                                    break;
+                            }
+                        }
+                    }
+                    if (draw is Laser)
                     {
                         Laser laser = draw as Laser;
                         if (laser.Team != Team)
                         {
-                            /*
                             circleDistance.x = abs(circle.x - rect.x);
                             circleDistance.y = abs(circle.y - rect.y);
-                            */
                         }
                     }
+                    */
                 }
             }
             else
@@ -171,9 +194,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
                 VitaruTextures = new TextureStore(new RawTextureLoaderStore(new NamespacedResourceStore<byte[]>(VitaruResources, @"Textures")));
                 VitaruTextures.AddStore(new RawTextureLoaderStore(new OnlineStore()));
-
-                //This is wrong, but I am unsure how to add the audio files
-                //Audio = Dependencies.Cache(new SampleManager(new NamespacedResourceStore<byte[]>(Resources, @"Audio/Samples")));
             }
 
             //Drawable stuff loading for each individual Character
@@ -197,14 +217,30 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 {
                     Alpha = 0,
                     HitboxWidth = HitboxWidth,
-                    HitboxColor = HitboxColor,
+                    HitboxColor = CharacterColor,
                 },
                 CharacterSign = new Sprite()
                 {
                     Alpha = 0,
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                }
+                },
+                helper1 = new Helper(Team)
+                {
+                    Alpha = 0,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    HelperColor = CharacterColor,
+                    StartAngle = 20,
+                },
+                helper2 = new Helper(Team)
+                {
+                    Alpha = 0,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    HelperColor = CharacterColor,
+                    StartAngle = -20,
+                },
             };
 
             string characterType = "null";
@@ -221,8 +257,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     break;
             }
 
-            //sampleDeath = audio.Sample.Get(@"deathSound");
-            //sampleShoot = audio.Sample.Get(@"shootSound");
             CharacterSprite.Texture = VitaruTextures.Get(characterType);
             CharacterKiaiSprite.Texture = VitaruTextures.Get(characterType + "Kiai");
             CharacterSign.Texture = VitaruTextures.Get(characterType + "Sign");
@@ -230,7 +264,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
     }
 }
 
-//Stuff for when lasers are implemented properly
+
+
+
+//Stuff for when lasers are implemented properly, should wait until new hitbox system is ready
 
 /*bool intersects(CircleType circle, RectType rect)
 {

@@ -1,11 +1,8 @@
-﻿using osu.Framework.Graphics.Containers;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Input;
-using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 using osu.Framework.Graphics;
 using osu.Framework.Input;
 using System.Collections.Generic;
-using System;
 using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
 using OpenTK.Graphics;
 using osu.Game.Rulesets.Objects.Drawables;
@@ -18,8 +15,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
     public class DrawableVitaruPlayer : DrawableCharacter
     {
         private readonly VitaruPlayer player;
+
         private Dictionary<Key, bool> keys = new Dictionary<Key, bool>();
+
         private double savedTime = -10000;
+
         private int healEnergy = 10;
         private int maxEnergy = 100;
 
@@ -45,7 +45,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             CharacterType = HitObjectType.Player;
             CharacterHealth = 100;
             Team = 0;
-            HitboxColor = Color4.Yellow;
+            CharacterColor = Color4.Red;
             HitboxWidth = 4;
             CharacterShoot = shoot;
         }
@@ -58,6 +58,17 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private const float playerSpeed = 0.4f;
         private Vector2 positionChange = Vector2.Zero;
+        private float savedTime2;
+
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+
+            helper1.Position = new Vector2(20, -30);
+            helper2.Position = new Vector2(-20, -30);
+            helper1.Alpha = 1;
+            helper2.Alpha = 1;
+        }
 
         protected override void Update()
         {
@@ -107,6 +118,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 VitaruPlayer.PlayerPosition.X += xTranslationDistance;
             }
 
+            if (Bullet.BulletSpeedModifier < 1)
+                Bullet.BulletSpeedModifier = (((float)Time.Current - savedTime2) / 2500);
+
             VitaruPlayer.PlayerPosition = Vector2.ComponentMin(VitaruPlayer.PlayerPosition, playerBounds.Yw);
             VitaruPlayer.PlayerPosition  = Vector2.ComponentMax(VitaruPlayer.PlayerPosition, playerBounds.Xz);
             Position = VitaruPlayer.PlayerPosition;
@@ -128,6 +142,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         {
             if(CharacterEnergy >= healEnergy)
             {
+                savedTime2 = (float)Time.Current;
+                Bullet.BulletSpeedModifier = 0;
                 CharacterSign.Colour = Color4.Red;
                 CharacterEnergy = CharacterEnergy - healEnergy;
                 if((healEnergy + 5) <= maxEnergy)
@@ -140,6 +156,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private void shoot()
         {
+            helper1.shoot();
+            helper2.shoot();
+            
             Wave a;
             VitaruPlayfield.vitaruPlayfield.Add(a = new Wave(Team)
             {
@@ -151,7 +170,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 PatternBulletWidth = 8,
                 PatternDifficulty = 1,
             });
-            a.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), a));
+            a.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, -30), a));
         }
 
         protected override bool OnKeyDown(InputState state, KeyDownEventArgs args)

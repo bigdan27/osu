@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using osu.Game.Rulesets.Vitaru.UI;
 using osu.Game.Audio;
 using System.Linq;
+using osu.Game.Rulesets.Vitaru.Beatmaps;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
@@ -22,6 +23,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private Color4 enemyColor = Color4.Green;
         private int patternID = -1;
 
+        public static int EnemyIDCount = 0;
+        public int EnemyID = 0;
+
         private readonly List<ISliderProgress> components = new List<ISliderProgress>();
         private int currentRepeat;
 
@@ -32,18 +36,25 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             Origin = Anchor.Centre;
             Position = enemy.Position;
             CharacterType = HitObjectType.Enemy;
-            CharacterHealth = 20;
+            CharacterHealth = 50;
             Team = 1;
             HitboxWidth = 24;
-            HitboxColor = Color4.Cyan;
+            CharacterColor = Color4.Cyan;
             Alpha = 1;
-
-
+            EnemyIDCount++;
+            EnemyID = EnemyIDCount;
+            OnDeath = death;
+            VitaruBeatmapConverter.EnemyList.Add(this);
         }
 
         private bool hasShot = false;
         private bool sliderDone = false;
         
+        private void death()
+        {
+            VitaruBeatmapConverter.EnemyList.Remove(this);
+            Dispose();
+        }
 
         protected override void Update()
         {
@@ -93,14 +104,20 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         {
             if (CharacterHealth <= 0)
             {
-                PlaySamples();
+                if (!hasShot)
+                    PlaySamples();
                 Judgement.Result = HitResult.Hit;
+                Judgement.Score = VitaruScoreResult.Kill10;
             }
         }
 
         protected override void UpdateInitialState()
         {
             base.UpdateInitialState();
+
+            if(enemy.IsSlider)
+                enemy.EndTime = enemy.StartTime + enemy.RepeatCount * enemy.Curve.Distance / enemy.Velocity;
+
             Alpha = 0f;
             Scale = new Vector2(0.5f);
         }
@@ -113,17 +130,18 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             ScaleTo(1f, TIME_PREEMPT, EasingTypes.OutQuart);
         }
 
+        double endTime;
         protected override void UpdateState(ArmedState state)
         {
             base.UpdateState(state);
 
-            double endTime = (HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime;
+            if(enemy.IsSlider)
+                endTime = (HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime;
             double duration = endTime - HitObject.StartTime;
-
-
 
             Delay(HitObject.StartTime - Time.Current + Judgement.TimeOffset, true);
 
+            //Does nothing atm
             switch (State)
             {
                 case ArmedState.Idle:
@@ -161,7 +179,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             }
             if (HitObject.StartTime <= Time.Current && hasShot == true && Position.Y <= -300)
             {
-                Dispose();
+                death();
             }
         }
 
@@ -185,7 +203,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             if (enemy.EndTime <= Time.Current && hasShot == true && Position.Y <= -300)
             {
-                Dispose();
+                death();
             }
 
             double progress = MathHelper.Clamp((Time.Current - enemy.StartTime) / enemy.Duration, 0, 1);

@@ -17,14 +17,18 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public float BulletWidth { get; set; } = 12f;
         public float BulletAngleRadian { get; set; } = -10;
         public bool DynamicBulletVelocity { get; set; } = false;
+        public bool Piercing { get; set; } = false;
+
+        //Used like a multiple
+        public static float BulletSpeedModifier = 1;
 
         //This is an extra 10 outside of playerbounds intentionally. There is No escape.
-        private Vector4 BulletBounds = new Vector4(-10, -10, 522, 830);
+        public Vector4 BulletBounds = new Vector4(-10, -10, 522, 830);
 
         public static int BulletCount = 0;
 
         //Result of bulletSpeed + bulletAngle math, should never be modified outside of this class
-        private Vector2 bulletVelocity;
+        public Vector2 BulletVelocity;
 
         private Container bulletRing;
         private CircularContainer bulletCircle;
@@ -43,6 +47,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             {
                 bulletRing = new Container
                 {
+                    Scale = new Vector2(0.1f),
                     Masking = true,
                     AutoSizeAxes = Axes.Both,
                     Origin = Anchor.Centre,
@@ -51,7 +56,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                     Depth = 5,
                     AlwaysPresent = true,
                     BorderColour = BulletColor,
-                    Alpha = 1f,
+                    Alpha = 0f,
                     CornerRadius = BulletWidth,
                     Children = new[]
                     {
@@ -82,19 +87,20 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                         }
                 }
             };
+            bulletRing.FadeIn(100, EasingTypes.OutCubic);
+            bulletRing.ScaleTo(new Vector2(1), 100, EasingTypes.OutCubic);
         }
 
         public Vector2 GetBulletVelocity()
         {
-            bulletVelocity.X = BulletSpeed * (((float)Math.Cos(BulletAngleRadian)));
-            bulletVelocity.Y = BulletSpeed * ((float)Math.Sin(BulletAngleRadian));
-            return bulletVelocity;
+            BulletVelocity.X = BulletSpeed * (((float)Math.Cos(BulletAngleRadian)));
+            BulletVelocity.Y = BulletSpeed * ((float)Math.Sin(BulletAngleRadian));
+            return BulletVelocity;
         }
 
         protected override void Update()
         {
             base.Update();
-            MoveToOffset(new Vector2(bulletVelocity.X * (float)Clock.ElapsedFrameTime, bulletVelocity.Y * (float)Clock.ElapsedFrameTime));
 
             //Will be useful for makin bullets stop, like if a certain character / boss could freeze time.
             if (DynamicBulletVelocity)
@@ -105,12 +111,18 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
             if (Position.Y < BulletBounds.Y | Position.X < BulletBounds.X | Position.Y > BulletBounds.W | Position.X > BulletBounds.Z)   
                 fadeOut();
+            MoveBullet();
         }
 
         private void fadeOut()
         {
             if(Alpha == 1)
-                FadeOut(300);
+                FadeOut(200);
+        }
+
+        public void MoveBullet()
+        {
+            MoveToOffset(new Vector2((BulletVelocity.X * BulletSpeedModifier) * (float)Clock.ElapsedFrameTime, (BulletVelocity.Y * BulletSpeedModifier) * (float)Clock.ElapsedFrameTime));
         }
 
         internal void DeleteBullet()

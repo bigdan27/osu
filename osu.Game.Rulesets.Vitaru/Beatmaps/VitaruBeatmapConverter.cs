@@ -17,6 +17,8 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
     internal class VitaruBeatmapConverter : BeatmapConverter<VitaruHitObject>
     {
         private bool playerLoaded = false;
+        public static List<DrawableVitaruEnemy> EnemyList = new List<DrawableVitaruEnemy>();
+
         protected override IEnumerable<Type> ValidConversionTypes { get; } = new[] { typeof(IHasPosition) };
 
         protected override IEnumerable<VitaruHitObject> ConvertHitObject(HitObject original, Beatmap beatmap)
@@ -28,7 +30,7 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
             
             if (playerLoaded == false)
             {
-                DrawableCharacter.AssetsLoaded = false;
+                EnemyList = new List<DrawableVitaruEnemy>();
                 playerLoaded = true;
                 VitaruPlayer.PlayerPosition = new Vector2(256, 700);
                 yield return new VitaruPlayer
@@ -76,18 +78,6 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
                     NewCombo = comboData?.NewCombo ?? false,
                 };
             }
-        }
-        private void enemySlider()
-        {
-
-        }
-        private void enemySpinner()
-        {
-
-        }
-        private void enemyHitcircle()
-        {
-
         }
     }
 }

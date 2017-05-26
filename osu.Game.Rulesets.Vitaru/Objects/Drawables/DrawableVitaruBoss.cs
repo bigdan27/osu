@@ -17,7 +17,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             CharacterType = HitObjectType.Boss;
             CharacterHealth = 1000;
             Team = 1;
-            HitboxColor = Color4.Green;
+            CharacterColor = Color4.Green;
             HitboxWidth = 32;
         }
 
