@@ -216,12 +216,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 death();
             }
 
-            if (HitObject.StartTime <= Time.Current && !hasShot && Dead && !leaving)
-            {
-                PlaySamples();
-                death();
-            }
-
             if (HitObject.StartTime <= Time.Current && !hasShot && !Dead)
             {
                 enemyShoot(patternID);
@@ -232,6 +226,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             {
                 enemyShoot(patternID);
                 leave();
+                sliderDone = true;
+            }
+
+            if (enemy.EndTime <= Time.Current && hasShot && !sliderDone && Dead)
+            {
+                death();
+                PlaySamples();
                 sliderDone = true;
             }
 

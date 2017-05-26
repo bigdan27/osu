@@ -9,6 +9,7 @@ using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Vitaru.Scoring;
 using osu.Game.Rulesets.Vitaru.UI;
 using osu.Game.Rulesets.Vitaru.Objects.Characters;
+using osu.Game.Rulesets.Vitaru.Beatmaps;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
@@ -48,6 +49,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             CharacterColor = Color4.Red;
             HitboxWidth = 4;
             CharacterShoot = shoot;
+            OnDeath = death;
+        }
+
+        private void death()
+        {
+            VitaruBeatmapConverter.EnemyList.Clear();
+            Dispose();
         }
 
         protected override void CheckJudgement(bool userTriggered)
