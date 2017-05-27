@@ -88,6 +88,6 @@ namespace osu.Game.Rulesets.Vitaru
             new KeyCounterKeyboard(Key.Down),
         };
 
-        //public override FontAwesome Icon => FontAwesome.fa_osu_vitaru_o;
+        public override FontAwesome Icon => FontAwesome.fa_bathtub;
     }
 }
