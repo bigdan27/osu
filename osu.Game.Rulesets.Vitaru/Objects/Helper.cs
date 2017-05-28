@@ -34,7 +34,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public void shoot()
         {
             SeekingBullet s;
-            VitaruPlayfield.vitaruPlayfield.Add(s = new SeekingBullet(Team)
+            Projectile projectile = new Projectile { };
+            VitaruPlayfield.vitaruPlayfield.Add(s = new SeekingBullet(projectile)
             {
                 Origin = Anchor.Centre,
                 Depth = 5,

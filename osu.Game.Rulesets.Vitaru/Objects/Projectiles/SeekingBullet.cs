@@ -22,9 +22,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         public float StartAngle { get; set; }
 
-        public SeekingBullet(int team) : base(team)
+        public SeekingBullet(Projectile projectile) : base(projectile)
         {
-            Team = team;
         }
 
         protected override void LoadComplete()

@@ -2,21 +2,23 @@
 using OpenTK.Graphics;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {
-    public class Laser : Projectile
+    public class Laser : DrawableVitaruHitObject
     {
         public float LaserDamage { get; set; } = 10;
         public Color4 LaserColor { get; set; } = Color4.White;
         public float LaserWidth { get; set; } = 12f;
         public float LaserLength { get; set; } = 1000f;
+        public int Team { get; set; }
         public float LaserAngleRadian { get; set; }
         private Container laserPiece;
 
-        public Laser(int team)
+        public Laser(Projectile projectile) : base(projectile)
         {
-            Team = team;
+            projectile.Team = Team;
         }
 
         protected override void LoadComplete()

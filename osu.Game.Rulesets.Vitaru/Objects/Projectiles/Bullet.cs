@@ -5,10 +5,11 @@ using OpenTK.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Extensions.Color4Extensions;
+using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {
-    public class Bullet : Projectile
+    public class Bullet : DrawableVitaruHitObject
     {
         //Different stats for Bullet that should always be changed
         public float BulletDamage { get; set; } = 10;
@@ -18,6 +19,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public float BulletAngleRadian { get; set; } = -10;
         public bool DynamicBulletVelocity { get; set; } = false;
         public bool Piercing { get; set; } = false;
+        public int Team { get; set; }
 
         //Used like a multiple
         public static float BulletSpeedModifier = 1;
@@ -34,9 +36,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         private CircularContainer bulletCircle;
 
 
-        public Bullet(int team)
+        public Bullet(Projectile projectile) : base(projectile)
         {
-            Team = team;
+            projectile.Team = Team;
         }
 
         protected override void LoadComplete()

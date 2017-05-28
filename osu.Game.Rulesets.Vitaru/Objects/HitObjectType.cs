@@ -7,6 +7,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
     {
         Player,
         Enemy,
-        Boss
+        Boss,
+        Projectile
     }
 }

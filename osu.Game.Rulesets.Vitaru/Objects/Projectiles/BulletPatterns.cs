@@ -52,8 +52,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected void bulletAddRad(float speed, float angle)
         {
             bulletCount++;
+            Projectile projectile = new Projectile { };
             Bullet bullet;
-            VitaruPlayfield.vitaruPlayfield.Add(bullet = new Bullet(Team)
+            VitaruPlayfield.vitaruPlayfield.Add(bullet = new Bullet(projectile)
             {
                 Origin = Anchor.Centre,
                 Depth = 5,
