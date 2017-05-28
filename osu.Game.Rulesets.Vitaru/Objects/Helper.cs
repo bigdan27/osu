@@ -43,6 +43,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 BulletColor = HelperColor,
                 StartAngle = StartAngle,
                 BulletDamage = 5,
+                Team = Team,
             });
             s.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), s));
         }

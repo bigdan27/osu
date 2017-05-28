@@ -64,6 +64,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 BulletWidth = PatternBulletWidth,
                 BulletDamage = PatternDamage,
                 DynamicBulletVelocity = DynamicPatternVelocity,
+                Team = Team,
             });
             bullet.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), bullet));
         }

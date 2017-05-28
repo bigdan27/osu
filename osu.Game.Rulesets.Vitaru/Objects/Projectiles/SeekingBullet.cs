@@ -24,6 +24,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         public SeekingBullet(Projectile projectile) : base(projectile)
         {
+            projectile.Team = Team;
         }
 
         protected override void LoadComplete()
