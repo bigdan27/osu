@@ -63,6 +63,17 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Characters
             set { Curve.Distance = value; }
         }
 
+        private int stackHeight = 0;
+        public override int StackHeight
+        {
+            get { return stackHeight; }
+            set
+            {
+                stackHeight = value;
+                Curve.Offset = StackOffset;
+            }
+        }
+
         public override void ApplyDefaults(ControlPointInfo controlPointInfo, BeatmapDifficulty difficulty)
         {
             base.ApplyDefaults(controlPointInfo, difficulty);
@@ -75,8 +86,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Characters
             Velocity = scoringDistance / timingPoint.BeatLength;
             TickDistance = scoringDistance / difficulty.SliderTickRate;
         }
-
-        public static Vector2 EnemyPos;
 
         //Main Enemy Function
         public Enemy() : base () { }

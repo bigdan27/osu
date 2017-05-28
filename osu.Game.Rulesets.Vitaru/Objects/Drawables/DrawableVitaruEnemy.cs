@@ -12,6 +12,9 @@ using osu.Game.Rulesets.Vitaru.UI;
 using osu.Game.Audio;
 using System.Linq;
 using osu.Game.Rulesets.Vitaru.Beatmaps;
+using osu.Framework.Allocation;
+using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
@@ -29,6 +32,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private readonly List<ISliderProgress> components = new List<ISliderProgress>();
         private int currentRepeat;
         private bool returnJudge = false;
+        private bool leaving = false;
 
         public DrawableVitaruEnemy(Enemy enemy) : base(enemy)
         {
@@ -44,42 +48,43 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             Alpha = 1;
             EnemyIDCount++;
             EnemyID = EnemyIDCount;
-            OnDeath = deathAnimation;
+            OnDeath = dyingAnimation;
             VitaruBeatmapConverter.EnemyList.Add(this);
         }
 
         private bool hasShot = false;
         private bool sliderDone = false;
-        
+
         private void death()
         {
+            pop();
             returnJudge = true;
             VitaruBeatmapConverter.EnemyList.Remove(this);
             Dispose();
         }
 
-        private void deathAnimation()
+        private void dyingAnimation()
         {
             if (leaving)
                 death();
             double deathDuration = 1000;
             Dead = true;
             VitaruBeatmapConverter.EnemyList.Remove(this);
-            RotateTo(60 , deathDuration, EasingTypes.InExpo);
-            MoveTo(new Vector2(Position.X , Position.Y - 400) , deathDuration , EasingTypes.InBack);
-            ScaleTo(new Vector2 (0.25f) , deathDuration , EasingTypes.OutSine);
+            RotateTo(60, deathDuration, EasingTypes.InExpo);
+            MoveTo(new Vector2(Position.X, Position.Y - 400), deathDuration, EasingTypes.InBack);
+            ScaleTo(new Vector2(0.25f), deathDuration, EasingTypes.OutSine);
         }
 
         protected override void Update()
         {
             enemy.EnemyPosition = enemy.Position;
 
-            if(patternID == -1)
+            if (patternID == -1)
                 getPatternID();
 
             HitDetect();
 
-            if (!enemy.IsSlider && !enemy.IsSpinner)
+            if (!enemy.IsSlider/* && !enemy.IsSpinner*/)
                 hitcircle(patternID);
 
             if (enemy.IsSlider)
@@ -87,7 +92,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             if (enemy.IsSpinner)
                 spinner();
-                
+
         }
 
         /// <summary>
@@ -127,7 +132,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         {
             base.UpdateInitialState();
 
-            if(enemy.IsSlider)
+            if (enemy.IsSlider)
                 enemy.EndTime = enemy.StartTime + enemy.RepeatCount * enemy.Curve.Distance / enemy.Velocity;
 
             Alpha = 0f;
@@ -143,13 +148,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         }
 
         double endTime;
-        private bool leaving = false;
 
         protected override void UpdateState(ArmedState state)
         {
             base.UpdateState(state);
 
-            if(enemy.IsSlider)
+            if (enemy.IsSlider)
                 endTime = (HitObject as IHasEndTime)?.EndTime ?? HitObject.StartTime;
             double duration = endTime - HitObject.StartTime;
 
@@ -186,6 +190,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         /// </summary>
         private void hitcircle(int patternID)
         {
+            if (Dead && leaving)
+            {
+                death();
+            }
+
             if (HitObject.StartTime <= Time.Current && !hasShot && Dead)
             {
                 PlaySamples();
@@ -210,6 +219,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         /// </summary>
         private void slider(int patternID)
         {
+            if (Dead && leaving)
+            {
+                death();
+            }
+
             if (HitObject.StartTime <= Time.Current && !hasShot && Dead && !leaving)
             {
                 PlaySamples();
@@ -254,19 +268,19 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 }
                 currentRepeat = repeat;
             }
-            if(!sliderDone)
+            if (!sliderDone)
                 UpdateProgress(progress, repeat);
-        }
-
-        public void UpdateProgress(double progress, int repeat)
-        {
-            if(!sliderDone)
-                Position = enemy.Curve.PositionAt(progress);
         }
 
         internal interface ISliderProgress
         {
             void UpdateProgress(double progress, int repeat);
+        }
+
+        public void UpdateProgress(double progress, int repeat)
+        {
+            if (!sliderDone)
+                Position = enemy.Curve.PositionAt(progress);
         }
 
         /// <summary>
@@ -372,8 +386,17 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public float playerRelativePositionAngle()
         {
             //Returns a Radian
-            playerPos = (float)Math.Atan2((VitaruPlayer.PlayerPosition.Y - Position.Y),(VitaruPlayer.PlayerPosition.X - Position.X));
+            playerPos = (float)Math.Atan2((VitaruPlayer.PlayerPosition.Y - Position.Y), (VitaruPlayer.PlayerPosition.X - Position.X));
             return playerPos;
+        }
+
+        private void pop()
+        {
+            GlowRing.Alpha = 1;
+            CharacterSprite.Alpha = 0;
+            GlowRing.ScaleTo(new Vector2(1), 300);
+            GlowRing.FadeOut(300);
+            GlowRing.Colour = Color4.Green;
         }
     }
 }

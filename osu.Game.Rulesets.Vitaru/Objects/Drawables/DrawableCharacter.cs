@@ -22,6 +22,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         protected Sprite CharacterSprite;
         protected Sprite CharacterKiaiSprite;
         protected Sprite CharacterSign;
+        protected Sprite GlowRing;
 
         //Sign stuff
         public float DegreesPerSecond = 80;
@@ -182,7 +183,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         }
 
         [BackgroundDependencyLoader]
-        private void load(FrameworkConfigManager config)
+        private void load(FrameworkConfigManager config , TextureStore textures)
         {
             if (!AssetsLoaded)
             {
@@ -240,6 +241,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     HelperColor = CharacterColor,
                     StartAngle = -20,
                 },
+                GlowRing = new Sprite
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    Alpha = 0,
+                    Scale = new Vector2(0.1f),
+               }
             };
 
             string characterType = "null";
@@ -259,6 +267,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             CharacterSprite.Texture = VitaruTextures.Get(characterType);
             CharacterKiaiSprite.Texture = VitaruTextures.Get(characterType + "Kiai");
             CharacterSign.Texture = VitaruTextures.Get(characterType + "Sign");
+            GlowRing.Texture = textures.Get(@"Play/osu/ring-glow");
         }
     }
 }
