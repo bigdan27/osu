@@ -41,6 +41,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 BulletSpeed = 0.8f,
                 BulletColor = HelperColor,
                 StartAngle = StartAngle,
+                BulletDamage = 5,
             });
             s.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), s));
         }

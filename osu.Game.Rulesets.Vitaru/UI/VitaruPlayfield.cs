@@ -16,6 +16,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
     public class VitaruPlayfield : Playfield<VitaruHitObject, VitaruJudgement>
     {
         public static Container vitaruPlayfield;
+        private readonly Container judgementLayer;
 
         public override bool ProvidingUserCursor => true;
 
@@ -53,9 +54,13 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 },
                 vitaruPlayfield = new Container
                 {
-                    Masking = false,
                     RelativeSizeAxes = Axes.Both,
                     Depth = 2,
+                },
+                judgementLayer = new Container
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Depth = 3,
                 },
             });
         }
@@ -74,6 +79,17 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 vitaruPlayfield.Add(c.ProxiedLayer.CreateProxy());
 
             base.Add(h);
+        }
+
+        public override void OnJudgement(DrawableHitObject<VitaruHitObject, VitaruJudgement> judgedObject)
+        {
+            DrawableVitaruJudgement explosion = new DrawableVitaruJudgement(judgedObject.Judgement)
+            {
+                Origin = Anchor.Centre,
+                Position = judgedObject.HitObject.Position
+            };
+
+            judgementLayer.Add(explosion);
         }
     }
 }
