@@ -12,6 +12,7 @@ using osu.Framework.Platform;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Audio;
+using osu.Game.Rulesets.Objects.Drawables;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
@@ -117,6 +118,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             }
         }
 
+        protected abstract void CharacterJudgment();
+
+        public Bullet Bullet;
         public void HitDetect()
         {
             if (VitaruPlayfield.vitaruPlayfield != null)
@@ -125,49 +129,25 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 {
                     if (draw is Bullet)
                     {
-                        Bullet bullet = draw as Bullet;
-                        if (bullet.Team != Team)
+                        Bullet = draw as Bullet;
+                        if (Bullet.Team != Team)
                         {
-                            Vector2 bulletPos = bullet.ToSpaceOfOtherDrawable(Vector2.Zero, this);
+                            Vector2 bulletPos = Bullet.ToSpaceOfOtherDrawable(Vector2.Zero, this);
                             float distance = (float)Math.Sqrt(Math.Pow(bulletPos.X, 2) + Math.Pow(bulletPos.Y, 2));
-                            float minDist = Hitbox.HitboxWidth + bullet.BulletWidth;
-                            float signDist = ((CharacterSign.Size.Y / 2) - 14) + bullet.BulletWidth;
+                            float minDist = Hitbox.HitboxWidth + Bullet.BulletWidth;
+                            float signDist = ((CharacterSign.Size.Y / 2) - 14) + Bullet.BulletWidth;
 
                             if (CharacterSign.Alpha >= 0.1f && distance < signDist)
-                                bullet.DeleteBullet();
+                                Bullet.DeleteBullet();
 
                             if (distance < minDist && !Dead)
                             {
-                                if(!bullet.Piercing)
-                                    bullet.DeleteBullet();
-                                if (TakeDamage(bullet.BulletDamage))
-                                    break;
+                                if (TakeDamage(Bullet.BulletDamage))
+                                    CharacterJudgment();
                             }
                         }
                     }
                     /*
-                    if (draw is SeekingBullet)
-                    {
-                        SeekingBullet seekingBullet = draw as SeekingBullet;
-                        if (seekingBullet.Team != Team)
-                        {
-                            Vector2 bulletPos = seekingBullet.ToSpaceOfOtherDrawable(Vector2.Zero, this);
-                            float distance = (float)Math.Sqrt(Math.Pow(bulletPos.X, 2) + Math.Pow(bulletPos.Y, 2));
-                            float minDist = Hitbox.HitboxWidth + seekingBullet.BulletWidth;
-                            float signDist = ((CharacterSign.Size.Y / 2) - 14) + seekingBullet.BulletWidth;
-
-                            if (CharacterSign.Alpha >= 0.1f && distance < signDist)
-                                seekingBullet.DeleteBullet();
-
-                            if (distance < minDist)
-                            {
-                                if (!seekingBullet.Piercing)
-                                    seekingBullet.DeleteBullet();
-                                if (TakeDamage(seekingBullet.BulletDamage))
-                                    break;
-                            }
-                        }
-                    }
                     if (draw is Laser)
                     {
                         Laser laser = draw as Laser;

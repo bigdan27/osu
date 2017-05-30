@@ -6,6 +6,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
+using osu.Game.Rulesets.Objects.Drawables;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {
@@ -21,6 +22,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public bool Piercing { get; set; } = false;
         public int Team { get; set; }
 
+        public HitResult BulletResult = HitResult.None;
+        public VitaruScoreResult BulletScore;
+
         //Used like a multiple
         public static float BulletSpeedModifier = 1;
 
@@ -35,6 +39,33 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         private Container bulletRing;
         private CircularContainer bulletCircle;
 
+        protected override void CheckJudgement(bool userTriggered)
+        {
+            base.CheckJudgement(userTriggered);
+
+            if(BulletResult != HitResult.None)
+            {
+                Judgement.Score = BulletScore;
+                Judgement.Result = BulletResult;
+                DeleteBullet();
+            }
+        }
+
+        protected override void UpdateState(ArmedState state)
+        {
+            base.UpdateState(state);
+
+            switch (State)
+            {
+                case ArmedState.Idle:
+                    Expire(true);
+                    break;
+                case ArmedState.Hit:
+                    Expire();
+                    break;
+            }
+            Expire();
+        }
 
         public Bullet(Projectile projectile) : base(projectile)
         {
@@ -103,6 +134,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void Update()
         {
             base.Update();
+            CheckJudgement(true);
 
             //Will be useful for makin bullets stop, like if a certain character / boss could freeze time.
             if (DynamicBulletVelocity)
@@ -133,3 +165,4 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         }
     }
 }
+ 

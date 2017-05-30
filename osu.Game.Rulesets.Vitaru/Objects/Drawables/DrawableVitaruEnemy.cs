@@ -121,11 +121,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         protected override void CheckJudgement(bool userTriggered)
         {
-            if (returnJudge)
-            {
-                Judgement.Result = HitResult.Hit;
-                Judgement.Score = VitaruScoreResult.Kill10;
-            }
         }
 
         protected override void UpdateInitialState()
@@ -159,20 +154,16 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             Delay(HitObject.StartTime - Time.Current + Judgement.TimeOffset, true);
 
-            //Saves Performance atm
             switch (State)
             {
                 case ArmedState.Idle:
                     Delay(duration + TIME_PREEMPT);
-                    FadeOut(TIME_FADEOUT * 2);
                     Expire(true);
                     break;
                 case ArmedState.Hit:
-                    FadeOut(TIME_FADEOUT / 4);
                     Expire();
                     break;
             }
-
             Expire();
         }
 
@@ -397,6 +388,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             GlowRing.ScaleTo(new Vector2(1), 300);
             GlowRing.FadeOut(300);
             GlowRing.Colour = Color4.Green;
+        }
+
+        protected override void CharacterJudgment()
+        {
+            Bullet.BulletScore = VitaruScoreResult.Kill20;
+            Bullet.BulletResult = HitResult.Hit;
         }
     }
 }

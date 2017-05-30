@@ -10,6 +10,7 @@ using osu.Game.Rulesets.Vitaru.Scoring;
 using osu.Game.Rulesets.Vitaru.UI;
 using osu.Game.Rulesets.Vitaru.Objects.Characters;
 using osu.Game.Rulesets.Vitaru.Beatmaps;
+using System;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
@@ -60,8 +61,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         protected override void CheckJudgement(bool userTriggered)
         {
-            if(CharacterHealth <= 0)
-                Judgement.Result = HitResult.Miss;
         }
 
         private const float playerSpeed = 0.4f;
@@ -196,6 +195,15 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             if (args.Key == Key.LShift || args.Key == Key.RShift)
                 Hitbox.Alpha = 0;
             return base.OnKeyUp(state, args);
+        }
+
+        protected override void CharacterJudgment()
+        {
+            if(CharacterHealth <= 0)
+            {
+                Bullet.BulletScore = VitaruScoreResult.Miss;
+                Bullet.BulletResult = HitResult.Miss;
+            }
         }
     }
 }

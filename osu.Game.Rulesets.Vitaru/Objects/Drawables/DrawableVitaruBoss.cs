@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using System;
+using OpenTK;
 using OpenTK.Graphics;
 using osu.Framework.Graphics;
 using osu.Game.Rulesets.Vitaru.Objects.Characters;
@@ -19,6 +20,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             Team = 1;
             CharacterColor = Color4.Green;
             HitboxWidth = 32;
+        }
+
+        protected override void CharacterJudgment()
+        {
+            throw new NotImplementedException();
         }
 
         protected override void Update()
