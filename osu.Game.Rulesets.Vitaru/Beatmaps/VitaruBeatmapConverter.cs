@@ -62,8 +62,8 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
                 {
                     StartTime = original.StartTime,
                     Samples = original.Samples,
-                    //EndTime = endTimeData.EndTime,
-                    //IsSpinner = true,
+                    EndTime = endTimeData.EndTime,
+                    IsSpinner = true,
 
                     Position = positionData?.Position ?? VitaruPlayfield.BASE_SIZE / 2,
                 };

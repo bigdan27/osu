@@ -1,4 +1,7 @@
-﻿using osu.Framework.Graphics.Containers;
+﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+
+using osu.Framework.Graphics.Containers;
 using OpenTK;
 using OpenTK.Graphics;
 using osu.Framework.Graphics;
@@ -18,11 +21,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public float PatternAngleDegree { get; set; } = 0;
         public float PatternBulletWidth { get; set; } = 2;
         public float PatternDamage { get; set; } = 10;
+        public double Duration { get; set; } = 0;
         public bool DynamicPatternVelocity { get; set; } = false;
         public int Team { get; set; }
+        public double StartTime;
 
         public Color4 PatternColor { get; set; } = Color4.White;
-        protected int bulletCount { get; set; } = 0;
 
         public BulletPattern()
         {
@@ -31,24 +35,22 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void LoadComplete()
         {
             base.LoadComplete();
-
+            StartTime = Time.Current;
             if (PatternAngleRadian == -10)
                 PatternAngleRadian = MathHelper.DegreesToRadians(PatternAngleDegree - 90);
 
             CreatePattern();
-            Dispose();
         }
 
         protected override void Update()
         {
             base.Update();
 
-            if (bulletCount <= 0)
+            if (Time.Current > StartTime + Duration)
                 Dispose();
         }
         protected void bulletAddRad(float speed, float angle)
         {
-            bulletCount++;
             Projectile projectile = new Projectile { };
             Bullet bullet;
             VitaruPlayfield.vitaruPlayfield.Add(bullet = new Bullet(projectile)
@@ -97,10 +99,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            for (int i = 1; i <= 3 * PatternDifficulty; i++)
+            for (int i = 1; i <= PatternDifficulty + 1; i++)
             {
                 bulletAddRad(0.12f + PatternSpeed, PatternAngleRadian);
-                PatternSpeed += 0.025f;
+                PatternSpeed += 0.02f;
             }
         }
     }
@@ -136,7 +138,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            float directionModifier = (float)(90 / Math.Pow(2, PatternDifficulty));
+            int numberbullets = (int)Math.Pow(2, PatternDifficulty + 1.5);
+            float directionModifier = (float)(360 / numberbullets);
             directionModifier = MathHelper.DegreesToRadians(directionModifier);
             float circleAngle = 0;
             for (int j = 1; j <= Math.Pow(2, PatternDifficulty * 2); j++)
@@ -167,6 +170,32 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 );
                 speedModifier -= 0.01f;
                 directionModifier += 0.075f;
+            }
+        }
+    }
+
+    public class Spin : BulletPattern
+    {
+        public override int PatternID => 5;
+
+        public Spin(int team)
+        {
+            Team = team;
+        }
+
+        protected override void CreatePattern()
+        {
+            int numberbullets = (int)(16 * PatternDifficulty * (PatternDifficulty / 5f + 1));
+            float directionModifier = (float)(360 / (16 * PatternDifficulty));
+            directionModifier = MathHelper.DegreesToRadians(directionModifier);
+            Duration /= numberbullets;
+            int j = 1;
+            while (j <= numberbullets)
+            {
+                bulletAddRad(PatternSpeed, PatternAngleRadian);
+                PatternAngleRadian -= directionModifier;
+                j++;
+                // Delay each bullet by Duration
             }
         }
     }
