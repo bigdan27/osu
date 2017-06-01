@@ -21,7 +21,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public float PatternAngleDegree { get; set; } = 0;
         public float PatternBulletWidth { get; set; } = 2;
         public float PatternDamage { get; set; } = 10;
-        public int Duration { get; set; }
+        public double Duration { get; set; }
         public bool DynamicPatternVelocity { get; set; } = false;
         public int Team { get; set; }
 

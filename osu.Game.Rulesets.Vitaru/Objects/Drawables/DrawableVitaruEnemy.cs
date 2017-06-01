@@ -396,7 +396,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         PatternBulletWidth = 9,
                         PatternDifficulty = OD,
                         PatternDamage = 5,
-                        Duration = (int)totalDuration,
+                        Duration = (double)totalDuration,
                     });
                     s.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), s));
                     break;
