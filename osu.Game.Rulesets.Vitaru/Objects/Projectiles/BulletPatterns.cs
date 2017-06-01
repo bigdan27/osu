@@ -21,6 +21,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public float PatternAngleDegree { get; set; } = 0;
         public float PatternBulletWidth { get; set; } = 2;
         public float PatternDamage { get; set; } = 10;
+        public int Duration { get; set; }
         public bool DynamicPatternVelocity { get; set; } = false;
         public int Team { get; set; }
 
@@ -39,7 +40,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 PatternAngleRadian = MathHelper.DegreesToRadians(PatternAngleDegree - 90);
 
             CreatePattern();
-            Dispose();
+            // Dispose();
         }
 
         protected override void Update()
@@ -100,10 +101,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            for (int i = 1; i <= 3 * PatternDifficulty; i++)
+            for (int i = 1; i <= PatternDifficulty + 1; i++)
             {
                 bulletAddRad(0.12f + PatternSpeed, PatternAngleRadian);
-                PatternSpeed += 0.025f;
+                PatternSpeed += 0.02f;
             }
         }
     }
@@ -139,7 +140,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            float directionModifier = (float)(90 / Math.Pow(2, PatternDifficulty));
+            int numberbullets = (int)Math.Pow(2, PatternDifficulty + 1.5);
+            float directionModifier = (float)(360 / numberbullets);
             directionModifier = MathHelper.DegreesToRadians(directionModifier);
             float circleAngle = 0;
             for (int j = 1; j <= Math.Pow(2, PatternDifficulty * 2); j++)
@@ -170,6 +172,34 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 );
                 speedModifier -= 0.01f;
                 directionModifier += 0.075f;
+            }
+        }
+    }
+
+    public class Spin : BulletPattern
+    {
+        public override int PatternID => 5;
+        
+        public Spin(int team)
+        {
+            Team = team;
+        }
+
+        protected override void CreatePattern()
+        {
+            base.LoadComplete();
+
+            int numberbullets = (int)(16 * PatternDifficulty * (PatternDifficulty / 5f + 1));
+            float directionModifier = (float)(360 / (16 * PatternDifficulty));
+            directionModifier = MathHelper.DegreesToRadians(directionModifier);
+            Duration /= numberbullets;
+            int j = 1;
+            while (j <= numberbullets)
+            {
+                bulletAddRad(PatternSpeed, PatternAngleRadian);
+                PatternAngleRadian -= directionModifier;
+                j++;
+                // Delay each bullet by Duration
             }
         }
     }
