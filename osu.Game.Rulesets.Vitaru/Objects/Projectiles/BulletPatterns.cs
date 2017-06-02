@@ -21,7 +21,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public float PatternAngleDegree { get; set; } = 0;
         public float PatternBulletWidth { get; set; } = 2;
         public float PatternDamage { get; set; } = 10;
-        public double Duration { get; set; } = 0;
+        public float PatternRepeatTimes { get; set; } = 1f;
+        public double PatternDuration { get; set; } = 0;
+        public double PatternRepeatDelay { get; set; } = 0;
         public bool DynamicPatternVelocity { get; set; } = false;
         public int Team { get; set; }
         public double StartTime;
@@ -45,10 +47,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void Update()
         {
             base.Update();
-
-            if (Time.Current > StartTime + Duration)
-                Dispose();
         }
+        
         protected void bulletAddRad(float speed, float angle)
         {
             Projectile projectile = new Projectile { };
@@ -80,8 +80,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            float directionModifier = -0.1f * PatternDifficulty;
-            for (int i = 1; i <= (3 * PatternDifficulty); i++)
+            int numberBullets = (int)PatternDifficulty * 2 + 1;
+            float directionModifier = -0.1f * ((numberBullets - 1) / 2);
+            for (int i = 1; i <= numberBullets; i++)
             {
                 bulletAddRad(PatternSpeed, PatternAngleRadian + directionModifier);
                 directionModifier += 0.1f;
@@ -127,7 +128,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             }
         }
     }
-    public class Circle : BulletPattern
+    public class Circle : BulletPattern // It stacks the bullet idk why
     {
         public override int PatternID => 3;
 
@@ -138,11 +139,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            int numberbullets = (int)Math.Pow(2, PatternDifficulty + 1.5);
+            int numberbullets = (int)Math.Pow(2, (PatternDifficulty + 1.5) / 1.5);
             float directionModifier = (float)(360 / numberbullets);
             directionModifier = MathHelper.DegreesToRadians(directionModifier);
             float circleAngle = 0;
-            for (int j = 1; j <= Math.Pow(2, PatternDifficulty * 2); j++)
+            for (int j = 1; j <= numberbullets; j++)
             {
                 bulletAddRad(PatternSpeed, circleAngle);
                 circleAngle += directionModifier;
@@ -177,7 +178,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
     public class Spin : BulletPattern
     {
         public override int PatternID => 5;
-
+        
         public Spin(int team)
         {
             Team = team;
@@ -185,17 +186,27 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            int numberbullets = (int)(16 * PatternDifficulty * (PatternDifficulty / 5f + 1));
-            float directionModifier = (float)(360 / (16 * PatternDifficulty));
+            double numberbullets = Math.Pow(2, (PatternDifficulty + 1.5) / 1.5);
+
+            float directionModifier = (float)(360 / numberbullets);
             directionModifier = MathHelper.DegreesToRadians(directionModifier);
-            Duration /= numberbullets;
-            int j = 1;
-            while (j <= numberbullets)
+            double originalDuration = PatternDuration;
+            PatternDuration /= numberbullets;
+            PatternDuration /= PatternRepeatTimes;
+            int i = 1;
+            while(i <= PatternRepeatTimes)
             {
-                bulletAddRad(PatternSpeed, PatternAngleRadian);
-                PatternAngleRadian -= directionModifier;
-                j++;
-                // Delay each bullet by Duration
+                int j = 1;
+                while (j <= numberbullets)
+                {
+                    Scheduler.AddDelayed(() =>
+                    {
+                        bulletAddRad(PatternSpeed, PatternAngleRadian);
+                        PatternAngleRadian -= directionModifier;
+                    }, PatternDuration * (j - 1) + (originalDuration * (i - 1)));
+                    j++;
+                }
+                i++;
             }
         }
     }

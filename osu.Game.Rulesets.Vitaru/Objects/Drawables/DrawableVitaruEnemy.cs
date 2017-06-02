@@ -285,9 +285,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 hasShot = true;
             }
 
-            if (enemy.StartTime + totalDuration <= Time.Current && hasShot == true)
+            if (enemy.StartTime + totalDuration <= Time.Current && hasShot == true && !leaving)
+            {
                 leave();
-
+                leaving = true;
+            }
             if (Position.Y <= -300)
                 Dispose();
         }
@@ -381,6 +383,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     });
                     f.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), f));
                     break;
+                    
                 case 5: // Spin
 
                     double totalDuration = enemy.EndTime - enemy.StartTime;
@@ -396,7 +399,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         PatternBulletWidth = 9,
                         PatternDifficulty = OD,
                         PatternDamage = 5,
-                        Duration = (int)totalDuration,
+                        PatternRepeatTimes = 1f,
+                        PatternRepeatDelay = 0,
+                        PatternDuration = (double)totalDuration,
                     });
                     s.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), s));
                     break;
