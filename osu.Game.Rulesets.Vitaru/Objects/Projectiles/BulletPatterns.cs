@@ -28,7 +28,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public int Team { get; set; }
 
         public Color4 PatternColor { get; set; } = Color4.White;
-        protected int bulletCount { get; set; } = 0;
 
         public BulletPattern()
         {
@@ -42,7 +41,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 PatternAngleRadian = MathHelper.DegreesToRadians(PatternAngleDegree - 90);
 
             CreatePattern();
-            Dispose();
         }
 
         protected override void Update()
@@ -51,7 +49,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         }
         protected void bulletAddRad(float speed, float angle)
         {
-            bulletCount++;
             Projectile projectile = new Projectile { };
             Bullet bullet;
             VitaruPlayfield.vitaruPlayfield.Add(bullet = new Bullet(projectile)
@@ -193,11 +190,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             float directionModifier = (float)(360 / (16 * PatternDifficulty));
             directionModifier = MathHelper.DegreesToRadians(directionModifier);
             PatternDuration /= numberbullets;
-            int i = 1;  int j = 1;
+            int i = 1;
+            int j = 1;
             while(i <= PatternRepeatTimes)
             {
-                Scheduler.AddDelayed(() =>
-                {
+                //Scheduler.AddDelayed(() =>
+                //{
 
                     while (j <= numberbullets)
                     {
@@ -210,7 +208,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                     }
 
                 i++;
-                }, PatternRepeatTimes * (i - 1));
+                //}, PatternRepeatTimes * (i - 1));
 
             }
             
