@@ -21,7 +21,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public float PatternAngleDegree { get; set; } = 0;
         public float PatternBulletWidth { get; set; } = 2;
         public float PatternDamage { get; set; } = 10;
-        public double Duration { get; set; }
+        public float PatternRepeatTimes { get; set; } = 1f;
+        public double PatternDuration { get; set; }
+        public double PatternRepeatDelay { get; set; }
         public bool DynamicPatternVelocity { get; set; } = false;
         public int Team { get; set; }
 
@@ -46,9 +48,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void Update()
         {
             base.Update();
-
-            if (bulletCount <= 0)
-                Dispose();
         }
         protected void bulletAddRad(float speed, float angle)
         {
@@ -189,19 +188,25 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void CreatePattern()
         {
             int numberbullets = (int)(16 * PatternDifficulty * (PatternDifficulty / 5f + 1));
+            
+
             float directionModifier = (float)(360 / (16 * PatternDifficulty));
             directionModifier = MathHelper.DegreesToRadians(directionModifier);
-            Duration /= numberbullets;
-            int j = 1;
-            while (j <= numberbullets)
+            PatternDuration /= numberbullets;
+            int i = 1;  int j = 1;
+            while(i <= PatternRepeatTimes)
             {
-                Scheduler.AddDelayed(() =>
+                while (j <= numberbullets)
                 {
-                    bulletAddRad(PatternSpeed, PatternAngleRadian);
-                    PatternAngleRadian -= directionModifier;
-                }, Duration * j);
-                j++;
+                    Scheduler.AddDelayed(() =>
+                    {
+                        bulletAddRad(PatternSpeed, PatternAngleRadian);
+                        PatternAngleRadian -= directionModifier;
+                    }, PatternDuration * (j - 1));
+                    j++;
+                }
             }
+            
         }
     }
 }
