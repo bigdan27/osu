@@ -184,32 +184,27 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            int numberbullets = (int)(16 * PatternDifficulty * (PatternDifficulty / 5f + 1));
-            
+            int numberbullets = (int)Math.Pow(3, (PatternDifficulty + 1.5) / 1.5);
 
-            float directionModifier = (float)(360 / (16 * PatternDifficulty));
+
+            float directionModifier = (float)(360 / numberbullets);
             directionModifier = MathHelper.DegreesToRadians(directionModifier);
             PatternDuration /= numberbullets;
             int i = 1;
             int j = 1;
             while(i <= PatternRepeatTimes)
             {
-                //Scheduler.AddDelayed(() =>
-                //{
-
                     while (j <= numberbullets)
                     {
                         Scheduler.AddDelayed(() =>
                         {
                         bulletAddRad(PatternSpeed, PatternAngleRadian);
                         PatternAngleRadian -= directionModifier;
-                        }, PatternDuration * (j - 1));
+                        }, PatternDuration * (j - 1) + (PatternRepeatTimes * numberbullets * (i - 1)));
                         j++;
                     }
 
                 i++;
-                //}, PatternRepeatTimes * (i - 1));
-
             }
             
         }
