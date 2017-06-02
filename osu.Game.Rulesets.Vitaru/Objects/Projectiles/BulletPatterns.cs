@@ -184,7 +184,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            int numberbullets = (int)Math.Pow(3, (PatternDifficulty + 1.5) / 1.5);
+            double numberbullets = Math.Pow(2, (PatternDifficulty + 1.5) / 1.5);
 
 
             float directionModifier = (float)(360 / numberbullets);
