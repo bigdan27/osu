@@ -22,8 +22,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public float PatternBulletWidth { get; set; } = 2;
         public float PatternDamage { get; set; } = 10;
         public float PatternRepeatTimes { get; set; } = 1f;
-        public double PatternDuration { get; set; }
-        public double PatternRepeatDelay { get; set; }
+        public double PatternDuration { get; set; } = 0;
+        public double PatternRepeatDelay { get; set; } = 0;
         public bool DynamicPatternVelocity { get; set; } = false;
         public int Team { get; set; }
 
@@ -196,15 +196,22 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             int i = 1;  int j = 1;
             while(i <= PatternRepeatTimes)
             {
-                while (j <= numberbullets)
+                Scheduler.AddDelayed(() =>
                 {
-                    Scheduler.AddDelayed(() =>
+
+                    while (j <= numberbullets)
                     {
+                        Scheduler.AddDelayed(() =>
+                        {
                         bulletAddRad(PatternSpeed, PatternAngleRadian);
                         PatternAngleRadian -= directionModifier;
-                    }, PatternDuration * (j - 1));
-                    j++;
-                }
+                        }, PatternDuration * (j - 1));
+                        j++;
+                    }
+
+                i++;
+                }, PatternRepeatTimes * (i - 1));
+
             }
             
         }
