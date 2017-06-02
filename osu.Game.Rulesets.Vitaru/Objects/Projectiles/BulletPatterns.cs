@@ -40,7 +40,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 PatternAngleRadian = MathHelper.DegreesToRadians(PatternAngleDegree - 90);
 
             CreatePattern();
-            // Dispose();
+            Dispose();
         }
 
         protected override void Update()
@@ -82,8 +82,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            float directionModifier = -0.1f * PatternDifficulty;
-            for (int i = 1; i <= (3 * PatternDifficulty); i++)
+            int numberBullets = (int)PatternDifficulty * 2 + 1;
+            float directionModifier = -0.1f * numberBullets;
+            for (int i = 1; i <= numberBullets; i++)
             {
                 bulletAddRad(PatternSpeed, PatternAngleRadian + directionModifier);
                 directionModifier += 0.1f;
@@ -140,7 +141,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            int numberbullets = (int)Math.Pow(2, PatternDifficulty + 1.5);
+            int numberbullets = (int)Math.Pow(2, (PatternDifficulty + 4) / 4);
             float directionModifier = (float)(360 / numberbullets);
             directionModifier = MathHelper.DegreesToRadians(directionModifier);
             float circleAngle = 0;
