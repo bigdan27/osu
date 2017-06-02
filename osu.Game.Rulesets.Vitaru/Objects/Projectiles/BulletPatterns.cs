@@ -83,7 +83,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void CreatePattern()
         {
             int numberBullets = (int)PatternDifficulty * 2 + 1;
-            float directionModifier = -0.1f * numberBullets;
+            float directionModifier = -0.1f * ((numberBullets - 1) / 2);
             for (int i = 1; i <= numberBullets; i++)
             {
                 bulletAddRad(PatternSpeed, PatternAngleRadian + directionModifier);
@@ -130,7 +130,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             }
         }
     }
-    public class Circle : BulletPattern
+    public class Circle : BulletPattern // It stacks the bullet idk why
     {
         public override int PatternID => 3;
 
@@ -141,11 +141,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            int numberbullets = (int)Math.Pow(2, (PatternDifficulty + 4) / 4);
+            int numberbullets = (int)Math.Pow(2, (PatternDifficulty + 1.5) / 1.5);
             float directionModifier = (float)(360 / numberbullets);
             directionModifier = MathHelper.DegreesToRadians(directionModifier);
             float circleAngle = 0;
-            for (int j = 1; j <= Math.Pow(2, PatternDifficulty * 2); j++)
+            for (int j = 1; j <= numberbullets; j++)
             {
                 bulletAddRad(PatternSpeed, circleAngle);
                 circleAngle += directionModifier;
@@ -201,7 +201,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                     PatternAngleRadian -= directionModifier;
                 }, Duration * j);
                 j++;
-                // Delay each bullet by Duration
             }
         }
     }
