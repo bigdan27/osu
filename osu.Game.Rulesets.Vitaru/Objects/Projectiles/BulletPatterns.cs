@@ -26,6 +26,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public double PatternRepeatDelay { get; set; } = 0;
         public bool DynamicPatternVelocity { get; set; } = false;
         public int Team { get; set; }
+        public double StartTime;
 
         public Color4 PatternColor { get; set; } = Color4.White;
 
@@ -36,7 +37,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void LoadComplete()
         {
             base.LoadComplete();
-
+            StartTime = Time.Current;
             if (PatternAngleRadian == -10)
                 PatternAngleRadian = MathHelper.DegreesToRadians(PatternAngleDegree - 90);
 
@@ -47,6 +48,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         {
             base.Update();
         }
+        
         protected void bulletAddRad(float speed, float angle)
         {
             Projectile projectile = new Projectile { };

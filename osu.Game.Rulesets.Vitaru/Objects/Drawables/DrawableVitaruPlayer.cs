@@ -137,7 +137,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         {
             if (keys[Key.Z])
             {
-                Shooting = true;
+                //Shooting = true;
             }
             if (keys[Key.Z] == false)
             {

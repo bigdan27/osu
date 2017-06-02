@@ -290,7 +290,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 leave();
                 leaving = true;
             }
-
             if (Position.Y <= -300)
                 Dispose();
         }
@@ -384,7 +383,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     });
                     f.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), f));
                     break;
-
+                    
                 case 5: // Spin
 
                     double totalDuration = enemy.EndTime - enemy.StartTime;
