@@ -128,28 +128,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             }
         }
     }
-    public class Circle : BulletPattern // It stacks the bullet idk why
-    {
-        public override int PatternID => 3;
-
-        public Circle(int team)
-        {
-            Team = team;
-        }
-
-        protected override void CreatePattern()
-        {
-            int numberbullets = (int)Math.Pow(2, (PatternDifficulty + 1.5) / 1.5);
-            float directionModifier = (float)(360 / numberbullets);
-            directionModifier = MathHelper.DegreesToRadians(directionModifier);
-            float circleAngle = 0;
-            for (int j = 1; j <= numberbullets; j++)
-            {
-                bulletAddRad(PatternSpeed, circleAngle);
-                circleAngle += directionModifier;
-            }
-        }
-    }
     public class CoolWave : BulletPattern
     {
         public override int PatternID => 4;
@@ -207,6 +185,42 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                     j++;
                 }
                 i++;
+            }
+        }
+    }
+    public class Trianglewave : BulletPattern
+    {
+        public override int PatternID => 5;
+
+        public Trianglewave(int team)
+        {
+            Team = team;
+        }
+
+        protected override void CreatePattern()
+        {
+            bool reversed = true;
+            int numberwaves = (int)(PatternDifficulty + 2) / 2;
+            float originalDirection = 0f;
+            int numberbullets;
+            PatternDuration /= numberwaves;
+            float speedModifier;
+            for (int i = 1; i <= numberwaves; i++)
+            {
+                numberbullets = i;
+                if (reversed)
+                    speedModifier = 0.30f - (i - 1) * 0.03f;
+                else
+                    speedModifier = (i - 1) * 0.03f;
+                for (int j = 1; j <= numberbullets; j++)
+                {
+                    float directionModifier = ((j - 1) * 0.1f);
+                        bulletAddRad(
+                            PatternSpeed + speedModifier,
+                            PatternAngleRadian + (originalDirection - directionModifier)
+                        );
+                }
+                originalDirection = 0.05f * i;
             }
         }
     }

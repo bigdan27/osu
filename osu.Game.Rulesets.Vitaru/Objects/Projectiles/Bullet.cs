@@ -116,7 +116,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                         {
                             Type = EdgeEffectType.Shadow,
                             Colour = (BulletColor).Opacity(0.5f),
-                            Radius = 2f,
+                            Radius = 1.25f,
                         }
                 }
             };
