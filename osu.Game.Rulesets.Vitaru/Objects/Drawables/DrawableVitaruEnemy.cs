@@ -285,7 +285,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 hasShot = true;
             }
 
-            if (enemy.StartTime + totalDuration <= Time.Current && hasShot == true && !leaving)
+            if (enemy.EndTime <= Time.Current && hasShot == true && !leaving)
             {
                 leave();
                 leaving = true;
@@ -326,7 +326,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     {
                         Origin = Anchor.Centre,
                         Depth = 6,
-                        PatternColor = Color4.Green,
+                        PatternColor = Color4.Yellow,
                         PatternAngleRadian = playerPos,
                         PatternSpeed = 0.2f,
                         PatternBulletWidth = 8,
@@ -352,9 +352,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     cw.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), cw));
                     break;
 
-                case 3: // Circle
-                    Circle c;
-                    VitaruPlayfield.vitaruPlayfield.Add(c = new Circle(Team)
+                case 3: // Circle is a spin with 1 bullet
+                    Spin c;
+                    VitaruPlayfield.vitaruPlayfield.Add(c = new Spin(Team)
                     {
                         Origin = Anchor.Centre,
                         Depth = 6,
@@ -368,13 +368,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     c.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), c));
                     break;
 
-                case 1: // Snipe!
+                case 1: // Snipe is a line with 1 bullet
                     Line f;
                     VitaruPlayfield.vitaruPlayfield.Add(f = new Line(Team)
                     {
                         Origin = Anchor.Centre,
                         Depth = 6,
-                        PatternColor = Color4.Green,
+                        PatternColor = Color4.Yellow,
                         PatternAngleRadian = playerPos,
                         PatternSpeed = 0.38f,
                         PatternBulletWidth = 8,
@@ -383,7 +383,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     });
                     f.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), f));
                     break;
-                    
+
                 case 5: // Spin
 
                     double totalDuration = enemy.EndTime - enemy.StartTime;
@@ -404,6 +404,24 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         PatternDuration = (double)totalDuration,
                     });
                     s.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), s));
+                    break;
+
+                case 6: // Triangle
+
+                    Trianglewave t;
+                    VitaruPlayfield.vitaruPlayfield.Add(t = new Trianglewave(Team)
+                    {
+                        Origin = Anchor.Centre,
+                        Depth = 6,
+                        PatternColor = Color4.Pink,
+                        PatternAngleRadian = playerPos,
+                        PatternSpeed = 0.1f,
+                        PatternBulletWidth = 9,
+                        PatternDifficulty = OD,
+                        PatternDamage = 5,
+                        PatternDuration = 500,
+                    });
+                    t.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), t));
                     break;
             }
         }
