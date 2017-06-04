@@ -112,7 +112,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             if (line)
                 return patternID = 4;
             if (wave)
-                return patternID = 6;
+                return patternID = 2;
             else
                 return patternID = 0;
         }
@@ -285,7 +285,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 hasShot = true;
             }
 
-            if (enemy.StartTime + totalDuration <= Time.Current && hasShot == true && !leaving)
+            if (enemy.EndTime <= Time.Current && hasShot == true && !leaving)
             {
                 leave();
                 leaving = true;
