@@ -12,11 +12,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Characters
 {
     public class Boss : Character
     {
-        public Vector2 BossPosition = new Vector2(0, -160);
-
         public Boss() { }
         public override HitObjectType Type => HitObjectType.Boss;
-
-        public double EndTime { get; set; }
     }
 }

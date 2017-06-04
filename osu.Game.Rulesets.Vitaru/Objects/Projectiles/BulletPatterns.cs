@@ -47,6 +47,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void Update()
         {
             base.Update();
+            if (StartTime + PatternDuration <= Time.Current)
+                Dispose();
         }
         
         protected void bulletAddRad(float speed, float angle)

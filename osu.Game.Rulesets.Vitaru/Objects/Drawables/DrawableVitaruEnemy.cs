@@ -32,7 +32,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private readonly List<ISliderProgress> components = new List<ISliderProgress>();
         private int currentRepeat;
-        private bool returnJudge = false;
         private bool leaving = false;
 
         public DrawableVitaruEnemy(Enemy enemy) : base(enemy)
@@ -49,7 +48,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             Alpha = 1;
             EnemyIDCount++;
             EnemyID = EnemyIDCount;
-            OnDeath = dyingAnimation;
             VitaruBeatmapConverter.EnemyList.Add(this);
         }
 
@@ -59,21 +57,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private void death()
         {
             pop();
-            returnJudge = true;
             VitaruBeatmapConverter.EnemyList.Remove(this);
             Dispose();
-        }
-
-        private void dyingAnimation()
-        {
-            if (leaving)
-                death();
-            double deathDuration = 1000;
-            Dead = true;
-            VitaruBeatmapConverter.EnemyList.Remove(this);
-            RotateTo(60, deathDuration, EasingTypes.InExpo);
-            MoveTo(new Vector2(Position.X, Position.Y - 400), deathDuration, EasingTypes.InBack);
-            ScaleTo(new Vector2(0.25f), deathDuration, EasingTypes.OutSine);
         }
 
         protected override void Update()
@@ -170,8 +155,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             leaving = true;
             int r = RNG.Next(-100, 612);
             MoveTo(new Vector2(r, -300), 2000, EasingTypes.InCubic);
-            FadeOut(2000, EasingTypes.InCubic);
-            ScaleTo(new Vector2(0.75f), 2000, EasingTypes.InCubic);
+            FadeOut(1000, EasingTypes.InCubic);
+            ScaleTo(new Vector2(0.75f), 1500, EasingTypes.InCubic);
         }
 
         /// <summary>
@@ -197,7 +182,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 hasShot = true;
             }
 
-            if (HitObject.StartTime <= Time.Current && hasShot && Position.Y <= -300)
+            if (HitObject.StartTime <= Time.Current && hasShot && Alpha <= 0)
             {
                 death();
             }
@@ -239,7 +224,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 sliderDone = true;
             }
 
-            if (enemy.EndTime <= Time.Current && hasShot && Position.Y <= -300)
+            if (enemy.EndTime <= Time.Current && hasShot && Alpha <= 0)
             {
                 death();
             }
@@ -290,8 +275,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 leave();
                 leaving = true;
             }
-            if (Position.Y <= -300)
-                Dispose();
+            if (leaving && Alpha <= 0)
+                death();
         }
 
         /// <summary>

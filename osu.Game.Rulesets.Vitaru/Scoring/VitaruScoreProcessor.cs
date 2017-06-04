@@ -74,9 +74,10 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
                 switch (judgement.Result)
                 {
                     case HitResult.Hit:
+                        Health.Value += 0.05f;
                         break;
                     case HitResult.Miss:
-                        Health.Value -= 1f;
+                        Health.Value -= 0.1f;
                         break;
                 }
 

@@ -32,7 +32,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public float SineSpeed = 0.001f;
 
         //Generic Character stuff
-        public Vector2 Speed { get; set; } = Vector2.Zero;
         public float CharacterHealth { get; set; } = 100;
         public float CharacterEnergy { get; set; } = 0;
         public int Team { get; set; } = 0; // 0 = Player, 1 = Ememies + Boss(s) in Singleplayer
@@ -58,8 +57,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public Action CharacterShoot { get; set; }
 
         public static bool AssetsLoaded = false;
-        protected Helper helper1;
-        protected Helper helper2;
 
         public bool Kiai { get; set; }
 
@@ -143,7 +140,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                             if (distance < minDist && !Dead)
                             {
                                 if (TakeDamage(Bullet.BulletDamage))
+                                {
                                     CharacterJudgment();
+                                    Bullet.DeleteBullet();
+                                }
                             }
                         }
                     }
@@ -204,22 +204,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     Alpha = 0,
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                },
-                helper1 = new Helper(Team)
-                {
-                    Alpha = 0,
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    HelperColor = CharacterColor,
-                    StartAngle = 20,
-                },
-                helper2 = new Helper(Team)
-                {
-                    Alpha = 0,
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    HelperColor = CharacterColor,
-                    StartAngle = -20,
                 },
                 GlowRing = new Sprite
                 {

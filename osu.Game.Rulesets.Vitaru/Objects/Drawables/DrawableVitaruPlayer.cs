@@ -70,11 +70,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         protected override void LoadComplete()
         {
             base.LoadComplete();
-
-            helper1.Position = new Vector2(20, -30);
-            helper2.Position = new Vector2(-20, -30);
-            helper1.Alpha = 1;
-            helper2.Alpha = 1;
         }
 
         protected override void Update()
@@ -163,9 +158,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private void shoot()
         {
-            helper1.shoot();
-            helper2.shoot();
-            
             Wave a;
             VitaruPlayfield.vitaruPlayfield.Add(a = new Wave(Team)
             {
@@ -199,11 +191,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         protected override void CharacterJudgment()
         {
-            if(CharacterHealth <= 0)
-            {
-                Bullet.BulletScore = VitaruScoreResult.Miss;
-                Bullet.BulletResult = HitResult.Miss;
-            }
+            Bullet.BulletScore = VitaruScoreResult.Miss;
+            Bullet.BulletResult = HitResult.Miss;
         }
     }
 }

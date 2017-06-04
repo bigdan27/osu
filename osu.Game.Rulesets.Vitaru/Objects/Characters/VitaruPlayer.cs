@@ -16,7 +16,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Characters
     public class VitaruPlayer : Character
     {
         public VitaruPlayer() : base() { }
-        public double EndTime { get; set; }
         public object Sample { get; internal set; }
 
         public static Vector2 PlayerPosition;

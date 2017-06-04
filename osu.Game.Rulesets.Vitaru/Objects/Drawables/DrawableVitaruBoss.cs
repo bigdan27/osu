@@ -32,9 +32,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             base.Update();
 
             HitDetect();
-
-            float ySpeed = Speed.Y * (float)Clock.ElapsedFrameTime;
-            float xSpeed = Speed.X * (float)Clock.ElapsedFrameTime;
         }
     }
 }
