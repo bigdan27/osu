@@ -125,13 +125,14 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                             float minDist = Hitbox.HitboxWidth + Bullet.BulletWidth;
                             float signDist = ((CharacterSign.Size.Y / 2) - 14) + Bullet.BulletWidth;
 
-                            if (CharacterSign.Alpha >= 0.1f && distance < signDist)
+                            if (CharacterSign.Alpha > 0f && distance < signDist)
                                 Bullet.DeleteBullet();
 
                             if (distance < minDist && !Dead)
                             {
                                 TakeDamage(Bullet.BulletDamage);
                                 CharacterHitJudgment();
+                                Bullet.DeleteBullet();
                             }
                         }
                     }

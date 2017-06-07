@@ -31,8 +31,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         //This is an extra 10 outside of playerbounds intentionally. There is No escape.
         public Vector4 BulletBounds = new Vector4(-10, -10, 522, 830);
 
-        public static int BulletCount = 0;
-
         //Result of bulletSpeed + bulletAngle math, should never be modified outside of this class
         public Vector2 BulletVelocity;
 
@@ -45,12 +43,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
             if(BulletResult != HitResult.None)
             {
-                Judgement.Score = BulletScore;
                 Judgement.Result = BulletResult;
-                if (BulletResult == HitResult.Miss)
-                    State = ArmedState.Miss;
-                if (BulletResult == HitResult.Hit)
-                    State = ArmedState.Hit;
+                Judgement.Score = BulletScore;
             }
         }
 
@@ -61,7 +55,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             switch (State)
             {
                 case ArmedState.Idle:
-                    Expire(true);
                     break;
                 case ArmedState.Hit:
                     Dispose();
@@ -70,7 +63,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                     Dispose();
                     break;
             }
-            Expire();
         }
 
         public Bullet(Projectile projectile) : base(projectile)
@@ -80,7 +72,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void LoadComplete()
         {
-            BulletCount++;
             GetBulletVelocity();
             Children = new Drawable[]
             {
@@ -140,7 +131,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         protected override void Update()
         {
             base.Update();
-            CheckJudgement(true);
 
             //Will be useful for makin bullets stop, like if a certain character / boss could freeze time.
             if (DynamicBulletVelocity)

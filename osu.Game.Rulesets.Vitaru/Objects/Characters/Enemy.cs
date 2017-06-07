@@ -17,7 +17,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Characters
         public bool Shoot = false;
         public Vector2 EnemyPosition;
         public Vector2 EnemySpeed { get; set; } = new Vector2(0.5f, 0.5f);
-        public double kill30 = 30;
         public double HitWindowMiss = 1000;
         
         public Vector2 EnemyVelocity;
