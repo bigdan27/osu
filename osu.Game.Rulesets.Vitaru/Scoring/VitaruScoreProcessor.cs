@@ -1,7 +1,4 @@
-﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using osu.Framework.Extensions;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Vitaru.Judgements;
@@ -74,10 +71,10 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
                 switch (judgement.Result)
                 {
                     case HitResult.Hit:
-                        Health.Value += 0.05f;
+                        Health.Value = PlayerHealth;
                         break;
                     case HitResult.Miss:
-                        Health.Value -= 0.1f;
+                        Health.Value = PlayerHealth;
                         break;
                 }
 

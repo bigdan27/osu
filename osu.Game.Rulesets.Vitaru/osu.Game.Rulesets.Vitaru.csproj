@@ -50,7 +50,6 @@
     <Compile Include="Judgements\VitaruJudgement.cs" />
     <Compile Include="Objects\AccurateHitbox.cs" />
     <Compile Include="Objects\Drawables\DrawableVitaruJudgement.cs" />
-    <Compile Include="Objects\OsuMonLogo.cs" />
     <Compile Include="Objects\Projectiles\SeekingBullet.cs" />
     <Compile Include="UI\VitaruUI.cs" />
     <Compile Include="VitaruAutoReplay.cs" />

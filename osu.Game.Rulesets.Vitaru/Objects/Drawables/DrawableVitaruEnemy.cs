@@ -427,7 +427,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             GlowRing.Colour = Color4.Green;
         }
 
-        protected override void CharacterJudgment()
+        protected override void CharacterHitJudgment()
         {
             Bullet.BulletScore = VitaruScoreResult.Kill20;
             Bullet.BulletResult = HitResult.Hit;

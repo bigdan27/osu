@@ -1,7 +1,4 @@
-﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
-
-using System;
+﻿using System;
 using OpenTK;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
@@ -50,7 +47,7 @@ namespace osu.Game.Rulesets.Vitaru.Judgements
                     return 30;
                 case VitaruScoreResult.Kill1500:
                     return 1500;
-                case VitaruScoreResult.Hit:
+                case VitaruScoreResult.Miss:
                     return 0;
             }
         }

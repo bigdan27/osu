@@ -47,7 +47,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             {
                 Judgement.Score = BulletScore;
                 Judgement.Result = BulletResult;
-                DeleteBullet();
+                if (BulletResult == HitResult.Miss)
+                    State = ArmedState.Miss;
+                if (BulletResult == HitResult.Hit)
+                    State = ArmedState.Hit;
             }
         }
 
@@ -61,7 +64,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                     Expire(true);
                     break;
                 case ArmedState.Hit:
-                    Expire();
+                    Dispose();
+                    break;
+                case ArmedState.Miss:
+                    Dispose();
                     break;
             }
             Expire();

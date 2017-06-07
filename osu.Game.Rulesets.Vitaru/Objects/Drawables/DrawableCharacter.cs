@@ -82,15 +82,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             return false;
         }
 
-        /// <summary>
-        /// Heals the <see cref="Character"/> by the specified amount
-        /// </summary>
-        /// <param name="healing">Amount of health to be healed</param>
-        public void Heal(int healAmount)
-        {
-            CharacterHealth = 100 >= healAmount + CharacterHealth ? 100 : CharacterHealth + healAmount;
-        }
-
         protected override void Update()
         {
             base.Update();
@@ -115,7 +106,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             }
         }
 
-        protected abstract void CharacterJudgment();
+        protected abstract void CharacterHitJudgment();
 
         public Bullet Bullet;
         public void HitDetect()
@@ -139,11 +130,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
                             if (distance < minDist && !Dead)
                             {
-                                if (TakeDamage(Bullet.BulletDamage))
-                                {
-                                    CharacterJudgment();
-                                    Bullet.DeleteBullet();
-                                }
+                                TakeDamage(Bullet.BulletDamage);
+                                CharacterHitJudgment();
                             }
                         }
                     }

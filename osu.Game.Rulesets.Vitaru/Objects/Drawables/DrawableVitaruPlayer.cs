@@ -189,7 +189,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             return base.OnKeyUp(state, args);
         }
 
-        protected override void CharacterJudgment()
+        protected override void CharacterHitJudgment()
         {
             Bullet.BulletScore = VitaruScoreResult.Miss;
             Bullet.BulletResult = HitResult.Miss;

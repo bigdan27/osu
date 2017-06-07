@@ -22,7 +22,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             HitboxWidth = 32;
         }
 
-        protected override void CharacterJudgment()
+        protected override void CharacterHitJudgment()
         {
             throw new NotImplementedException();
         }
