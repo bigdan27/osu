@@ -1,9 +1,5 @@
-﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using osu.Game.Rulesets.UI;
-using System;
 using osu.Game.Graphics;
 using osu.Game.Beatmaps;
 using osu.Game.Screens.Play;
@@ -32,7 +28,14 @@ namespace osu.Game.Rulesets.Vitaru
                     {
                         new VitaruModEasy(),
                         new VitaruModNoFail(),
-                        new VitaruModHalfTime(),
+                        new MultiMod
+                        {
+                            Mods = new Mod[]
+                            {
+                                new VitaruModHalfTime(),
+                                new VitaruModDaycore(),
+                            },
+                        },
                     };
 
                 case ModType.DifficultyIncrease:
