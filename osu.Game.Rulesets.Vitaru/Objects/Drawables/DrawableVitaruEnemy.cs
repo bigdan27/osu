@@ -25,7 +25,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private float playerPos;
         private Color4 enemyColor = Color4.Green;
         private int patternID = -1;
-        private float OD = 6f;
+        private float OD = 2f;
 
         public static int EnemyIDCount = 0;
         public int EnemyID = 0;
@@ -347,7 +347,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         PatternAngleRadian = playerPos,
                         PatternSpeed = 0.15f,
                         PatternBulletWidth = 12,
-                        PatternDifficulty = OD,
+                        PatternDifficulty = OD / 4,
                         PatternDamage = 5,
                     });
                     c.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), c));

@@ -163,7 +163,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         protected override void CreatePattern()
         {
-            double numberbullets = 90;
+            double numberbullets = 30 * PatternDifficulty;
             int numberspins = (int)(PatternDifficulty + 2) / 2;
             float spinModifier = MathHelper.DegreesToRadians((float)(360 / numberspins));
             float directionModifier = (float)(360 / numberbullets);
