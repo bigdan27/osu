@@ -86,6 +86,17 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         {
             base.Update();
 
+            if(Kiai && CharacterSprite.Alpha == 1)
+            {
+                CharacterKiaiSprite.FadeInFromZero(100);
+                CharacterSprite.FadeOutFromOne(100);
+            }
+            if(!Kiai && CharacterSprite.Alpha == 0)
+            {
+                CharacterSprite.FadeInFromZero(100);
+                CharacterKiaiSprite.FadeOutFromOne(100);
+            }
+
             HitDetect();
 
             if (CharacterSign.Alpha > 0)
