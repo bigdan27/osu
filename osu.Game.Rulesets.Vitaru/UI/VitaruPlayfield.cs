@@ -39,11 +39,10 @@ namespace osu.Game.Rulesets.Vitaru.UI
             {
                 vitaruUI = new VitaruUI
                 {
+                    Depth = 1,
                     Masking = false,
-                    //Magic numbers, srry in advance
                     Position = new Vector2(-10),
                     RelativeSizeAxes = Axes.Both,
-                    //Magic numbers, srry in advance
                     Size = new Vector2(1.48f , 1.46f),
                     Origin = Anchor.TopLeft,
                     Anchor = Anchor.TopLeft,
@@ -51,7 +50,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 vitaruPlayfield = new Container
                 {
                     RelativeSizeAxes = Axes.Both,
-                    Depth = 2,
+                    Depth = -10,
                 },
                 judgementLayer = new Container
                 {

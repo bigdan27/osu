@@ -40,6 +40,16 @@ namespace osu.Game.Rulesets.Vitaru.UI
             RelativeSizeAxes = Axes.Both;
             Children = new Drawable[]
             {
+                new Box
+                {
+                    Alpha = 0.25f,
+                    Colour = Color4.Black,
+                    Depth = 10,
+                    Position = new Vector2(10),
+                    Size = new Vector2(512 , 820),
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+                },
                 energy = new SpriteText
                 {
                     Anchor = Anchor.CentreRight,
@@ -60,20 +70,21 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 },
                 energyBar = new Container
                 {
+                    Masking = true,
                     Alpha = 1f,
                     Depth = 1,
                     Anchor = Anchor.CentreRight,
                     Origin = Anchor.CentreRight,
-                    Colour = Color4.SkyBlue.Opacity(0.5f),
+                    Colour = Color4.SkyBlue,
                     Size = new Vector2(10,820),
-                    BorderColour = Color4.SkyBlue,
-                    BorderThickness = 2,
+                    BorderColour = Color4.Blue,
+                    BorderThickness = 4,
                     Position = new Vector2(0),
                     Children = new Drawable[]
                     {
                         energyBarBox = new Box
                         {
-                            Size = new Vector2(10 , 820),
+                            RelativeSizeAxes = Axes.Both,
                             Colour = Color4.White,
                         },
                         energyTriangles = new Triangles
@@ -88,26 +99,27 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     EdgeEffect = new EdgeEffect
                     {
                         Type = EdgeEffectType.Shadow,
-                        Colour = Color4.SkyBlue,
-                        Radius = 2,
+                        Colour = Color4.SkyBlue.Opacity(0.5f),
+                        Radius = 8,
                     }
                 },
                 healthBar = new Container
                 {
+                    Masking = true,
                     Alpha = 1f,
                     Depth = 0,
                     Anchor = Anchor.CentreLeft,
                     Origin = Anchor.CentreLeft,
-                    Colour = Color4.Green.Opacity(0.5f),
+                    Colour = Color4.LightGreen,
                     Size = new Vector2(10,820),
                     BorderColour = Color4.Green,
-                    BorderThickness = 2,
+                    BorderThickness = 4,
                     Position = new Vector2(0),
                     Children = new Drawable[]
                     {
                         healthBarBox = new Box
                         {
-                            Size = new Vector2(10 , 820),
+                            RelativeSizeAxes = Axes.Both,
                             Colour = Color4.White,
                         },
                         healthTriangles = new Triangles
@@ -122,8 +134,8 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     EdgeEffect = new EdgeEffect
                     {
                         Type = EdgeEffectType.Shadow,
-                        Colour = Color4.Green,
-                        Radius = 2,
+                        Colour = Color4.Green.Opacity(0.5f),
+                        Radius = 8,
                     }
                 },
                 opponentBar = new Container
@@ -139,14 +151,14 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     {
                         opponentBarBox = new Box
                         {
-                            Size = new Vector2(548 , 10),
+                            RelativeSizeAxes = Axes.Both,
                             Colour = Color4.White,
                         },
                     },
                 },
                 friendlyBar = new Container
                 {
-                    Masking = false,
+                    Masking = true,
                     Alpha = 1f,
                     Depth = 0,
                     Anchor = Anchor.BottomCentre,
@@ -157,7 +169,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     {
                         friendlyBarBox = new Box
                         {
-                            Size = new Vector2(548 , 10),
+                            RelativeSizeAxes = Axes.Both,
                             Colour = Color4.White,
                         },
                     },

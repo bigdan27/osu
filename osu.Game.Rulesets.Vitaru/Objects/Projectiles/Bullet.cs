@@ -28,8 +28,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         //Used like a multiple
         public static float BulletSpeedModifier = 1;
 
-        //This is an extra 10 outside of playerbounds intentionally. There is No escape.
-        public Vector4 BulletBounds = new Vector4(-10, -10, 522, 830);
+        public Vector4 BulletBounds = new Vector4(0, 0, 512, 820);
 
         //Result of bulletSpeed + bulletAngle math, should never be modified outside of this class
         public Vector2 BulletVelocity;
