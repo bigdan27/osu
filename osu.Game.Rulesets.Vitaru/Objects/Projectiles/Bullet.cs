@@ -12,7 +12,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {
     public class Bullet : DrawableVitaruHitObject
     {
-        //Different stats for Bullet that should always be changed
+        //Different stats for Bullet that can be changed
         public float BulletDamage { get; set; } = 10;
         public Color4 BulletColor { get; set; } = Color4.White;
         public float BulletSpeed { get; set; } = 1f;
@@ -28,7 +28,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         //Used like a multiple
         public static float BulletSpeedModifier = 1;
 
-        public Vector4 BulletBounds = new Vector4(0, 0, 512, 820);
+        public Vector4 BulletBounds = new Vector4(-1, -1, 513, 821);
 
         //Result of bulletSpeed + bulletAngle math, should never be modified outside of this class
         public Vector2 BulletVelocity;
@@ -131,11 +131,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         {
             base.Update();
 
-            //Will be useful for makin bullets stop, like if a certain character / boss could freeze time.
             if (DynamicBulletVelocity)
                 GetBulletVelocity();
 
-            if (Alpha < 0.05)
+            if (Alpha <= 0.05f)
                 DeleteBullet();
 
             if (Position.Y < BulletBounds.Y | Position.X < BulletBounds.X | Position.Y > BulletBounds.W | Position.X > BulletBounds.Z)   
@@ -146,7 +145,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         private void fadeOut()
         {
             if(Alpha == 1)
-                FadeOut(200);
+                FadeOutFromOne(200);
         }
 
         public void MoveBullet()

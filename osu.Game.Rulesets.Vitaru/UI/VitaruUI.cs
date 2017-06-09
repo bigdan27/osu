@@ -77,8 +77,6 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Origin = Anchor.CentreRight,
                     Colour = Color4.SkyBlue,
                     Size = new Vector2(10,820),
-                    BorderColour = Color4.Blue,
-                    BorderThickness = 4,
                     Position = new Vector2(0),
                     Children = new Drawable[]
                     {
@@ -112,8 +110,6 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Origin = Anchor.CentreLeft,
                     Colour = Color4.LightGreen,
                     Size = new Vector2(10,820),
-                    BorderColour = Color4.Green,
-                    BorderThickness = 4,
                     Position = new Vector2(0),
                     Children = new Drawable[]
                     {
