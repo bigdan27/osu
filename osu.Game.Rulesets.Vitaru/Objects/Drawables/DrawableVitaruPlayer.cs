@@ -78,7 +78,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             HitDetect();
 
-            if (savedTime < Time.Current - 1000 && CharacterEnergy < maxEnergy)
+            if (savedTime <= Time.Current - 1000 && CharacterEnergy < maxEnergy)
                 energyAdd();
             playerInput();
             playerMovement();

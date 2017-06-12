@@ -18,9 +18,6 @@ namespace osu.Game.Rulesets.Vitaru.Judgements
         /// </summary>
         public VitaruScoreResult Score;
 
-        /// <summary>
-        /// The score which would be achievable on a perfect hit.
-        /// </summary>
         public VitaruScoreResult MaxScore = VitaruScoreResult.Kill1500;
 
         public override string ResultString => Score.GetDescription();

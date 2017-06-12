@@ -56,7 +56,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private void death()
         {
-            pop();
             VitaruBeatmapConverter.EnemyList.Remove(this);
             Dispose();
         }
@@ -416,15 +415,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             //Returns a Radian
             playerPos = (float)Math.Atan2((VitaruPlayer.PlayerPosition.Y - Position.Y), (VitaruPlayer.PlayerPosition.X - Position.X));
             return playerPos;
-        }
-
-        private void pop()
-        {
-            GlowRing.Alpha = 1;
-            CharacterSprite.Alpha = 0;
-            GlowRing.ScaleTo(new Vector2(1), 300);
-            GlowRing.FadeOut(300);
-            GlowRing.Colour = Color4.Green;
         }
 
         protected override void CharacterHitJudgment()

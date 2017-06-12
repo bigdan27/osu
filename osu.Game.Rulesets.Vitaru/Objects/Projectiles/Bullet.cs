@@ -56,10 +56,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 case ArmedState.Idle:
                     break;
                 case ArmedState.Hit:
-                    Dispose();
+                    //DeleteBullet();
                     break;
                 case ArmedState.Miss:
-                    Dispose();
+                    //DeleteBullet();
                     break;
             }
         }
