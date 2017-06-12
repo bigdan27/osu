@@ -27,7 +27,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             {
                 laserPiece = new Container
                 {
-                    AlwaysPresent = true,
+                    Masking = true,
                     Anchor = Anchor.BottomCentre,
                     Origin = Anchor.BottomCentre,
                     Rotation = LaserAngleRadian,

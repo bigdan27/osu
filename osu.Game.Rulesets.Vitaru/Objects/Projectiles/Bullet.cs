@@ -54,12 +54,15 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             switch (State)
             {
                 case ArmedState.Idle:
+                    Expire(true);
                     break;
                 case ArmedState.Hit:
-                    //DeleteBullet();
+                    Expire();
+                    DeleteBullet();
                     break;
                 case ArmedState.Miss:
-                    //DeleteBullet();
+                    Expire();
+                    DeleteBullet();
                     break;
             }
         }

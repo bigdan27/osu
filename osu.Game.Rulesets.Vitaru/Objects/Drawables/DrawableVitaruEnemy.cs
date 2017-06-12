@@ -257,7 +257,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         }
 
         /// <summary>
-        /// all the spinner stuff
+        /// All the spinner stuff
         /// </summary>
         private void spinner()
         {
@@ -281,7 +281,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         /// <summary>
         /// All the shooting stuff
         /// </summary>
-
         private void enemyShoot(int patternID)
         {
             playerRelativePositionAngle();
@@ -412,7 +411,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         public float playerRelativePositionAngle()
         {
-            //Returns a Radian
+        //Used for finding where the player is relative to this enemy, returns a radian
             playerPos = (float)Math.Atan2((VitaruPlayer.PlayerPosition.Y - Position.Y), (VitaruPlayer.PlayerPosition.X - Position.X));
             return playerPos;
         }
