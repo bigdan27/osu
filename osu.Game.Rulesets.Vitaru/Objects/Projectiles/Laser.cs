@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using System;
+using OpenTK;
 using OpenTK.Graphics;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -6,8 +7,8 @@ using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {
-    public class Laser : DrawableVitaruHitObject
-    {
+    public class Laser : VitaruHitObject
+    {/*
         public float LaserDamage { get; set; } = 10;
         public Color4 LaserColor { get; set; } = Color4.White;
         public float LaserWidth { get; set; } = 12f;
@@ -55,6 +56,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         internal void DeleteLaser()
         {
             Dispose();
+        }*/
+        public override HitObjectType Type
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

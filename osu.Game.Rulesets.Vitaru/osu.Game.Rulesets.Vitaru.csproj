@@ -49,6 +49,7 @@
     <Compile Include="Beatmaps\VitaruBeatmapProcessor.cs" />
     <Compile Include="Judgements\VitaruJudgement.cs" />
     <Compile Include="Objects\AccurateHitbox.cs" />
+    <Compile Include="Objects\Drawables\DrawableBullet.cs" />
     <Compile Include="Objects\Drawables\DrawableVitaruJudgement.cs" />
     <Compile Include="Objects\Projectiles\SeekingBullet.cs" />
     <Compile Include="UI\VitaruUI.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="Objects\VitaruHitObjectDifficulty.cs" />
     <Compile Include="Objects\Projectiles\BulletPatterns.cs" />
     <Compile Include="Objects\Projectiles\Laser.cs" />
-    <Compile Include="Objects\Projectiles\Projectile.cs" />
     <Compile Include="Objects\VitaruHitObject.cs" />
     <Compile Include="Objects\Characters\VitaruPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

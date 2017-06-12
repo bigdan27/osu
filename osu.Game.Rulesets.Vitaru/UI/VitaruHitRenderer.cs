@@ -11,6 +11,7 @@ using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.Beatmaps;
 using OpenTK;
 using osu.Game.Rulesets.Vitaru.Scoring;
+using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
 
 namespace osu.Game.Rulesets.Vitaru
 {
@@ -42,6 +43,14 @@ namespace osu.Game.Rulesets.Vitaru
             var boss = h as Boss;
             if (boss != null)
                 return new DrawableVitaruBoss(boss);
+
+            var bullet = h as Bullet;
+            if (bullet != null)
+                return new DrawableBullet(bullet);
+            /*
+            var laser = h as Laser;
+            if (laser != null)
+                return new DrawableLaser(laser);*/
             return null;
         }
 

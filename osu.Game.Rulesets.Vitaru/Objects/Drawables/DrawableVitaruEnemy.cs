@@ -418,8 +418,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         protected override void CharacterHitJudgment()
         {
-            Bullet.BulletScore = VitaruScoreResult.Kill20;
-            Bullet.BulletResult = HitResult.Hit;
+            DrawableBullet.BulletScore = VitaruScoreResult.Kill20;
+            DrawableBullet.BulletResult = HitResult.Hit;
         }
     }
 }

@@ -50,9 +50,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         
         protected void bulletAddRad(float speed, float angle)
         {
-            Projectile projectile = new Projectile { };
-            Bullet bullet;
-            VitaruPlayfield.vitaruPlayfield.Add(bullet = new Bullet(projectile)
+            Bullet bullet= new Bullet { };
+            DrawableBullet drawableBullet;
+            VitaruPlayfield.vitaruPlayfield.Add(drawableBullet = new DrawableBullet(bullet)
             {
                 Origin = Anchor.Centre,
                 Depth = 5,
@@ -64,7 +64,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 DynamicBulletVelocity = DynamicPatternVelocity,
                 Team = Team,
             });
-            bullet.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), bullet));
+            drawableBullet.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), drawableBullet));
         }
         protected abstract void CreatePattern();
     }

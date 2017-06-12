@@ -120,8 +120,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 VitaruPlayer.PlayerPosition.X += xTranslationDistance;
             }
 
-            if (Bullet.BulletSpeedModifier < 1)
-                Bullet.BulletSpeedModifier = (((float)Time.Current - savedTime2) / 2500);
+            if (DrawableBullet.BulletSpeedModifier < 1)
+                DrawableBullet.BulletSpeedModifier = (((float)Time.Current - savedTime2) / 2500);
 
             VitaruPlayer.PlayerPosition = Vector2.ComponentMin(VitaruPlayer.PlayerPosition, playerBounds.Yw);
             VitaruPlayer.PlayerPosition  = Vector2.ComponentMax(VitaruPlayer.PlayerPosition, playerBounds.Xz);
@@ -145,7 +145,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             if(CharacterEnergy >= healEnergy)
             {
                 savedTime2 = (float)Time.Current;
-                Bullet.BulletSpeedModifier = 0;
+                DrawableBullet.BulletSpeedModifier = 0;
                 CharacterSign.Colour = Color4.Red;
                 CharacterEnergy = CharacterEnergy - healEnergy;
                 if((healEnergy + 5) <= maxEnergy)
@@ -191,8 +191,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         protected override void CharacterHitJudgment()
         {
-            Bullet.BulletScore = VitaruScoreResult.Miss;
-            Bullet.BulletResult = HitResult.Miss;
+            DrawableBullet.BulletScore = VitaruScoreResult.Miss;
+            DrawableBullet.BulletResult = HitResult.Miss;
         }
     }
 }

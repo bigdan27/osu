@@ -118,29 +118,29 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         protected abstract void CharacterHitJudgment();
 
-        public Bullet Bullet;
+        public DrawableBullet DrawableBullet;
         public void HitDetect()
         {
             if (VitaruPlayfield.vitaruPlayfield != null)
             {
                 foreach (Drawable draw in VitaruPlayfield.vitaruPlayfield.Children)
                 {
-                    if (draw is Bullet)
+                    if (draw is DrawableBullet)
                     {
-                        Bullet = draw as Bullet;
-                        if (Bullet.Team != Team)
+                        DrawableBullet = draw as DrawableBullet;
+                        if (DrawableBullet.Team != Team)
                         {
-                            Vector2 bulletPos = Bullet.ToSpaceOfOtherDrawable(Vector2.Zero, this);
+                            Vector2 bulletPos = DrawableBullet.ToSpaceOfOtherDrawable(Vector2.Zero, this);
                             float distance = (float)Math.Sqrt(Math.Pow(bulletPos.X, 2) + Math.Pow(bulletPos.Y, 2));
-                            float minDist = Hitbox.HitboxWidth + Bullet.BulletWidth;
-                            float signDist = ((CharacterSign.Size.Y / 2) - 14) + Bullet.BulletWidth;
+                            float minDist = Hitbox.HitboxWidth + DrawableBullet.BulletWidth;
+                            float signDist = ((CharacterSign.Size.Y / 2) - 14) + DrawableBullet.BulletWidth;
 
                             if (CharacterSign.Alpha > 0f && distance < signDist)
-                                Bullet.DeleteBullet();
+                                DrawableBullet.DeleteBullet();
 
-                            if (distance < minDist && !Dead && Bullet.BulletResult == HitResult.None)
+                            if (distance < minDist && !Dead && DrawableBullet.BulletResult == HitResult.None)
                             {
-                                TakeDamage(Bullet.BulletDamage);
+                                TakeDamage(DrawableBullet.BulletDamage);
                                 CharacterHitJudgment();
                             }
                         }

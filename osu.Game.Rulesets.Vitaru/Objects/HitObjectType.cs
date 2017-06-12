@@ -5,6 +5,7 @@
         Player,
         Enemy,
         Boss,
-        Projectile
+        Bullet,
+        Laser
     }
 }

@@ -32,7 +32,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         }
 
         public void shoot()
-        {
+        {/*
             SeekingBullet s;
             Projectile projectile = new Projectile { };
             VitaruPlayfield.vitaruPlayfield.Add(s = new SeekingBullet(projectile)
@@ -46,7 +46,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 Team = Team,
             });
             s.MoveTo(ToSpaceOfOtherDrawable(new Vector2(0, 0), s));
-        }
+        */}
 
         protected override void LoadComplete()
         {

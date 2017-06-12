@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {
-    public class SeekingBullet : Bullet
+    public class SeekingBullet : DrawableBullet
     {
         public DrawableVitaruEnemy NearestEnemy;
         private float enemyPos = -10;
@@ -22,9 +22,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         public float StartAngle { get; set; }
 
-        public SeekingBullet(Projectile projectile) : base(projectile)
+        public SeekingBullet(Bullet bullet) : base(bullet)
         {
-            projectile.Team = Team;
+            bullet.Team = Team;
         }
 
         protected override void LoadComplete()

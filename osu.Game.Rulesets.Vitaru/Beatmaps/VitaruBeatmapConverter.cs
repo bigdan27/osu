@@ -11,12 +11,13 @@ using osu.Game.Rulesets.Vitaru.Objects.Characters;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 using osu.Game.Audio;
 using System.Linq;
+using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
 
 namespace osu.Game.Rulesets.Vitaru.Beatmaps
 {
     internal class VitaruBeatmapConverter : BeatmapConverter<VitaruHitObject>
     {
-        private bool playerLoaded = false;
+        private bool initialLoad = false;
         public static List<DrawableVitaruEnemy> EnemyList = new List<DrawableVitaruEnemy>();
 
         protected override IEnumerable<Type> ValidConversionTypes { get; } = new[] { typeof(IHasPosition) };
@@ -28,16 +29,18 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
             var positionData = original as IHasPosition;
             var comboData = original as IHasCombo;
             
-            if (playerLoaded == false)
+            if (initialLoad == false)
             {
                 EnemyList = new List<DrawableVitaruEnemy>();
-                playerLoaded = true;
+                
                 VitaruPlayer.PlayerPosition = new Vector2(256, 700);
+
                 yield return new VitaruPlayer
                 {
                     Position = VitaruPlayer.PlayerPosition,
                     StartTime = 0f,
                 };
+                initialLoad = true;
             }
 
             if (curveData != null)
