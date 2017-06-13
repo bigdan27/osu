@@ -22,9 +22,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public bool Piercing { get; set; } = false;
         public int Team { get; set; }
 
-        public HitResult BulletResult = HitResult.None;
-        public VitaruScoreResult BulletScore;
-
         //Used like a multiple
         public static float BulletSpeedModifier = 1;
 
@@ -39,12 +36,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         protected override void CheckJudgement(bool userTriggered)
         {
             base.CheckJudgement(userTriggered);
-
-            if(BulletResult != HitResult.None)
-            {
-                Judgement.Result = BulletResult;
-                Judgement.Score = BulletScore;
-            }
         }
 
         protected override void UpdateState(ArmedState state)

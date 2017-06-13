@@ -103,7 +103,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
             double timeElapsed = (BaseHitObject.StartTime - previousHitObject.BaseHitObject.StartTime) / timeRate;
             double decay = Math.Pow(DECAY_BASE[(int)type], timeElapsed / 1000);
 
-            if (BaseHitObject.Type == HitObjectType.Enemy)
+            if (BaseHitObject.Type == HitObjectType.Bullet)
             {
                 addition = spacingWeight(DistanceTo(previousHitObject), type) * spacing_weight_scaling[(int)type];
             }

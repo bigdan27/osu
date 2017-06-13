@@ -7,18 +7,18 @@ using osu.Game.Rulesets.Objects.Types;
 using System;
 using osu.Game.Rulesets.Vitaru.UI;
 using osu.Game.Rulesets.Beatmaps;
-using osu.Game.Rulesets.Vitaru.Objects.Characters;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 using osu.Game.Audio;
 using System.Linq;
 using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
+using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 
 namespace osu.Game.Rulesets.Vitaru.Beatmaps
 {
     internal class VitaruBeatmapConverter : BeatmapConverter<VitaruHitObject>
     {
         private bool initialLoad = false;
-        public static List<DrawableVitaruEnemy> EnemyList = new List<DrawableVitaruEnemy>();
 
         protected override IEnumerable<Type> ValidConversionTypes { get; } = new[] { typeof(IHasPosition) };
 
@@ -30,55 +30,22 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
             var comboData = original as IHasCombo;
             
             if (initialLoad == false)
-            {
-                EnemyList = new List<DrawableVitaruEnemy>();
-                
+            {                
                 VitaruPlayer.PlayerPosition = new Vector2(256, 700);
-
-                yield return new VitaruPlayer
+ 
+                VitaruPlayer vitaruPlayer;
+                VitaruPlayfield.vitaruPlayfield.Add(vitaruPlayer = new VitaruPlayer
                 {
-                    Position = VitaruPlayer.PlayerPosition,
-                    StartTime = 0f,
-                };
+                    Alpha = 1,
+                    AlwaysPresent = true,
+                });
                 initialLoad = true;
-            }
-
-            if (curveData != null)
-            {
-                yield return new Enemy
-                {
-                    StartTime = original.StartTime,
-                    Samples = original.Samples,
-                    ControlPoints = curveData.ControlPoints,
-                    CurveType = curveData.CurveType,
-                    Distance = curveData.Distance,
-                    RepeatSamples = curveData.RepeatSamples,
-                    RepeatCount = curveData.RepeatCount,
-                    Position = positionData?.Position ?? Vector2.Zero,
-                    NewCombo = comboData?.NewCombo ?? false,
-                    IsSlider = true,
-                };
-            }
-            else if (endTimeData != null)
-            {
-                yield return new Enemy
-                {
-                    StartTime = original.StartTime,
-                    Samples = original.Samples,
-                    EndTime = endTimeData.EndTime,
-                    IsSpinner = true,
-
-                    Position = positionData?.Position ?? VitaruPlayfield.BASE_SIZE / 2,
-                };
             }
             else
             {
-                yield return new Enemy
+                yield return new BulletPattern
                 {
                     StartTime = original.StartTime,
-                    Samples = original.Samples,
-                    Position = positionData?.Position ?? Vector2.Zero,
-                    NewCombo = comboData?.NewCombo ?? false,
                 };
             }
         }

@@ -14,7 +14,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
         public static Container vitaruPlayfield;
         private readonly Container judgementLayer;
 
-        public override bool ProvidingUserCursor => true;
+        public override bool ProvidingUserCursor => false;
 
         public static readonly Vector2 BASE_SIZE = new Vector2(512, 820);
         private VitaruUI vitaruUI;
@@ -43,6 +43,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Masking = false,
                     Position = new Vector2(-10),
                     RelativeSizeAxes = Axes.Both,
+                    //magic numbers :P
                     Size = new Vector2(1.48f , 1.46f),
                     Origin = Anchor.TopLeft,
                     Anchor = Anchor.TopLeft,

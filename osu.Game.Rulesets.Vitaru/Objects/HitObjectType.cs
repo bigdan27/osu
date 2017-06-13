@@ -2,9 +2,7 @@
 {
     public enum HitObjectType
     {
-        Player,
-        Enemy,
-        Boss,
+        Pattern,
         Bullet,
         Laser
     }

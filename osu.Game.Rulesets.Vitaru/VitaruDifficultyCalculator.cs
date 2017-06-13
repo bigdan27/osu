@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.Beatmaps;
-using osu.Game.Rulesets.Vitaru.Objects.Characters;
 
 namespace osu.Game.Rulesets.Vitaru
 {
