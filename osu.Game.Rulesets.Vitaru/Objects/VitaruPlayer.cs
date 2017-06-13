@@ -111,8 +111,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             if (savedTime <= Time.Current - 1000 && VitaruScoreProcessor.PlayerEnergy < maxEnergy)
                 energyAdd();
             playerMovement();
-            VitaruScoreProcessor.PlayerHealth = VitaruScoreProcessor.PlayerHealth / 100;
-            VitaruScoreProcessor.PlayerEnergy = VitaruScoreProcessor.PlayerEnergy / 100;
         }
 
         private void energyAdd()
