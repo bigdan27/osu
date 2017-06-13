@@ -59,6 +59,12 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Depth = 3,
                 },
             });
+            VitaruPlayer vitaruPlayer;
+            VitaruPlayfield.vitaruPlayfield.Add(vitaruPlayer = new VitaruPlayer
+            {
+                Alpha = 1,
+                AlwaysPresent = true,
+            });
         }
 
         protected override void LoadComplete()

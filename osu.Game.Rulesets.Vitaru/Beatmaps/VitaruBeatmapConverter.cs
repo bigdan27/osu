@@ -32,13 +32,6 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
             if (initialLoad == false)
             {                
                 VitaruPlayer.PlayerPosition = new Vector2(256, 700);
- 
-                VitaruPlayer vitaruPlayer;
-                VitaruPlayfield.vitaruPlayfield.Add(vitaruPlayer = new VitaruPlayer
-                {
-                    Alpha = 1,
-                    AlwaysPresent = true,
-                });
                 initialLoad = true;
             }
             else
