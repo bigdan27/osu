@@ -91,6 +91,29 @@ namespace osu.Game.Rulesets.Vitaru
             new KeyCounterKeyboard(Key.Down),
         };
 
-        public override FontAwesome Icon => FontAwesome.fa_bathtub;
+        private VitaruFont icon;
+
+        public VitaruFont Icon
+        {
+            get
+            {
+                return icon;
+            }
+
+            set
+            {
+                if (icon == value) return;
+
+                icon = value;
+                Text = ((char)icon).ToString();
+            }
+        }
+
+        public override FontAwesome Icon => VitaruFont.vf_logo;
+    }
+
+    public enum VitaruFont
+    {
+        vf_logo = 0xe04b,
     }
 }

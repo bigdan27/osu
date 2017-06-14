@@ -77,6 +77,7 @@
     <None Include="..\osu.licenseheader">
       <Link>osu.licenseheader</Link>
     </None>
+    <EmbeddedResource Include="Assets\Font\vitaruFont.fnt" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -102,6 +103,7 @@
     <Folder Include="Assets\Audio\Tracks\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Assets\Font\vitaruFont_0.png" />
     <EmbeddedResource Include="Assets\Textures\player.png" />
     <EmbeddedResource Include="Assets\Textures\playerKiai.png" />
     <EmbeddedResource Include="Assets\Audio\Samples\deathSound.mp3" />

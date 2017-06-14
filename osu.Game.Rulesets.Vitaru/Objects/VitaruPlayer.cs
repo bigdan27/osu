@@ -14,6 +14,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Configuration;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Audio;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
@@ -52,6 +53,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         public static ResourceStore<byte[]> VitaruResources;
         public static TextureStore VitaruTextures;
+        public static FontStore VitaruFont;
+        public static AudioManager VitaruAudio;
 
         //(MinX,MaxX,MinY,MaxY)
         private Vector4 playerBounds = new Vector4(0, 512, 0, 820);
@@ -257,6 +260,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
                 VitaruTextures = new TextureStore(new RawTextureLoaderStore(new NamespacedResourceStore<byte[]>(VitaruResources, @"Textures")));
                 VitaruTextures.AddStore(new RawTextureLoaderStore(new OnlineStore()));
+
+                VitaruFont = new FontStore(new GlyphStore(VitaruResources, @"Font/vitaruFont"))
+                {
+                    ScaleAdjust = 100
+                };
             }
 
             //Drawable stuff loading
