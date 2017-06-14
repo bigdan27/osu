@@ -29,18 +29,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         protected Sprite PlayerSign;
         protected Hitbox Hitbox;
 
-        public float DegreesPerSecond = 80;
-        public float NormalSize = 200;
-        public float SineHeight = 100;
-        public float SineSpeed = 0.001f;
-
         public float CharacterHealth { get; set; } = 100;
         public float CharacterEnergy { get; set; } = 0;
         public int Team { get; set; } = 0;
         public int ProjectileDamage { get; set; }
         public bool Kiai { get; set; }
-
-        public bool Dead = false;
 
         public static bool AssetsLoaded = false;
 
@@ -104,14 +97,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 PlayerKiaiSprite.FadeOutFromOne(100);
             }
 
-            if (PlayerSign.Alpha > 0)
-            {
-                PlayerSign.ResizeTo((float)Math.Abs(Math.Sin(Clock.CurrentTime * SineSpeed)) * SineHeight + NormalSize);
-                PlayerSign.RotateTo((float)((Clock.CurrentTime / 1000) * DegreesPerSecond));
-            }
-
             if (savedTime <= Time.Current - 1000 && PlayerEnergy < maxEnergy)
                 energyAdd();
+
+            if(PlayerSign.Alpha > 0)
+                PlayerSign.RotateTo((float)((Clock.CurrentTime / 1000) * 90));
+
             playerMovement();
         }
 
@@ -159,7 +150,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private void spell()
         {
-            if(PlayerEnergy >= healEnergy)
+            if(PlayerEnergy >= healEnergy && PlayerSign.Alpha <= 0)
             {
                 savedTime2 = (float)Time.Current;
                 DrawableBullet.BulletSpeedModifier = 0;
@@ -167,9 +158,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 PlayerEnergy = PlayerEnergy - healEnergy;
                 if((healEnergy + 5) <= maxEnergy)
                 healEnergy = healEnergy + 5;
-                PlayerSign.Alpha = 1;
                 PlayerHealth = 100;
-                PlayerSign.FadeOut(2500 , EasingTypes.InQuint);
+                PlayerSign.FadeOutFromOne(2500 , EasingTypes.InQuint);
+                PlayerSign.Size = new Vector2(300);
+                PlayerSign.ResizeTo(new Vector2(50f) , 2500 , EasingTypes.InQuint);
             }
         }
 
@@ -189,12 +181,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                             Vector2 bulletPos = DrawableBullet.ToSpaceOfOtherDrawable(Vector2.Zero, this);
                             float distance = (float)Math.Sqrt(Math.Pow(bulletPos.X, 2) + Math.Pow(bulletPos.Y, 2));
                             float minDist = Hitbox.HitboxWidth + DrawableBullet.BulletWidth;
-                            float signDist = ((PlayerSign.Size.Y / 2) - 14) + DrawableBullet.BulletWidth;
+                            //The -20 is for the blank space around the sprite (transparent pixels)
+                            float signDist = ((PlayerSign.Size.Y / 2) - 20) + DrawableBullet.BulletWidth;
 
                             if (PlayerSign.Alpha > 0f && distance < signDist)
                                 DrawableBullet.DeleteBullet();
 
-                            if (distance < minDist && !Dead)
+                            if (distance < minDist)
                             {
                                 TakeDamage(DrawableBullet.BulletDamage);
                                 DrawableBullet.DeleteBullet();
