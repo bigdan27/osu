@@ -39,6 +39,7 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
                     PatternAngleDegree = 180,
                     PatternSpeed = 0.25f,
                     PatternBulletWidth = 8f,
+                    PatternTeam = 1,
                 };
             }
         }

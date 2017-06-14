@@ -5,7 +5,6 @@ using osu.Framework.Input;
 using System.Collections.Generic;
 using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
 using OpenTK.Graphics;
-using osu.Game.Rulesets.Vitaru.Scoring;
 using osu.Game.Rulesets.Vitaru.UI;
 using System;
 using osu.Framework.Graphics.Sprites;
@@ -13,14 +12,17 @@ using osu.Framework.IO.Stores;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Configuration;
 using osu.Framework.Allocation;
-using osu.Framework.Graphics.Containers;
 using osu.Framework.Audio;
+using osu.Game.Graphics.Containers;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
-    public class VitaruPlayer : Container
+    public class VitaruPlayer : BeatSyncedContainer
     {
         public static Vector2 PlayerPosition = new Vector2(0);
+
+        public static float PlayerEnergy = 0;
+        public static float PlayerHealth = 100;
 
         protected Sprite PlayerSprite;
         protected Sprite PlayerKiaiSprite;
@@ -108,14 +110,14 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 PlayerSign.RotateTo((float)((Clock.CurrentTime / 1000) * DegreesPerSecond));
             }
 
-            if (savedTime <= Time.Current - 1000 && VitaruScoreProcessor.PlayerEnergy < maxEnergy)
+            if (savedTime <= Time.Current - 1000 && PlayerEnergy < maxEnergy)
                 energyAdd();
             playerMovement();
         }
 
         private void energyAdd()
         {
-            VitaruScoreProcessor.PlayerEnergy++;
+            PlayerEnergy++;
             savedTime = Time.Current;
         }
 
@@ -157,16 +159,16 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private void spell()
         {
-            if(VitaruScoreProcessor.PlayerEnergy >= healEnergy)
+            if(PlayerEnergy >= healEnergy)
             {
                 savedTime2 = (float)Time.Current;
                 DrawableBullet.BulletSpeedModifier = 0;
                 PlayerSign.Colour = Color4.Red;
-                VitaruScoreProcessor.PlayerEnergy = VitaruScoreProcessor.PlayerEnergy - healEnergy;
+                PlayerEnergy = PlayerEnergy - healEnergy;
                 if((healEnergy + 5) <= maxEnergy)
                 healEnergy = healEnergy + 5;
                 PlayerSign.Alpha = 1;
-                VitaruScoreProcessor.PlayerHealth = 100;
+                PlayerHealth = 100;
                 PlayerSign.FadeOut(2500 , EasingTypes.InQuint);
             }
         }
@@ -180,7 +182,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     if (draw is DrawableBullet)
                     {
                         DrawableBullet = draw as DrawableBullet;
-                        if (DrawableBullet.Team != Team)
+
+                        //yes I may still need this, want to make team battles more interesting ;)
+                        if (true)//DrawableBullet.Team != Team)
                         {
                             Vector2 bulletPos = DrawableBullet.ToSpaceOfOtherDrawable(Vector2.Zero, this);
                             float distance = (float)Math.Sqrt(Math.Pow(bulletPos.X, 2) + Math.Pow(bulletPos.Y, 2));
@@ -200,7 +204,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     if (draw is DrawableLaser)
                     {
                         DrawableLaser drawableLaser = draw as DrawableLaser;
-                        if (drawableLaser.Team != Team)
+                        if (true)//drawableLaser.Team != Team)
                         {/*
                             circleDistance.x = abs(circle.x - rect.x);
                             circleDistance.y = abs(circle.y - rect.y);
@@ -217,8 +221,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         /// <returns>If the Character died</returns>
         public bool TakeDamage(float damage)
         {
-            CharacterHealth -= damage;
-            if (CharacterHealth <= 0)
+            PlayerHealth -= damage;
+            if (PlayerHealth <= 0)
             {
                 Death();
                 return true;
@@ -228,7 +232,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         public void Death()
         {
-
+            Dispose();
         }
 
         protected override bool OnKeyDown(InputState state, KeyDownEventArgs args)

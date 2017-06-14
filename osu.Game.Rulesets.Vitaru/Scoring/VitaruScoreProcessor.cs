@@ -12,9 +12,6 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
 {
     internal class VitaruScoreProcessor : ScoreProcessor<VitaruHitObject, VitaruJudgement>
     {
-        public static float PlayerEnergy = 0;
-        public static float PlayerHealth = 100;
-
         public VitaruScoreProcessor()
         {
         }
@@ -28,11 +25,11 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
         {
             base.Reset();
 
-            PlayerEnergy = 0;
-            PlayerHealth = 100;
+            VitaruPlayer.PlayerEnergy = 0;
+            VitaruPlayer.PlayerHealth = 100;
 
-            Health.Value = PlayerHealth / 100;
-            Accuracy.Value = PlayerEnergy / 100;
+            Health.Value = VitaruPlayer.PlayerHealth / 100;
+            Accuracy.Value = VitaruPlayer.PlayerEnergy / 100;
 
             TotalScore.Value = 0;
 
@@ -66,10 +63,10 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
                 switch (judgement.Result)
                 {
                     case HitResult.Hit:
-                        Health.Value = PlayerHealth / 100;
+                        Health.Value = VitaruPlayer.PlayerHealth / 100;
                         break;
                     case HitResult.Miss:
-                        Health.Value = PlayerHealth / 100;
+                        Health.Value = VitaruPlayer.PlayerHealth / 100;
                         break;
                 }
 

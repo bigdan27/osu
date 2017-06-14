@@ -6,6 +6,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Sprites;
 using osu.Game.Graphics.Backgrounds;
+using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 using osu.Game.Rulesets.Vitaru.Scoring;
 using System;
 using System.Collections.Generic;
@@ -178,24 +179,24 @@ namespace osu.Game.Rulesets.Vitaru.UI
         {
             base.Update();
 
-            if ((VitaruScoreProcessor.PlayerHealth) > 100)
+            if ((VitaruPlayer.PlayerHealth) > 100)
                 health.Colour = Color4.SkyBlue;
-            if ((VitaruScoreProcessor.PlayerHealth) > 50 && (VitaruScoreProcessor.PlayerHealth) <= 100)
+            if ((VitaruPlayer.PlayerHealth) > 50 && (VitaruPlayer.PlayerHealth) <= 100)
                 health.Colour = Color4.Green;
-            if ((VitaruScoreProcessor.PlayerHealth) <= 50 && (VitaruScoreProcessor.PlayerHealth) > 20)
+            if ((VitaruPlayer.PlayerHealth) <= 50 && (VitaruPlayer.PlayerHealth) > 20)
                 health.Colour = Color4.Yellow;
-            if ((VitaruScoreProcessor.PlayerHealth) <= 20 && (VitaruScoreProcessor.PlayerHealth) > 0)
+            if ((VitaruPlayer.PlayerHealth) <= 20 && (VitaruPlayer.PlayerHealth) > 0)
                 health.Colour = Color4.Red;
-            if ((VitaruScoreProcessor.PlayerHealth) <= 0)
+            if ((VitaruPlayer.PlayerHealth) <= 0)
                 health.Colour = Color4.Black;
 
             healthBar.Colour = health.Colour;
-            energyBar.ResizeTo(new Vector2(10 , VitaruScoreProcessor.PlayerEnergy * 8.20f) , 100 , EasingTypes.OutCubic);
-            healthBar.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
-            energyBarBox.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerEnergy * 8.20f), 100, EasingTypes.OutCubic);
-            healthBarBox.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
-            energy.Text = (VitaruScoreProcessor.PlayerEnergy).ToString() + "% Charge";
-            health.Text = (Math.Floor(VitaruScoreProcessor.PlayerHealth)).ToString() + "% Health";
+            energyBar.ResizeTo(new Vector2(10 , VitaruPlayer.PlayerEnergy * 8.20f) , 100 , EasingTypes.OutCubic);
+            healthBar.ResizeTo(new Vector2(10, VitaruPlayer.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
+            energyBarBox.ResizeTo(new Vector2(10, VitaruPlayer.PlayerEnergy * 8.20f), 100, EasingTypes.OutCubic);
+            healthBarBox.ResizeTo(new Vector2(10, VitaruPlayer.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
+            energy.Text = (VitaruPlayer.PlayerEnergy).ToString() + "% Charge";
+            health.Text = (Math.Floor(VitaruPlayer.PlayerHealth)).ToString() + "% Health";
         }
     }
 }

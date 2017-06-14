@@ -14,7 +14,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
         public static Container vitaruPlayfield;
         private readonly Container judgementLayer;
 
-        public override bool ProvidingUserCursor => false;
+        public override bool ProvidingUserCursor => true;
 
         public static readonly Vector2 BASE_SIZE = new Vector2(512, 820);
         private VitaruUI vitaruUI;
