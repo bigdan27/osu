@@ -128,7 +128,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                             TriangleScale = 1,
                         }
                     },
-                    EdgeEffect = new EdgeEffect
+                    EdgeEffect = new EdgeEffectParameters
                     {
                         Type = EdgeEffectType.Shadow,
                         Colour = Color4.Green.Opacity(0.5f),
