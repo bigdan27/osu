@@ -34,10 +34,14 @@ namespace osu.Game.Rulesets.Vitaru
             var bullet = h as Bullet;
             if (bullet != null)
                 return new DrawableBullet(bullet);
-            /*
+
+            var pattern = h as Pattern;
+            if (pattern != null)
+                return new DrawablePattern(pattern);
+
             var laser = h as Laser;
             if (laser != null)
-                return new DrawableLaser(laser);*/
+                return new DrawableLaser(laser);
             return null;
         }
 

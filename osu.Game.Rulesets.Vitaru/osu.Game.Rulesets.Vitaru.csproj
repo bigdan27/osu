@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Objects\Drawables\DrawableLaser.cs" />
-    <Compile Include="Objects\Projectiles\BulletPattern.cs" />
+    <Compile Include="Objects\Projectiles\Pattern.cs" />
     <Compile Include="Beatmaps\VitaruBeatmapConverter.cs" />
     <Compile Include="Beatmaps\VitaruBeatmapProcessor.cs" />
     <Compile Include="Judgements\VitaruJudgement.cs" />
@@ -62,7 +62,7 @@
     <Compile Include="Objects\Hitbox.cs" />
     <Compile Include="Objects\HitObjectType.cs" />
     <Compile Include="Objects\VitaruHitObjectDifficulty.cs" />
-    <Compile Include="Objects\Projectiles\DrawableBulletPatterns.cs" />
+    <Compile Include="Objects\Drawables\DrawablePatterns.cs" />
     <Compile Include="Objects\Projectiles\Laser.cs" />
     <Compile Include="Objects\VitaruHitObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

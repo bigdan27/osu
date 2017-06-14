@@ -5,14 +5,8 @@ using osu.Game.Rulesets.Vitaru.Objects;
 using System.Collections.Generic;
 using osu.Game.Rulesets.Objects.Types;
 using System;
-using osu.Game.Rulesets.Vitaru.UI;
 using osu.Game.Rulesets.Beatmaps;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
-using osu.Game.Audio;
-using System.Linq;
-using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
-using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
 
 namespace osu.Game.Rulesets.Vitaru.Beatmaps
 {
@@ -36,9 +30,15 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
             }
             else
             {
-                yield return new BulletPattern
+                yield return new Pattern
                 {
                     StartTime = original.StartTime,
+                    PatternPosition = positionData?.Position ?? Vector2.Zero,
+                    Samples = original.Samples,
+                    PatternID = 1,
+                    PatternAngleDegree = 180,
+                    PatternSpeed = 0.25f,
+                    PatternBulletWidth = 8f,
                 };
             }
         }

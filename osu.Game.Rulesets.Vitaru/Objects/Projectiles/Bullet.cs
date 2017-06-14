@@ -14,6 +14,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
     {
         public override HitObjectType Type => HitObjectType.Bullet;
         public int Team { get; set; }
+        public Bullet() : base() { }
     }
 }
  

@@ -83,7 +83,7 @@ namespace osu.Game.Rulesets.Vitaru
         public override IEnumerable<KeyCounter> CreateGameplayKeys() => new KeyCounter[]
         {
             new KeyCounterKeyboard(Key.LShift),
-            new KeyCounterKeyboard(Key.Z),
+            //new KeyCounterKeyboard(Key.Z),
             new KeyCounterKeyboard(Key.X),
             new KeyCounterKeyboard(Key.Up),
             new KeyCounterKeyboard(Key.Right),
@@ -91,25 +91,7 @@ namespace osu.Game.Rulesets.Vitaru
             new KeyCounterKeyboard(Key.Down),
         };
 
-        private VitaruFont icon;
-
-        public VitaruFont Icon
-        {
-            get
-            {
-                return icon;
-            }
-
-            set
-            {
-                if (icon == value) return;
-
-                icon = value;
-                Text = ((char)icon).ToString();
-            }
-        }
-
-        public override FontAwesome Icon => VitaruFont.vf_logo;
+        //public override FontAwesome Icon => VitaruFont.vf_logo;
     }
 
     public enum VitaruFont
