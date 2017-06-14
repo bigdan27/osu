@@ -51,7 +51,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         
         protected void bulletAddRad(float speed, float angle)
         {
-            Bullet bullet= new Bullet { };
+            Bullet bullet= new Bullet
+            {
+
+            };
+
             DrawableBullet drawableBullet;
             VitaruPlayfield.vitaruPlayfield.Add(drawableBullet = new DrawableBullet(bullet)
             {

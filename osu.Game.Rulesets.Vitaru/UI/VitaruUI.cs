@@ -189,10 +189,10 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 health.Colour = Color4.Black;
 
             healthBar.Colour = health.Colour;
-            energyBar.ResizeTo(new Vector2(10 , VitaruScoreProcessor.PlayerEnergy * 8.20f) , 0);
-            healthBar.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerHealth * 8.20f), 0);
-            energyBarBox.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerEnergy * 8.20f), 0);
-            healthBarBox.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerHealth * 8.20f), 0);
+            energyBar.ResizeTo(new Vector2(10 , VitaruScoreProcessor.PlayerEnergy * 8.20f) , 100 , EasingTypes.OutCubic);
+            healthBar.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
+            energyBarBox.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerEnergy * 8.20f), 100, EasingTypes.OutCubic);
+            healthBarBox.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
             energy.Text = (VitaruScoreProcessor.PlayerEnergy).ToString() + "% Charge";
             health.Text = (Math.Floor(VitaruScoreProcessor.PlayerHealth)).ToString() + "% Health";
         }

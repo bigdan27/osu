@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objects\Drawables\DrawableLaser.cs" />
     <Compile Include="Objects\Projectiles\BulletPattern.cs" />
     <Compile Include="Beatmaps\VitaruBeatmapConverter.cs" />
     <Compile Include="Beatmaps\VitaruBeatmapProcessor.cs" />

@@ -5,15 +5,12 @@ using osu.Framework.Input;
 using System.Collections.Generic;
 using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
 using OpenTK.Graphics;
-using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Vitaru.Scoring;
 using osu.Game.Rulesets.Vitaru.UI;
-using osu.Game.Rulesets.Vitaru.Beatmaps;
 using System;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.IO.Stores;
 using osu.Framework.Graphics.Textures;
-using osu.Game.Graphics.Containers;
 using osu.Framework.Configuration;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics.Containers;
@@ -36,7 +33,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         public float CharacterHealth { get; set; } = 100;
         public float CharacterEnergy { get; set; } = 0;
-        public int Team { get; set; } = 0; // 0 = Player, 1 = Ememies + Boss(s) in Singleplayer
+        public int Team { get; set; } = 0;
         public int ProjectileDamage { get; set; }
         public bool Kiai { get; set; }
 
@@ -197,17 +194,15 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                             }
                         }
                     }
-                    /*
-                    if (draw is Laser)
+                    if (draw is DrawableLaser)
                     {
-                        Laser laser = draw as Laser;
-                        if (laser.Team != Team)
-                        {
+                        DrawableLaser drawableLaser = draw as DrawableLaser;
+                        if (drawableLaser.Team != Team)
+                        {/*
                             circleDistance.x = abs(circle.x - rect.x);
                             circleDistance.y = abs(circle.y - rect.y);
-                        }
+                        */}
                     }
-                    */
                 }
             }
         }
@@ -264,7 +259,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 VitaruTextures.AddStore(new RawTextureLoaderStore(new OnlineStore()));
             }
 
-            //Drawable stuff loading for each individual Character
+            //Drawable stuff loading
             Anchor = Anchor.TopLeft;
             Origin = Anchor.Centre;
             Children = new Drawable[]
