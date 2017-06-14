@@ -46,7 +46,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
 
         private float scalingFactor;
 
-        private Vector2 startPosition;
+        private Vector2 startPosition = new Vector2(0);
         private Vector2 endPosition;
 
         internal VitaruHitObjectDifficulty(VitaruHitObject baseHitObject)

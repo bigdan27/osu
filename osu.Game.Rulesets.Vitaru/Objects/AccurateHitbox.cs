@@ -17,7 +17,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
         public float AccurateHitboxTestWidth { get; set; } = 8f;
         public Sprite HitboxSprite;
 
-        private Container accurateHitboxContainer;
+        //private Container accurateHitboxContainer;
         
         public AccurateHitbox()
         {

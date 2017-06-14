@@ -60,7 +60,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 },
             });
             VitaruPlayer vitaruPlayer;
-            VitaruPlayfield.vitaruPlayfield.Add(vitaruPlayer = new VitaruPlayer
+            vitaruPlayfield.Add(vitaruPlayer = new VitaruPlayer
             {
                 Alpha = 1,
                 AlwaysPresent = true,
