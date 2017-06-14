@@ -36,7 +36,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                     Alpha = 1,
                     BorderColour = LaserColor,
                     BorderThickness = LaserWidth / 4,
-                    EdgeEffect = new EdgeEffect
+                    EdgeEffect = new EdgeEffectParameters
                     {
                         Type = EdgeEffectType.Shadow,
                         Colour = LaserColor,

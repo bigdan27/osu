@@ -102,7 +102,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         Depth = 6,
                         AlwaysPresent = true,
                         Masking = true,
-                        EdgeEffect = new EdgeEffect
+                        EdgeEffect = new EdgeEffectParameters
                         {
                             Type = EdgeEffectType.Shadow,
                             Colour = (BulletColor).Opacity(0.5f),

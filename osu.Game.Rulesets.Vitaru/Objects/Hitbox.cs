@@ -54,7 +54,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
                         Scale = new Vector2(HitboxWidth * 2),
                         Depth = 2,
                         Masking = true,
-                        EdgeEffect = new EdgeEffect
+                        EdgeEffect = new EdgeEffectParameters
                         {
                             Type = EdgeEffectType.Shadow,
                             Colour = (HitboxColor).Opacity(0.3f),
