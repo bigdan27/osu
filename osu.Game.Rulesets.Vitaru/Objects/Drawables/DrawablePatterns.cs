@@ -17,6 +17,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public virtual int PatternID { get; set; }
 
         protected Pattern Pattern;
+        private bool visable = false;
 
         public DrawablePattern(Pattern pattern) : base(pattern)
         {
@@ -30,30 +31,33 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
             if (Pattern.PatternAngleRadian == -10)
                 Pattern.PatternAngleRadian = MathHelper.DegreesToRadians(Pattern.PatternAngleDegree - 90);
-            /*
+
+            Alpha = 0;
+        }
+
+        protected void PatternStart()
+        {
             Children = new Drawable[]
-            {
+{
                 new Container
                 {
-                    Scale = new Vector2(0.1f),
                     Masking = true,
                     AutoSizeAxes = Axes.Both,
                     Origin = Anchor.Centre,
                     Anchor = Anchor.Centre,
                     BorderThickness = 3,
                     Depth = 5,
-                    AlwaysPresent = true,
                     BorderColour = Pattern.PatternColor,
-                    Alpha = 0f,
-                    CornerRadius = Pattern.PatternBulletWidth,
+                    Alpha = 1f,
+                    CornerRadius = 16,
                     Children = new[]
                     {
                         new Box
                         {
                             Colour = Color4.White,
                             Alpha = 1,
-                            Width = Pattern.PatternBulletWidth * 2,
-                            Height = Pattern.PatternBulletWidth * 2,
+                            Width = 16 * 2,
+                            Height = 16 * 2,
                             Depth = 5,
                         },
                     },
@@ -63,25 +67,27 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                         Origin = Anchor.Centre,
                         Anchor = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
-                        Scale = new Vector2(Pattern.PatternBulletWidth * 2),
+                        Scale = new Vector2(16 * 2),
                         Depth = 6,
-                        AlwaysPresent = true,
                         Masking = true,
                         EdgeEffect = new EdgeEffectParameters
                         {
                             Type = EdgeEffectType.Shadow,
                             Colour = (Pattern.PatternColor).Opacity(0.5f),
-                            Radius = 1.25f,
+                            Radius = 2f,
                         }
                 }
-            };*/
+            };
+
+            visable = true;
+            Position = new Vector2(Pattern.PatternPosition.X, Pattern.PatternPosition.Y - 200);
+            MoveTo(Pattern.PatternPosition, TIME_PREEMPT);
+            FadeInFromZero(TIME_FADEIN);
         }
 
-        protected void PatternStart()
+        protected void PatternPop()
         {
-            Position = new Vector2(Pattern.PatternPosition.Y, Pattern.PatternPosition.Y + 200);
-            MoveTo(Pattern.PatternPosition, 500);
-            FadeInFromZero(250);
+            ScaleTo(0.1f, TIME_PREEMPT / 8);
         }
 
         protected override void Update()
@@ -90,9 +96,14 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
             //if (HitObject.StartTime + Pattern.PatternDuration <= Time.Current)
             //Dispose();
-            if (HitObject.StartTime - 500 <= Time.Current && Alpha <= 0)
+            if (HitObject.StartTime - TIME_PREEMPT <= Time.Current && !visable)
             {
                 PatternStart();
+            }
+
+            if (HitObject.StartTime - (TIME_PREEMPT / 8) <= Time.Current)
+            {
+                PatternPop();
             }
 
             if (HitObject.StartTime <= Time.Current)
@@ -118,12 +129,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 Depth = 5,
                 BulletColor = Pattern.PatternColor,
                 BulletAngleRadian = angle,
-                BulletSpeed = speed,
+                BulletSpeed = speed,// + PatternSpeed,
                 BulletWidth = Pattern.PatternBulletWidth,
                 BulletDamage = Pattern.PatternDamage,
                 DynamicBulletVelocity = Pattern.DynamicPatternVelocity,
             });
-            drawableBullet.MoveTo(ToSpaceOfOtherDrawable(Pattern.PatternPosition, drawableBullet));
+            drawableBullet.MoveTo(Pattern.PatternPosition);
         }
 
         protected virtual void CreatePattern() { }

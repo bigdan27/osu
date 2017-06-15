@@ -21,6 +21,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public bool DynamicBulletVelocity { get; set; } = false;
         public bool Piercing { get; set; } = false;
         public int Team { get; set; }
+        public string Result { get; set; }
 
         //Used like a multiple
         public static float BulletSpeedModifier = 1;
@@ -36,6 +37,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         protected override void CheckJudgement(bool userTriggered)
         {
             base.CheckJudgement(userTriggered);
+
+            if (Result == "Miss")
+            {
+                Judgement.Result = HitResult.Miss;
+                Judgement.Score = VitaruScoreResult.Miss;
+            }
         }
 
         protected override void UpdateState(ArmedState state)
@@ -77,9 +84,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     Anchor = Anchor.Centre,
                     BorderThickness = 3,
                     Depth = 5,
-                    AlwaysPresent = true,
                     BorderColour = BulletColor,
-                    Alpha = 0f,
                     CornerRadius = BulletWidth,
                     Children = new[]
                     {
@@ -100,7 +105,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         RelativeSizeAxes = Axes.Both,
                         Scale = new Vector2(BulletWidth * 2),
                         Depth = 6,
-                        AlwaysPresent = true,
                         Masking = true,
                         EdgeEffect = new EdgeEffectParameters
                         {
@@ -110,8 +114,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         }
                 }
             };
-            bulletRing.FadeIn(100, EasingTypes.OutCubic);
-            bulletRing.ScaleTo(new Vector2(1), 100, EasingTypes.OutCubic);
+            bulletRing.FadeInFromZero(TIME_PREEMPT / 8, EasingTypes.OutCubic);
+            bulletRing.ScaleTo(new Vector2(1), TIME_PREEMPT / 8, EasingTypes.OutCubic);
         }
 
         public Vector2 GetBulletVelocity()

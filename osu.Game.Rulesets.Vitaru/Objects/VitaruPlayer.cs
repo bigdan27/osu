@@ -190,7 +190,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                             if (distance < minDist)
                             {
                                 TakeDamage(DrawableBullet.BulletDamage);
-                                DrawableBullet.DeleteBullet();
+                                DrawableBullet.Result = "Miss";
                             }
                         }
                     }
@@ -207,16 +207,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             }
         }
 
-        /// <summary>
-        /// The <see cref="Character"/> gets damaged, with a multiplier of <see cref="DamageMultiplier"/>
-        /// </summary>
-        /// <param name="damage">Damage without the Resistance applied</param>
-        /// <returns>If the Character died</returns>
         public bool TakeDamage(float damage)
         {
             PlayerHealth -= damage;
             if (PlayerHealth <= 0)
             {
+                PlayerHealth = 0;
                 Death();
                 return true;
             }
