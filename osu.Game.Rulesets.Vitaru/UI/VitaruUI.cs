@@ -18,6 +18,9 @@ namespace osu.Game.Rulesets.Vitaru.UI
 {
     public class VitaruUI : Container
     {
+        private bool debugInfo = true;
+
+        //User stuff
         private SpriteText energy;
         private Container energyBar;
         private Container friendlyBar;
@@ -31,6 +34,9 @@ namespace osu.Game.Rulesets.Vitaru.UI
         private Box healthBarBox;
         private Box friendlyBarBox;
         private Box opponentBarBox;
+
+        //Debug section
+        private SpriteText frameTime;
 
         public VitaruUI()
         {
@@ -172,7 +178,21 @@ namespace osu.Game.Rulesets.Vitaru.UI
                         },
                     },
                 },
+                frameTime = new SpriteText
+                {
+                    Anchor = Anchor.CentreRight,
+                    Origin = Anchor.CentreLeft,
+                    Position = new Vector2(10 , 30),
+                    TextSize = 30,
+                    Colour = Color4.Purple,
+                    Text = "Frametime Value Here",
+                },
             };
+
+            if(debugInfo)
+            {
+                frameTime.Alpha = 1;
+            }
         }
 
         protected override void Update()
@@ -197,6 +217,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
             healthBarBox.ResizeTo(new Vector2(10, VitaruPlayer.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
             energy.Text = (VitaruPlayer.PlayerEnergy).ToString() + "% Charge";
             health.Text = (Math.Floor(VitaruPlayer.PlayerHealth)).ToString() + "% Health";
+            frameTime.Text = (Math.Floor((float)Clock.ElapsedFrameTime)).ToString() + " ms Delay";
         }
     }
 }

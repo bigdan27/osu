@@ -19,7 +19,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
     public class VitaruPlayer : BeatSyncedContainer
     {
-        public static Vector2 PlayerPosition = new Vector2(0);
+        public static Vector2 PlayerPosition = new Vector2(256, 700);
 
         public static float PlayerEnergy = 0;
         public static float PlayerHealth = 100;

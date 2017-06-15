@@ -14,8 +14,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {
     public class DrawablePattern : DrawableVitaruHitObject
     {
-        public virtual int PatternID { get; set; }
-
         protected Pattern Pattern;
         private bool visable = false;
 
@@ -94,8 +92,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         {
             base.Update();
 
-            //if (HitObject.StartTime + Pattern.PatternDuration <= Time.Current)
-            //Dispose();
             if (HitObject.StartTime - TIME_PREEMPT <= Time.Current && !visable)
             {
                 PatternStart();
@@ -108,7 +104,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
             if (HitObject.StartTime <= Time.Current)
             {
-                CreatePatternWave();
+                CreatePattern();
                 PlaySamples();
                 Dispose();
             }
@@ -137,9 +133,30 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             drawableBullet.MoveTo(Pattern.PatternPosition);
         }
 
-        protected virtual void CreatePattern() { }
+        public void CreatePattern()
+        {
+            int patternID = Pattern.PatternID;
+            switch (patternID)
+            {
+                case 1:
+                    PatternWave();
+                    break;
+                case 2:
+                    PatternLine();
+                    break;
+                case 3:
+                    PatternTriangleWave();
+                    break;
+                case 4:
+                    PatternCoolWave();
+                    break;
+            }
+        }
 
-        public void CreatePatternWave()
+        /// <summary>
+        /// These Will be the Base Patterns
+        /// </summary>
+        public void PatternWave()
         {
             int numberBullets = (int)Pattern.PatternDifficulty * 2 + 1;
             float directionModifier = -0.1f * ((numberBullets - 1) / 2);
@@ -149,32 +166,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 directionModifier += 0.1f;
             }
         }
-    }
-
-        /// <summary>
-        /// BASE PATTERNS
-        /// Well, following their structure you will be able to make your own once vitaru is more matured.
-        /// </summary>
-        /*
-        public class Wave : DrawablePattern
-        {
-            public override int PatternID => 0;
-
-            public Wave(Pattern pattern) : base(pattern)
-            {
-            }
-
-            protected override 
-        }*/
-        public class Line : DrawablePattern
-    {
-        public override int PatternID => 1;
-
-        public Line(Pattern pattern) : base(pattern)
-        {
-        }
-
-        protected override void CreatePattern()
+        public void PatternLine()
         {
             for (int i = 1; i <= Pattern.PatternDifficulty + 1; i++)
             {
@@ -182,16 +174,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 Pattern.PatternSpeed += 0.02f;
             }
         }
-    }
-    public class Flower : DrawablePattern
-    {
-        public override int PatternID => 2;
-
-        public Flower(Pattern pattern) : base(pattern)
-        {
-        }
-
-        protected override void CreatePattern()
+        public void PatternFlower()
         {
             double timeSaved = Time.Current;
             int a = 0;
@@ -202,16 +185,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 bulletAddRad(Pattern.PatternSpeed, a);
             }
         }
-    }
-    public class CoolWave : DrawablePattern
-    {
-        public override int PatternID => 3;
-
-        public CoolWave(Pattern pattern) : base(pattern)
-        {
-        }
-
-        protected override void CreatePattern()
+        public void PatternCoolWave()
         {
             float speedModifier = 0.01f + 0.01f * (Pattern.PatternDifficulty);
             float directionModifier = -0.075f - 0.075f * (Pattern.PatternDifficulty);
@@ -225,17 +199,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 directionModifier += 0.075f;
             }
         }
-    }
-
-    public class Spin : DrawablePattern
-    {
-        public override int PatternID => 4;
-        
-        public Spin(Pattern pattern) : base(pattern)
-        {
-        }
-
-        protected override void CreatePattern()
+        public void PatternSpin()
         {
             double numberbullets = 30 * Pattern.PatternDifficulty;
             int numberspins = (int)(Pattern.PatternDifficulty + 2) / 2;
@@ -246,14 +210,14 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
             Pattern.PatternDuration /= numberbullets;
             Pattern.PatternDuration /= Pattern.PatternRepeatTimes;
             int i = 1;
-            while(i <= Pattern.PatternRepeatTimes)
+            while (i <= Pattern.PatternRepeatTimes)
             {
                 int j = 1;
                 while (j <= numberbullets)
                 {
                     Scheduler.AddDelayed(() =>
                     {
-                        for(int k = 1; k <= numberspins; k++)
+                        for (int k = 1; k <= numberspins; k++)
                             bulletAddRad(Pattern.PatternSpeed, Pattern.PatternAngleRadian + (spinModifier * (k - 1)));
                         Pattern.PatternAngleRadian -= directionModifier;
                     }, Pattern.PatternDuration * (j - 1) + (originalDuration * (i - 1)));
@@ -262,16 +226,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 i++;
             }
         }
-    }
-    public class Trianglewave : DrawablePattern
-    {
-        public override int PatternID => 5;
-
-        public Trianglewave(Pattern pattern) : base(pattern)
-        {
-        }
-
-        protected override void CreatePattern()
+        public void PatternTriangleWave()
         {
             bool reversed = true;
             int numberwaves = (int)(Pattern.PatternDifficulty + 2) / 2;
@@ -289,10 +244,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 for (int j = 1; j <= numberbullets; j++)
                 {
                     float directionModifier = ((j - 1) * 0.1f);
-                        bulletAddRad(
-                            Pattern.PatternSpeed + speedModifier,
-                            Pattern.PatternAngleRadian + (originalDirection - directionModifier)
-                        );
+                    bulletAddRad(
+                        Pattern.PatternSpeed + speedModifier,
+                        Pattern.PatternAngleRadian + (originalDirection - directionModifier)
+                    );
                 }
                 originalDirection = 0.05f * i;
             }
