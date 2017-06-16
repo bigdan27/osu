@@ -44,9 +44,10 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
         {
             base.PopulateScore(score);
 
-            score.Statistics[@"30"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Kill30);
-            score.Statistics[@"20"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Kill20);
-            score.Statistics[@"10"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Kill10);
+            score.Statistics[@"300"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze300);
+            score.Statistics[@"100"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze100);
+            score.Statistics[@"50"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze50);
+            score.Statistics[@"10"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze10);
             score.Statistics[@"x"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Miss);
         }
 

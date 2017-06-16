@@ -190,7 +190,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                             if (distance < minDist)
                             {
                                 TakeDamage(DrawableBullet.BulletDamage);
-                                DrawableBullet.Result = "Miss";
+                                DrawableBullet.Miss();
                             }
                         }
                     }

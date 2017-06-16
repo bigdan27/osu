@@ -5,7 +5,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 
-namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
+namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
     public class DrawableLaser : DrawableVitaruHitObject
     {

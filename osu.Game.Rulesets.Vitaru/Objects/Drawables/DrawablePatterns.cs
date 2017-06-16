@@ -2,25 +2,63 @@
 using OpenTK;
 using OpenTK.Graphics;
 using osu.Framework.Graphics;
-using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 using System;
 using osu.Game.Rulesets.Vitaru.UI;
-using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
 using osu.Game.Rulesets.Vitaru.Beatmaps;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Extensions.Color4Extensions;
+using osu.Game.Rulesets.Objects.Drawables;
 
-namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
+namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
     public class DrawablePattern : DrawableVitaruHitObject
     {
         protected Pattern Pattern;
         private bool visable = false;
+        private bool patternCreated = false;
+
+        public int BulletCount = 0;
+
+        public bool Miss = false;
+        public bool Hit = false;
+        public bool Ten = false;
+        public int Score = 0;
 
         public DrawablePattern(Pattern pattern) : base(pattern)
         {
             AlwaysPresent = true;
             Pattern = pattern;
+        }
+
+        protected override void CheckJudgement(bool userTriggered)
+        {
+            base.CheckJudgement(userTriggered);
+            if (Miss)
+            {
+                Judgement.Result = HitResult.Miss;
+                Judgement.Score = VitaruScoreResult.Miss;
+                BulletCount = 0;
+            }
+            if (Hit)
+            {
+                Judgement.Result = HitResult.Hit;
+                switch (Score)
+                {
+                    case 10:
+                        Judgement.Score = VitaruScoreResult.Graze10;
+                        break;
+                    case 50:
+                        Judgement.Score = VitaruScoreResult.Graze50;
+                        break;
+                    case 100:
+                        Judgement.Score = VitaruScoreResult.Graze100;
+                        break;
+                    case 300:
+                        Judgement.Score = VitaruScoreResult.Graze300;
+                        break;
+                }
+                BulletCount = 0;
+            }
         }
 
         protected override void LoadComplete()
@@ -102,24 +140,25 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                 PatternPop();
             }
 
-            if (HitObject.StartTime <= Time.Current)
+            if (HitObject.StartTime <= Time.Current && !patternCreated)
             {
                 CreatePattern();
                 PlaySamples();
-                Dispose();
+                Alpha = 0;
+            }
+            if (patternCreated)
+            {
+                if (BulletCount == 0)
+                    Dispose();
             }
         }
 
         protected void bulletAddRad(float speed, float angle)
         {
-            Bullet bullet = new Bullet
-            {
-                Team = Pattern.PatternTeam,
-                StartTime = Pattern.StartTime,
-            };
+            BulletCount++;
 
             DrawableBullet drawableBullet;
-            VitaruPlayfield.vitaruPlayfield.Add(drawableBullet = new DrawableBullet(bullet)
+            VitaruPlayfield.vitaruPlayfield.Add(drawableBullet = new DrawableBullet(this)
             {
                 Origin = Anchor.Centre,
                 Depth = 5,
@@ -135,6 +174,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 
         public void CreatePattern()
         {
+            patternCreated = true;
             int patternID = Pattern.PatternID;
             switch (patternID)
             {
@@ -149,6 +189,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
                     break;
                 case 4:
                     PatternCoolWave();
+                    break;
+                case 5:
+                    PatternSpin();
                     break;
             }
         }

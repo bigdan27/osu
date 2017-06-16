@@ -7,10 +7,14 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 using osu.Game.Rulesets.Objects.Drawables;
+using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
+using osu.Game.Graphics.Containers;
+using osu.Framework.Audio.Track;
+using osu.Game.Beatmaps.ControlPoints;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
-    public class DrawableBullet : DrawableVitaruHitObject
+    public class DrawableBullet : BeatSyncedContainer
     { 
         //Different stats for Bullet that can be changed
         public float BulletDamage { get; set; } = 10;
@@ -33,41 +37,20 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private Container bulletRing;
         private CircularContainer bulletCircle;
+        private readonly DrawablePattern pattern;
 
-        protected override void CheckJudgement(bool userTriggered)
+        public DrawableBullet(DrawablePattern drawablePattern)
         {
-            base.CheckJudgement(userTriggered);
-
-            if (Result == "Miss")
-            {
-                Judgement.Result = HitResult.Miss;
-                Judgement.Score = VitaruScoreResult.Miss;
-            }
+            pattern = drawablePattern;
         }
 
-        protected override void UpdateState(ArmedState state)
+        protected override void OnNewBeat(int beatIndex, TimingControlPoint timingPoint, EffectControlPoint effectPoint, TrackAmplitudes amplitudes)
         {
-            base.UpdateState(state);
+            base.OnNewBeat(beatIndex, timingPoint, effectPoint, amplitudes);
 
-            switch (State)
-            {
-                case ArmedState.Idle:
-                    Expire(true);
-                    break;
-                case ArmedState.Hit:
-                    Expire();
-                    DeleteBullet();
-                    break;
-                case ArmedState.Miss:
-                    Expire();
-                    DeleteBullet();
-                    break;
-            }
-        }
-
-        public DrawableBullet(VitaruHitObject hitObject) : base(hitObject)
-        {
-
+            bulletCircle.Alpha = 0.75f;
+            using (BeginDelayedSequence(100))
+                bulletCircle.FadeTo(0.25f, Math.Max(0, timingPoint.BeatLength - 100), EasingTypes.OutSine);
         }
 
         protected override void LoadComplete()
@@ -105,17 +88,18 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         RelativeSizeAxes = Axes.Both,
                         Scale = new Vector2(BulletWidth * 2),
                         Depth = 6,
+                        Alpha = 0.25f,
                         Masking = true,
                         EdgeEffect = new EdgeEffectParameters
                         {
                             Type = EdgeEffectType.Shadow,
-                            Colour = (BulletColor).Opacity(0.5f),
-                            Radius = 1.25f,
+                            Colour = BulletColor,
+                            Radius = 2f,
                         }
                 }
             };
-            bulletRing.FadeInFromZero(TIME_PREEMPT / 8, EasingTypes.OutCubic);
-            bulletRing.ScaleTo(new Vector2(1), TIME_PREEMPT / 8, EasingTypes.OutCubic);
+            bulletRing.FadeInFromZero(pattern.TIME_PREEMPT / 8, EasingTypes.OutCubic);
+            bulletRing.ScaleTo(new Vector2(1), pattern.TIME_PREEMPT / 8, EasingTypes.OutCubic);
         }
 
         public Vector2 GetBulletVelocity()
@@ -132,18 +116,21 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             if (DynamicBulletVelocity)
                 GetBulletVelocity();
 
-            if (Alpha <= 0.05f)
+            if (Alpha <= 0)
                 DeleteBullet();
 
-            if (Position.Y < BulletBounds.Y | Position.X < BulletBounds.X | Position.Y > BulletBounds.W | Position.X > BulletBounds.Z)   
-                fadeOut();
+            if (Position.Y < BulletBounds.Y | Position.X < BulletBounds.X | Position.Y > BulletBounds.W | Position.X > BulletBounds.Z && Alpha >= 1)
+            {
+                FadeOutFromOne(200);
+                Hit();
+            }
             MoveBullet();
         }
 
-        private void fadeOut()
+        public void Hit()
         {
-            if(Alpha == 1)
-                FadeOutFromOne(200);
+            pattern.Hit = true;
+            pattern.Score = 10;
         }
 
         public void MoveBullet()
@@ -153,7 +140,14 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         internal void DeleteBullet()
         {
+            pattern.BulletCount--;
             Dispose();
+        }
+
+        public void Miss()
+        {
+            pattern.Miss = true;
+            DeleteBullet();
         }
     }
 }

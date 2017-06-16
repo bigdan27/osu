@@ -18,7 +18,7 @@ namespace osu.Game.Rulesets.Vitaru.Judgements
         /// </summary>
         public VitaruScoreResult Score;
 
-        public VitaruScoreResult MaxScore = VitaruScoreResult.Kill1500;
+        public VitaruScoreResult MaxScore = VitaruScoreResult.Graze300;
 
         public override string ResultString => Score.GetDescription();
 
@@ -34,16 +34,14 @@ namespace osu.Game.Rulesets.Vitaru.Judgements
             {
                 default:
                     return 0;
-                case VitaruScoreResult.Graze2:
-                    return 2;
-                case VitaruScoreResult.Kill10:
+                case VitaruScoreResult.Graze10:
                     return 10;
-                case VitaruScoreResult.Kill20:
-                    return 20;
-                case VitaruScoreResult.Kill30:
-                    return 30;
-                case VitaruScoreResult.Kill1500:
-                    return 1500;
+                case VitaruScoreResult.Graze50:
+                    return 50;
+                case VitaruScoreResult.Graze100:
+                    return 100;
+                case VitaruScoreResult.Graze300:
+                    return 300;
                 case VitaruScoreResult.Miss:
                     return 0;
             }
