@@ -89,8 +89,9 @@ namespace osu.Game.Rulesets.Vitaru.UI
         {
             DrawableVitaruJudgement explosion = new DrawableVitaruJudgement(judgedObject.Judgement)
             {
+                Alpha = 0.5f,
                 Origin = Anchor.Centre,
-                Position = judgedObject.HitObject.Position
+                Position = new Vector2(VitaruPlayer.PlayerPosition.X , VitaruPlayer.PlayerPosition.Y + 50)
             };
 
             judgementLayer.Add(explosion);

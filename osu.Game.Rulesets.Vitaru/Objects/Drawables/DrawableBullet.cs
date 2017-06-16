@@ -116,7 +116,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             if (DynamicBulletVelocity)
                 GetBulletVelocity();
 
-            if (Alpha <= 0)
+            if (Alpha <= 0.05f)
                 DeleteBullet();
 
             if (Position.Y < BulletBounds.Y | Position.X < BulletBounds.X | Position.Y > BulletBounds.W | Position.X > BulletBounds.Z && Alpha >= 1)
@@ -125,12 +125,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 Hit();
             }
             MoveBullet();
-        }
-
-        public void Hit()
-        {
-            pattern.Hit = true;
-            pattern.Score = 10;
         }
 
         public void MoveBullet()
@@ -148,6 +142,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         {
             pattern.Miss = true;
             DeleteBullet();
+        }
+        public void Hit()
+        {
+            pattern.Hit = true;
+            pattern.Score = 10;
         }
     }
 }
