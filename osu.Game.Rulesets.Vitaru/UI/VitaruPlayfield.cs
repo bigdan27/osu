@@ -66,7 +66,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 Alpha = 1,
                 AlwaysPresent = true,
             });
-            VitaruPlayer.PlayerPosition = new Vector2(256, 700);
+            VitaruPlayer.PlayerPosition = new Vector2(256, 820);
         }
 
         protected override void LoadComplete()

@@ -116,8 +116,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             };
 
             visable = true;
-            Position = new Vector2(Pattern.PatternPosition.X, Pattern.PatternPosition.Y - 200);
-            MoveTo(Pattern.PatternPosition, TIME_PREEMPT);
+            Position = new Vector2(Pattern.PatternPosition.X, -200);
+            MoveTo(new Vector2(Pattern.PatternPosition.X , 800), TIME_PREEMPT);
             FadeInFromZero(TIME_FADEIN);
         }
 
@@ -137,7 +137,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             if (HitObject.StartTime - (TIME_PREEMPT / 8) <= Time.Current)
             {
-                PatternPop();
+                //PatternPop();
             }
 
             if (HitObject.StartTime <= Time.Current && !patternCreated)
@@ -169,7 +169,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 BulletDamage = Pattern.PatternDamage,
                 DynamicBulletVelocity = Pattern.DynamicPatternVelocity,
             });
-            drawableBullet.MoveTo(Pattern.PatternPosition);
+            drawableBullet.MoveTo(Position);
         }
 
         public void CreatePattern()
@@ -193,7 +193,15 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 case 5:
                     PatternSpin();
                     break;
+                case 420:
+                    PatternFruit();
+                    break;
             }
+        }
+
+        public void PatternFruit()
+        {
+            bulletAddRad(Pattern.PatternSpeed, Pattern.PatternAngleRadian);
         }
 
         /// <summary>

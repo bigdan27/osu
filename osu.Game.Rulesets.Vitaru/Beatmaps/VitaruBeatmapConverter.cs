@@ -28,7 +28,7 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
             bool isLine = samples.Any(s => s.Name == SampleInfo.HIT_WHISTLE);
             bool isTriangleWave = samples.Any(s => s.Name == SampleInfo.HIT_FINISH);
             bool isCoolWave = samples.Any(s => s.Name == SampleInfo.HIT_CLAP);
-
+            /*
             if (isLine)
             {
                 yield return new Pattern
@@ -70,18 +70,18 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
                     PatternBulletWidth = 8f,
                     PatternTeam = 1,
                 };
-            }
-            else
+            }*/
+            if(true)
             {
                 yield return new Pattern
                 {
                     StartTime = original.StartTime,
                     PatternPosition = positionData?.Position ?? Vector2.Zero,
                     Samples = original.Samples,
-                    PatternID = 1,
+                    PatternID = 420,
                     PatternAngleDegree = 180,
                     PatternSpeed = 0.25f,
-                    PatternBulletWidth = 8f,
+                    PatternBulletWidth = 16f,
                     PatternTeam = 1,
                 };
             }

@@ -97,32 +97,6 @@ namespace osu.Game.Rulesets.Vitaru
         };
 
         //public override FontAwesome Icon => VitaruFontAwesome.fa_osu_vitaru_o;
-
-        public static ResourceStore<byte[]> VitaruResources;
-        public static TextureStore VitaruTextures;
-        public static FontStore VitaruFont;
-        public static AudioManager VitaruAudio;
-        public static bool AssetsLoaded = false;
-
-        [BackgroundDependencyLoader]
-        private void load(FrameworkConfigManager config, TextureStore textures)
-        {
-            if (!AssetsLoaded)
-            {
-                AssetsLoaded = true;
-                VitaruResources = new ResourceStore<byte[]>();
-                VitaruResources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore("osu.Game.Rulesets.Vitaru.dll"), ("Assets")));
-                VitaruResources.AddStore(new DllResourceStore("osu.Game.Rulesets.Vitaru.dll"));
-
-                VitaruTextures = new TextureStore(new RawTextureLoaderStore(new NamespacedResourceStore<byte[]>(VitaruResources, @"Textures")));
-                VitaruTextures.AddStore(new RawTextureLoaderStore(new OnlineStore()));
-
-                VitaruFont = new FontStore(new GlyphStore(VitaruResources, @"Font/vitaruFont"))
-                {
-                    ScaleAdjust = 100
-                };
-            }
-        }
     }
 
     public enum VitaruFontAwesome

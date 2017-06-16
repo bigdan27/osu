@@ -20,7 +20,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
 {
     public class VitaruPlayer : BeatSyncedContainer
     {
-        public static Vector2 PlayerPosition = new Vector2(256, 700);
+        public static Vector2 PlayerPosition = new Vector2(256, 820);
 
         public static float PlayerEnergy = 0;
         public static float PlayerHealth = 100;
@@ -114,12 +114,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects
 
             if (keys[Key.LShift] | keys[Key.RShift])
             {
-                xTranslationDistance /= 2;
-                yTranslationDistance /= 2;
+                xTranslationDistance *= 2;
+                yTranslationDistance *= 2;
             }
             if (keys[Key.Up])
             {
-                PlayerPosition.Y -= yTranslationDistance;
+                //PlayerPosition.Y -= yTranslationDistance;
             }
             if (keys[Key.Left])
             {
@@ -127,7 +127,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
             }
             if (keys[Key.Down])
             {
-                PlayerPosition.Y += yTranslationDistance;
+                //PlayerPosition.Y += yTranslationDistance;
             }
             if (keys[Key.Right])
             {
@@ -183,7 +183,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
 
                             if (distance < minDist)
                             {
-                                TakeDamage(DrawableBullet.BulletDamage);
+                                //TakeDamage(DrawableBullet.BulletDamage);
                                 DrawableBullet.Miss();
                             }
                         }
@@ -200,10 +200,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects
                 }
             }
         }
-
+        /*
         public bool TakeDamage(float damage)
         {
-            PlayerHealth -= damage;
+            PlayerHealth += damage;
             if (PlayerHealth <= 0)
             {
                 PlayerHealth = 0;
@@ -211,7 +211,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
                 return true;
             }
             return false;
-        }
+        }*/
 
         public void Death()
         {
@@ -220,8 +220,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects
 
         protected override bool OnKeyDown(InputState state, KeyDownEventArgs args)
         {
-            if (args.Key == Key.X)
-                spell();
+            //if (args.Key == Key.X)
+                //spell();
             keys[args.Key] = true;
             if (args.Key == Key.LShift || args.Key == Key.RShift)
                 Hitbox.Alpha = 1;
@@ -234,12 +234,33 @@ namespace osu.Game.Rulesets.Vitaru.Objects
                 Hitbox.Alpha = 0;
             return base.OnKeyUp(state, args);
         }
+        public static ResourceStore<byte[]> VitaruResources;
+        public static TextureStore VitaruTextures;
+        public static FontStore VitaruFont;
+        public static AudioManager VitaruAudio;
+        public static bool AssetsLoaded = false;
 
         [BackgroundDependencyLoader]
         private void load(FrameworkConfigManager config, TextureStore textures)
         {
-            //Drawable stuff loading
-            Anchor = Anchor.TopLeft;
+            if (!AssetsLoaded)
+            {
+                AssetsLoaded = true;
+                VitaruResources = new ResourceStore<byte[]>();
+                VitaruResources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore("osu.Game.Rulesets.Vitaru.dll"), ("Assets")));
+                VitaruResources.AddStore(new DllResourceStore("osu.Game.Rulesets.Vitaru.dll"));
+
+                VitaruTextures = new TextureStore(new RawTextureLoaderStore(new NamespacedResourceStore<byte[]>(VitaruResources, @"Textures")));
+                VitaruTextures.AddStore(new RawTextureLoaderStore(new OnlineStore()));
+
+                VitaruFont = new FontStore(new GlyphStore(VitaruResources, @"Font/vitaruFont"))
+                {
+                    ScaleAdjust = 100
+                };
+            }
+
+        //Drawable stuff loading
+        Anchor = Anchor.TopLeft;
             Origin = Anchor.Centre;
             Children = new Drawable[]
             {
@@ -258,7 +279,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
                 Hitbox = new Hitbox()
                 {
                     Alpha = 0,
-                    HitboxWidth = 4,
+                    HitboxWidth = 16,
                     HitboxColor = Color4.Red,
                 },
                 PlayerSign = new Sprite()
@@ -269,11 +290,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects
                     Colour = Color4.Red,
                 },
             };
-            try { PlayerSprite.Texture = VitaruRuleset.VitaruTextures.Get("player"); }
+            try { PlayerSprite.Texture = VitaruTextures.Get("player"); }
             catch { }
-            try { PlayerKiaiSprite.Texture = VitaruRuleset.VitaruTextures.Get("playerKiai"); }
+            try { PlayerKiaiSprite.Texture = VitaruTextures.Get("playerKiai"); }
             catch { }
-            try { PlayerSign.Texture = VitaruRuleset.VitaruTextures.Get("playerSign"); }
+            try { PlayerSign.Texture = VitaruTextures.Get("playerSign"); }
             catch { }
         }
     }

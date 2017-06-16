@@ -60,7 +60,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             {
                 bulletRing = new Container
                 {
-                    Scale = new Vector2(0.1f),
+                    //Scale = new Vector2(0.1f),
                     Masking = true,
                     AutoSizeAxes = Axes.Both,
                     Origin = Anchor.Centre,
@@ -98,8 +98,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         }
                 }
             };
-            bulletRing.FadeInFromZero(pattern.TIME_PREEMPT / 8, EasingTypes.OutCubic);
-            bulletRing.ScaleTo(new Vector2(1), pattern.TIME_PREEMPT / 8, EasingTypes.OutCubic);
+            //bulletRing.FadeInFromZero(pattern.TIME_PREEMPT / 8, EasingTypes.OutCubic);
+            //bulletRing.ScaleTo(new Vector2(1), pattern.TIME_PREEMPT / 8, EasingTypes.OutCubic);
         }
 
         public Vector2 GetBulletVelocity()
@@ -138,15 +138,16 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             Dispose();
         }
 
-        public void Miss()
+        public void Hit()
         {
             pattern.Miss = true;
             DeleteBullet();
         }
-        public void Hit()
+        public void Miss()
         {
             pattern.Hit = true;
-            pattern.Score = 10;
+            pattern.Score = 300;
+            DeleteBullet();
         }
     }
 }
