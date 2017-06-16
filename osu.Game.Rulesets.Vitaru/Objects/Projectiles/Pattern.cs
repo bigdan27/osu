@@ -3,7 +3,7 @@ using osu.Game.Rulesets.Vitaru.Objects;
 using OpenTK;
 using OpenTK.Graphics;
 
-namespace osu.Game.Rulesets.Vitaru.Beatmaps
+namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {
     public class Pattern : VitaruHitObject
     {

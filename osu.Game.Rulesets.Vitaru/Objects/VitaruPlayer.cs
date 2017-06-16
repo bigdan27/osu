@@ -14,8 +14,9 @@ using osu.Framework.Configuration;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Game.Graphics.Containers;
+using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 
-namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
+namespace osu.Game.Rulesets.Vitaru.Objects
 {
     public class VitaruPlayer : BeatSyncedContainer
     {
@@ -35,8 +36,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public int ProjectileDamage { get; set; }
         public bool Kiai { get; set; }
 
-        public static bool AssetsLoaded = false;
-
         public DrawableBullet DrawableBullet;
 
         private Dictionary<Key, bool> keys = new Dictionary<Key, bool>();
@@ -45,11 +44,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private int healEnergy = 10;
         private int maxEnergy = 100;
-
-        public static ResourceStore<byte[]> VitaruResources;
-        public static TextureStore VitaruTextures;
-        public static FontStore VitaruFont;
-        public static AudioManager VitaruAudio;
 
         //(MinX,MaxX,MinY,MaxY)
         private Vector4 playerBounds = new Vector4(0, 512, 0, 820);
@@ -244,22 +238,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         [BackgroundDependencyLoader]
         private void load(FrameworkConfigManager config, TextureStore textures)
         {
-            if (!AssetsLoaded)
-            {
-                AssetsLoaded = true;
-                VitaruResources = new ResourceStore<byte[]>();
-                VitaruResources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore("osu.Game.Rulesets.Vitaru.dll"), ("Assets")));
-                VitaruResources.AddStore(new DllResourceStore("osu.Game.Rulesets.Vitaru.dll"));
-
-                VitaruTextures = new TextureStore(new RawTextureLoaderStore(new NamespacedResourceStore<byte[]>(VitaruResources, @"Textures")));
-                VitaruTextures.AddStore(new RawTextureLoaderStore(new OnlineStore()));
-
-                VitaruFont = new FontStore(new GlyphStore(VitaruResources, @"Font/vitaruFont"))
-                {
-                    ScaleAdjust = 100
-                };
-            }
-
             //Drawable stuff loading
             Anchor = Anchor.TopLeft;
             Origin = Anchor.Centre;
@@ -291,10 +269,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     Colour = Color4.Red,
                 },
             };
-
-            PlayerSprite.Texture = VitaruTextures.Get("player");
-            PlayerKiaiSprite.Texture = VitaruTextures.Get("playerKiai");
-            PlayerSign.Texture = VitaruTextures.Get("playerSign");
+            try { PlayerSprite.Texture = VitaruRuleset.VitaruTextures.Get("player"); }
+            catch { }
+            try { PlayerKiaiSprite.Texture = VitaruRuleset.VitaruTextures.Get("playerKiai"); }
+            catch { }
+            try { PlayerSign.Texture = VitaruRuleset.VitaruTextures.Get("playerSign"); }
+            catch { }
         }
     }
 }

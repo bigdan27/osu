@@ -6,6 +6,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Sprites;
 using osu.Game.Graphics.Backgrounds;
+using osu.Game.Rulesets.Vitaru.Objects;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 using osu.Game.Rulesets.Vitaru.Scoring;
 using System;

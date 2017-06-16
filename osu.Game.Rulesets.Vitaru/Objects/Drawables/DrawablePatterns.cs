@@ -4,10 +4,10 @@ using OpenTK.Graphics;
 using osu.Framework.Graphics;
 using System;
 using osu.Game.Rulesets.Vitaru.UI;
-using osu.Game.Rulesets.Vitaru.Beatmaps;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Game.Rulesets.Objects.Drawables;
+using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
