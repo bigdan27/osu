@@ -2,7 +2,6 @@
 using osu.Game.Rulesets.Vitaru.Judgements;
 using osu.Game.Rulesets.Vitaru.Objects;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
-using osu.Game.Rulesets.Vitaru.Objects.Characters;
 using osu.Game.Rulesets.Vitaru.Beatmaps;
 using osu.Game.Rulesets.Vitaru.UI;
 using osu.Game.Beatmaps;
@@ -11,6 +10,7 @@ using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.Beatmaps;
 using OpenTK;
 using osu.Game.Rulesets.Vitaru.Scoring;
+using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
 
 namespace osu.Game.Rulesets.Vitaru
 {
@@ -31,17 +31,9 @@ namespace osu.Game.Rulesets.Vitaru
 
         protected override DrawableHitObject<VitaruHitObject, VitaruJudgement> GetVisualRepresentation(VitaruHitObject h)
         {
-            var player = h as VitaruPlayer;
-            if (player != null)
-                return new DrawableVitaruPlayer(player);
-            
-            var enemy = h as Enemy;
-            if (enemy != null)
-                return new DrawableVitaruEnemy(enemy);
-
-            var boss = h as Boss;
-            if (boss != null)
-                return new DrawableVitaruBoss(boss);
+            var pattern = h as Pattern;
+            if (pattern != null)
+                return new DrawablePattern(pattern);
             return null;
         }
 

@@ -7,40 +7,30 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
     public class DrawableVitaruHitObject : DrawableHitObject<VitaruHitObject, VitaruJudgement>
     {
-        public const float TIME_PREEMPT = 800;
-        public const float TIME_FADEIN = 600;
-
-        //Does nothing atm
-        public const float TIME_FADEOUT = 800;
+        public float TIME_PREEMPT = 500;
+        public float TIME_FADEIN = 250;
+        public float TIME_FADEOUT = 200;
 
         public DrawableVitaruHitObject(VitaruHitObject hitObject)
             : base(hitObject)
         {
         }
 
-        protected override VitaruJudgement CreateJudgement() => new VitaruJudgement { MaxScore = VitaruScoreResult.Kill1500 };
+        protected override VitaruJudgement CreateJudgement() => new VitaruJudgement { MaxScore = VitaruScoreResult.Graze300 };
 
         protected override void UpdateState(ArmedState state)
         {
-            Flush();
 
-            UpdateInitialState();
-
-            Delay(HitObject.StartTime - Time.Current - TIME_PREEMPT + Judgement.TimeOffset, true);
-
-            UpdatePreemptState();
-
-            Delay(TIME_PREEMPT, true);
         }
 
         protected virtual void UpdatePreemptState()
         {
-            FadeIn(TIME_FADEIN);
+
         }
 
         protected virtual void UpdateInitialState()
         {
-            Alpha = 1;
+
         }
     }
 
@@ -57,18 +47,14 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
     public enum VitaruScoreResult
     {
         [Description(@"Hit")]
-        Hit,
-        [Description(@"2")]
-        Graze2,
+        Miss,
         [Description(@"10")]
-        Kill10,
-        [Description(@"20")]
-        Kill20,
-        [Description(@"30")]
-        Kill30,
-        [Description(@"1500")]
-        Kill1500,
-        [Description(@"")]
-        Miss
+        Graze10,
+        [Description(@"50")]
+        Graze50,
+        [Description(@"100")]
+        Graze100,
+        [Description(@"300")]
+        Graze300,
     }
 }

@@ -6,10 +6,6 @@ using OpenTK;
 using osu.Game.Rulesets.Vitaru.Judgements;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.Objects.Drawables;
-using OpenTK.Graphics;
-using osu.Framework.Extensions.Color4Extensions;
-using osu.Framework.Graphics.Sprites;
-using System.Collections.Generic;
 
 namespace osu.Game.Rulesets.Vitaru.UI
 {
@@ -43,11 +39,11 @@ namespace osu.Game.Rulesets.Vitaru.UI
             {
                 vitaruUI = new VitaruUI
                 {
+                    Depth = 1,
                     Masking = false,
-                    //Magic numbers, srry in advance
                     Position = new Vector2(-10),
                     RelativeSizeAxes = Axes.Both,
-                    //Magic numbers, srry in advance
+                    //magic numbers :P
                     Size = new Vector2(1.48f , 1.46f),
                     Origin = Anchor.TopLeft,
                     Anchor = Anchor.TopLeft,
@@ -55,7 +51,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 vitaruPlayfield = new Container
                 {
                     RelativeSizeAxes = Axes.Both,
-                    Depth = 2,
+                    Depth = -10,
                 },
                 judgementLayer = new Container
                 {
@@ -63,6 +59,14 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Depth = 3,
                 },
             });
+
+            VitaruPlayer vitaruPlayer;
+            vitaruPlayfield.Add(vitaruPlayer = new VitaruPlayer
+            {
+                Alpha = 1,
+                AlwaysPresent = true,
+            });
+            VitaruPlayer.PlayerPosition = new Vector2(256, 700);
         }
 
         protected override void LoadComplete()
@@ -85,8 +89,9 @@ namespace osu.Game.Rulesets.Vitaru.UI
         {
             DrawableVitaruJudgement explosion = new DrawableVitaruJudgement(judgedObject.Judgement)
             {
+                Alpha = 0.5f,
                 Origin = Anchor.Centre,
-                Position = judgedObject.HitObject.Position
+                Position = new Vector2(VitaruPlayer.PlayerPosition.X , VitaruPlayer.PlayerPosition.Y + 50)
             };
 
             judgementLayer.Add(explosion);

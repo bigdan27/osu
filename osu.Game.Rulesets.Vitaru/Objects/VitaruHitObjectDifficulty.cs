@@ -1,7 +1,4 @@
-﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
-
-using OpenTK;
+﻿using OpenTK;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -49,7 +46,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
 
         private float scalingFactor;
 
-        private Vector2 startPosition;
+        private Vector2 startPosition = new Vector2(0);
         private Vector2 endPosition;
 
         internal VitaruHitObjectDifficulty(VitaruHitObject baseHitObject)
@@ -106,7 +103,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
             double timeElapsed = (BaseHitObject.StartTime - previousHitObject.BaseHitObject.StartTime) / timeRate;
             double decay = Math.Pow(DECAY_BASE[(int)type], timeElapsed / 1000);
 
-            if (BaseHitObject.Type == HitObjectType.Enemy)
+            if (BaseHitObject.Type == HitObjectType.Bullet)
             {
                 addition = spacingWeight(DistanceTo(previousHitObject), type) * spacing_weight_scaling[(int)type];
             }

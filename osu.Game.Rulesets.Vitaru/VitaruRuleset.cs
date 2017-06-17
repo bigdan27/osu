@@ -1,9 +1,5 @@
-﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using osu.Game.Rulesets.UI;
-using System;
 using osu.Game.Graphics;
 using osu.Game.Beatmaps;
 using osu.Game.Screens.Play;
@@ -12,6 +8,11 @@ using osu.Game.Rulesets.Vitaru.Mods;
 using OpenTK.Input;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.Vitaru.Scoring;
+using osu.Framework.Allocation;
+using osu.Framework.Configuration;
+using osu.Framework.Graphics.Textures;
+using osu.Framework.IO.Stores;
+using osu.Framework.Audio;
 
 namespace osu.Game.Rulesets.Vitaru
 {
@@ -32,7 +33,14 @@ namespace osu.Game.Rulesets.Vitaru
                     {
                         new VitaruModEasy(),
                         new VitaruModNoFail(),
-                        new VitaruModHalfTime(),
+                        new MultiMod
+                        {
+                            Mods = new Mod[]
+                            {
+                                new VitaruModHalfTime(),
+                                new VitaruModDaycore(),
+                            },
+                        },
                     };
 
                 case ModType.DifficultyIncrease:
@@ -80,7 +88,7 @@ namespace osu.Game.Rulesets.Vitaru
         public override IEnumerable<KeyCounter> CreateGameplayKeys() => new KeyCounter[]
         {
             new KeyCounterKeyboard(Key.LShift),
-            new KeyCounterKeyboard(Key.Z),
+            //new KeyCounterKeyboard(Key.Z),
             new KeyCounterKeyboard(Key.X),
             new KeyCounterKeyboard(Key.Up),
             new KeyCounterKeyboard(Key.Right),
@@ -88,6 +96,37 @@ namespace osu.Game.Rulesets.Vitaru
             new KeyCounterKeyboard(Key.Down),
         };
 
-        public override FontAwesome Icon => FontAwesome.fa_bathtub;
+        //public override FontAwesome Icon => VitaruFontAwesome.fa_osu_vitaru_o;
+
+        public static ResourceStore<byte[]> VitaruResources;
+        public static TextureStore VitaruTextures;
+        public static FontStore VitaruFont;
+        public static AudioManager VitaruAudio;
+        public static bool AssetsLoaded = false;
+
+        [BackgroundDependencyLoader]
+        private void load(FrameworkConfigManager config, TextureStore textures)
+        {
+            if (!AssetsLoaded)
+            {
+                AssetsLoaded = true;
+                VitaruResources = new ResourceStore<byte[]>();
+                VitaruResources.AddStore(new NamespacedResourceStore<byte[]>(new DllResourceStore("osu.Game.Rulesets.Vitaru.dll"), ("Assets")));
+                VitaruResources.AddStore(new DllResourceStore("osu.Game.Rulesets.Vitaru.dll"));
+
+                VitaruTextures = new TextureStore(new RawTextureLoaderStore(new NamespacedResourceStore<byte[]>(VitaruResources, @"Textures")));
+                VitaruTextures.AddStore(new RawTextureLoaderStore(new OnlineStore()));
+
+                VitaruFont = new FontStore(new GlyphStore(VitaruResources, @"Font/vitaruFont"))
+                {
+                    ScaleAdjust = 100
+                };
+            }
+        }
+    }
+
+    public enum VitaruFontAwesome
+    {
+        fa_osu_vitaru_o = 0xe04b,
     }
 }

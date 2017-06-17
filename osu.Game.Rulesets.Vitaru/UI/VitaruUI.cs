@@ -3,8 +3,11 @@ using OpenTK.Graphics;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Sprites;
 using osu.Game.Graphics.Backgrounds;
+using osu.Game.Rulesets.Vitaru.Objects;
+using osu.Game.Rulesets.Vitaru.Objects.Drawables;
 using osu.Game.Rulesets.Vitaru.Scoring;
 using System;
 using System.Collections.Generic;
@@ -16,6 +19,9 @@ namespace osu.Game.Rulesets.Vitaru.UI
 {
     public class VitaruUI : Container
     {
+        private bool debugInfo = true;
+
+        //User stuff
         private SpriteText energy;
         private Container energyBar;
         private Container friendlyBar;
@@ -30,16 +36,31 @@ namespace osu.Game.Rulesets.Vitaru.UI
         private Box friendlyBarBox;
         private Box opponentBarBox;
 
+        //Debug section
+        private SpriteText frameTime;
+        private SpriteText bulletsOnScreen;
+
         public VitaruUI()
         {
         }
 
         protected override void LoadComplete()
         {
+            DrawableBullet.BulletCount = 0;
             base.LoadComplete();
             RelativeSizeAxes = Axes.Both;
             Children = new Drawable[]
             {
+                new Box
+                {
+                    Alpha = 0.25f,
+                    Colour = Color4.Black,
+                    Depth = 10,
+                    Position = new Vector2(10),
+                    Size = new Vector2(512 , 820),
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+                },
                 energy = new SpriteText
                 {
                     Anchor = Anchor.CentreRight,
@@ -60,20 +81,19 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 },
                 energyBar = new Container
                 {
+                    Masking = true,
                     Alpha = 1f,
                     Depth = 1,
                     Anchor = Anchor.CentreRight,
                     Origin = Anchor.CentreRight,
-                    Colour = Color4.SkyBlue.Opacity(0.5f),
+                    Colour = Color4.SkyBlue,
                     Size = new Vector2(10,820),
-                    BorderColour = Color4.SkyBlue,
-                    BorderThickness = 2,
                     Position = new Vector2(0),
                     Children = new Drawable[]
                     {
                         energyBarBox = new Box
                         {
-                            Size = new Vector2(10 , 820),
+                            RelativeSizeAxes = Axes.Both,
                             Colour = Color4.White,
                         },
                         energyTriangles = new Triangles
@@ -85,29 +105,28 @@ namespace osu.Game.Rulesets.Vitaru.UI
                             TriangleScale = 1,
                         }
                     },
-                    EdgeEffect = new EdgeEffect
+                    EdgeEffect = new EdgeEffectParameters
                     {
                         Type = EdgeEffectType.Shadow,
-                        Colour = Color4.SkyBlue,
-                        Radius = 2,
+                        Colour = Color4.SkyBlue.Opacity(0.5f),
+                        Radius = 8,
                     }
                 },
                 healthBar = new Container
                 {
+                    Masking = true,
                     Alpha = 1f,
                     Depth = 0,
                     Anchor = Anchor.CentreLeft,
                     Origin = Anchor.CentreLeft,
-                    Colour = Color4.Green.Opacity(0.5f),
+                    Colour = Color4.LightGreen,
                     Size = new Vector2(10,820),
-                    BorderColour = Color4.Green,
-                    BorderThickness = 2,
                     Position = new Vector2(0),
                     Children = new Drawable[]
                     {
                         healthBarBox = new Box
                         {
-                            Size = new Vector2(10 , 820),
+                            RelativeSizeAxes = Axes.Both,
                             Colour = Color4.White,
                         },
                         healthTriangles = new Triangles
@@ -119,11 +138,11 @@ namespace osu.Game.Rulesets.Vitaru.UI
                             TriangleScale = 1,
                         }
                     },
-                    EdgeEffect = new EdgeEffect
+                    EdgeEffect = new EdgeEffectParameters
                     {
                         Type = EdgeEffectType.Shadow,
-                        Colour = Color4.Green,
-                        Radius = 2,
+                        Colour = Color4.Green.Opacity(0.5f),
+                        Radius = 8,
                     }
                 },
                 opponentBar = new Container
@@ -139,14 +158,14 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     {
                         opponentBarBox = new Box
                         {
-                            Size = new Vector2(548 , 10),
+                            RelativeSizeAxes = Axes.Both,
                             Colour = Color4.White,
                         },
                     },
                 },
                 friendlyBar = new Container
                 {
-                    Masking = false,
+                    Masking = true,
                     Alpha = 1f,
                     Depth = 0,
                     Anchor = Anchor.BottomCentre,
@@ -157,36 +176,61 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     {
                         friendlyBarBox = new Box
                         {
-                            Size = new Vector2(548 , 10),
+                            RelativeSizeAxes = Axes.Both,
                             Colour = Color4.White,
                         },
                     },
                 },
+                frameTime = new SpriteText
+                {
+                    Anchor = Anchor.CentreRight,
+                    Origin = Anchor.CentreLeft,
+                    Position = new Vector2(10 , 30),
+                    TextSize = 30,
+                    Colour = Color4.Purple,
+                    Text = "Frametime Value Here",
+                },
+                bulletsOnScreen = new SpriteText
+                {
+                    Anchor = Anchor.CentreRight,
+                    Origin = Anchor.CentreLeft,
+                    Position = new Vector2(10 , -30),
+                    TextSize = 30,
+                    Colour = Color4.Purple,
+                    Text = "Bullets On Screen Value Here",
+                }
             };
+
+            if(debugInfo)
+            {
+                frameTime.Alpha = 1;
+            }
         }
 
         protected override void Update()
         {
             base.Update();
 
-            if ((VitaruScoreProcessor.PlayerHealth * 100) > 100)
+            if ((VitaruPlayer.PlayerHealth) > 100)
                 health.Colour = Color4.SkyBlue;
-            if ((VitaruScoreProcessor.PlayerHealth * 100) > 50 && (VitaruScoreProcessor.PlayerHealth * 100) <= 100)
+            if ((VitaruPlayer.PlayerHealth) > 50 && (VitaruPlayer.PlayerHealth) <= 100)
                 health.Colour = Color4.Green;
-            if ((VitaruScoreProcessor.PlayerHealth * 100) <= 50 && (VitaruScoreProcessor.PlayerHealth * 100) > 20)
+            if ((VitaruPlayer.PlayerHealth) <= 50 && (VitaruPlayer.PlayerHealth) > 20)
                 health.Colour = Color4.Yellow;
-            if ((VitaruScoreProcessor.PlayerHealth * 100) <= 20 && (VitaruScoreProcessor.PlayerHealth * 100) > 0)
+            if ((VitaruPlayer.PlayerHealth) <= 20 && (VitaruPlayer.PlayerHealth) > 0)
                 health.Colour = Color4.Red;
-            if ((VitaruScoreProcessor.PlayerHealth * 100) <= 0)
+            if ((VitaruPlayer.PlayerHealth) <= 0)
                 health.Colour = Color4.Black;
 
             healthBar.Colour = health.Colour;
-            energyBar.ResizeTo(new Vector2(10 , VitaruScoreProcessor.PlayerEnergy * 820) , 0);
-            healthBar.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerHealth * 820), 0);
-            energyBarBox.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerEnergy * 820), 0);
-            healthBarBox.ResizeTo(new Vector2(10, VitaruScoreProcessor.PlayerHealth * 820), 0);
-            energy.Text = (VitaruScoreProcessor.PlayerEnergy * 100).ToString() + "% Charge";
-            health.Text = (Math.Floor(VitaruScoreProcessor.PlayerHealth * 100)).ToString() + "% Health";
+            energyBar.ResizeTo(new Vector2(10 , VitaruPlayer.PlayerEnergy * 8.20f) , 100 , EasingTypes.OutCubic);
+            healthBar.ResizeTo(new Vector2(10, VitaruPlayer.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
+            energyBarBox.ResizeTo(new Vector2(10, VitaruPlayer.PlayerEnergy * 8.20f), 100, EasingTypes.OutCubic);
+            healthBarBox.ResizeTo(new Vector2(10, VitaruPlayer.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
+            energy.Text = (VitaruPlayer.PlayerEnergy).ToString() + "% Charge";
+            health.Text = (Math.Floor(VitaruPlayer.PlayerHealth)).ToString() + "% Health";
+            frameTime.Text = (Math.Floor((float)Clock.ElapsedFrameTime)).ToString() + "ms Delay";
+            bulletsOnScreen.Text = DrawableBullet.BulletCount + " bullets on screen";
         }
     }
 }

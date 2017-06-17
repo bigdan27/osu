@@ -1,7 +1,4 @@
-﻿// Copyright (c) 2007-2017 ppy Pty Ltd <contact@ppy.sh>.
-// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using osu.Framework.Extensions;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Vitaru.Judgements;
@@ -15,11 +12,6 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
 {
     internal class VitaruScoreProcessor : ScoreProcessor<VitaruHitObject, VitaruJudgement>
     {
-
-        public static float VitaruScore = 0;
-        public static float PlayerEnergy = 0;
-        public static float PlayerHealth = 1;
-
         public VitaruScoreProcessor()
         {
         }
@@ -33,16 +25,13 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
         {
             base.Reset();
 
-            Health.Value = 1;
-            Accuracy.Value = 1;
+            VitaruPlayer.PlayerEnergy = 0;
+            VitaruPlayer.PlayerHealth = 100;
 
-            PlayerEnergy = 0;
-            PlayerHealth = 1;
-            VitaruScore = 0;
+            Health.Value = VitaruPlayer.PlayerHealth / 100;
+            Accuracy.Value = VitaruPlayer.PlayerEnergy / 100;
 
-            Health.Value = PlayerHealth;
-            TotalScore.Value = VitaruScore;
-            Accuracy.Value = PlayerEnergy;
+            TotalScore.Value = 0;
 
             scoreResultCounts.Clear();
             comboResultCounts.Clear();
@@ -55,9 +44,11 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
         {
             base.PopulateScore(score);
 
-            score.Statistics[@"30"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Kill30);
-            score.Statistics[@"20"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Kill20);
-            score.Statistics[@"10"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Kill10);
+            score.Statistics[@"300"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze300);
+            //score.Statistics[@"200"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze200);
+            score.Statistics[@"100"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze100);
+            score.Statistics[@"50"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze50);
+            score.Statistics[@"10"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze10);
             score.Statistics[@"x"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Miss);
         }
 
@@ -74,9 +65,10 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
                 switch (judgement.Result)
                 {
                     case HitResult.Hit:
+                        Health.Value = VitaruPlayer.PlayerHealth / 100;
                         break;
                     case HitResult.Miss:
-                        Health.Value -= 1f;
+                        Health.Value = VitaruPlayer.PlayerHealth / 100;
                         break;
                 }
 

@@ -15,7 +15,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects
 
         public bool Kiai { get; protected set; }
 
-        //I have no idea where enemies are getting pos info from if its not from here
         public Vector2 Position { get; set; }
 
         public Vector2 StackedPosition => Position + StackOffset;
@@ -38,29 +37,15 @@ namespace osu.Game.Rulesets.Vitaru.Objects
         public virtual bool NewCombo { get; set; }
         public int ComboIndex { get; set; }
 
-        public double HitWindowFor(VitaruScoreResult result)
-        {
-            switch (result)
-            {
-                default:
-                case VitaruScoreResult.Graze2:
-                    return 2;
-                case VitaruScoreResult.Kill10:
-                    return 10;
-                case VitaruScoreResult.Kill20:
-                    return 20;
-                case VitaruScoreResult.Kill30:
-                    return 30;
-                case VitaruScoreResult.Kill1500:
-                    return 1500;
-            }
-        }
-
         public override void ApplyDefaults(ControlPointInfo controlPointInfo, BeatmapDifficulty difficulty)
         {
             base.ApplyDefaults(controlPointInfo, difficulty);
 
+            EffectControlPoint effectPoint = controlPointInfo.EffectPointAt(StartTime);
+
             Scale = (1.0f - 0.7f * (difficulty.CircleSize - 5) / 5) / 2;
+
+            Kiai |= effectPoint.KiaiMode;
         }
     }
 }
