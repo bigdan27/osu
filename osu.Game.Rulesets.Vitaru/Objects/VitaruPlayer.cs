@@ -169,12 +169,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects
                     {
                         DrawableBullet = draw as DrawableBullet;
 
-                        //yes I may still need this, want to make team battles more interesting ;)
+                        //Yes, I may still need this. I want to make team battles more interesting in multi ;)
                         if (true)//DrawableBullet.Team != Team)
                         {
                             Vector2 bulletPos = DrawableBullet.ToSpaceOfOtherDrawable(Vector2.Zero, this);
                             float distance = (float)Math.Sqrt(Math.Pow(bulletPos.X, 2) + Math.Pow(bulletPos.Y, 2));
                             float minDist = Hitbox.HitboxWidth + DrawableBullet.BulletWidth;
+
                             //The -20 is for the blank space around the sprite (transparent pixels)
                             float signDist = ((PlayerSign.Size.Y / 2) - 20) + DrawableBullet.BulletWidth;
 
