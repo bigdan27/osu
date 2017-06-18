@@ -37,6 +37,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         //Result of bulletSpeed + bulletAngle math, should never be modified outside of this class
         public Vector2 BulletVelocity;
 
+        private double bulletDeleteTime = -1;
+
         private Container bulletRing;
         private CircularContainer bulletCircle;
         private readonly DrawablePattern pattern;
@@ -119,11 +121,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             if (DynamicBulletVelocity)
                 GetBulletVelocity();
 
-            if (Alpha <= 0.05f)
+            if (Time.Current >= bulletDeleteTime && bulletDeleteTime != -1)
                 DeleteBullet();
 
             if (Position.Y < BulletBounds.Y | Position.X < BulletBounds.X | Position.Y > BulletBounds.W | Position.X > BulletBounds.Z && Alpha >= 1)
             {
+                AlwaysPresent = true;
+                bulletDeleteTime = Time.Current + 200;
                 FadeOutFromOne(200);
                 Hit();
             }

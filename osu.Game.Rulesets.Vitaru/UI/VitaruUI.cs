@@ -3,17 +3,11 @@ using OpenTK.Graphics;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Sprites;
 using osu.Game.Graphics.Backgrounds;
 using osu.Game.Rulesets.Vitaru.Objects;
 using osu.Game.Rulesets.Vitaru.Objects.Drawables;
-using osu.Game.Rulesets.Vitaru.Scoring;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace osu.Game.Rulesets.Vitaru.UI
 {
@@ -37,6 +31,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
         private Box opponentBarBox;
 
         //Debug section
+        private Container debugContainer;
         private SpriteText frameTime;
         private SpriteText bulletsOnScreen;
 
@@ -181,24 +176,47 @@ namespace osu.Game.Rulesets.Vitaru.UI
                         },
                     },
                 },
-                frameTime = new SpriteText
+                debugContainer = new Container
                 {
-                    Anchor = Anchor.CentreRight,
-                    Origin = Anchor.CentreLeft,
-                    Position = new Vector2(10 , 30),
-                    TextSize = 30,
-                    Colour = Color4.Purple,
-                    Text = "Frametime Value Here",
+                    Anchor = Anchor.TopRight,
+                    Origin = Anchor.TopLeft,
+                    Position = new Vector2(10 , 40),
+                    Size = new Vector2(280 , 140),
+                    Masking = true,
+                    Depth = 0,
+                    BorderColour = Color4.White,
+                    BorderThickness = 10,
+                    CornerRadius = 20,
+                    Children = new Drawable[]
+                    {
+                        new Box
+                        {
+                            Depth = 0,
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = Color4.Navy,
+                        },
+                        frameTime = new SpriteText
+                        {
+                            Depth = -10,
+                            Anchor = Anchor.CentreLeft,
+                            Origin = Anchor.CentreLeft,
+                            Position = new Vector2(10 , 20),
+                            TextSize = 30,
+                            Colour = Color4.YellowGreen,
+                            Text = "Frametime Value Here",
+                        },
+                        bulletsOnScreen = new SpriteText
+                        {
+                            Depth = -10,
+                            Anchor = Anchor.CentreLeft,
+                            Origin = Anchor.CentreLeft,
+                            Position = new Vector2(10 , -20),
+                            TextSize = 30,
+                            Colour = Color4.YellowGreen,
+                            Text = "Bullets On Screen Value Here",
+                        }
+                    }
                 },
-                bulletsOnScreen = new SpriteText
-                {
-                    Anchor = Anchor.CentreRight,
-                    Origin = Anchor.CentreLeft,
-                    Position = new Vector2(10 , -30),
-                    TextSize = 30,
-                    Colour = Color4.Purple,
-                    Text = "Bullets On Screen Value Here",
-                }
             };
 
             if(debugInfo)
