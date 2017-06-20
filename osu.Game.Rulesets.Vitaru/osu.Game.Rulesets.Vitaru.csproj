@@ -58,7 +58,6 @@
     <Compile Include="Mods\VitaruMod.cs" />
     <Compile Include="Objects\Drawables\DrawableVitaruHitObject.cs" />
     <Compile Include="Objects\VitaruPlayer.cs" />
-    <Compile Include="Objects\Helper.cs" />
     <Compile Include="Objects\Hitbox.cs" />
     <Compile Include="Objects\HitObjectType.cs" />
     <Compile Include="Objects\VitaruHitObjectDifficulty.cs" />

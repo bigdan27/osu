@@ -45,7 +45,6 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
             base.PopulateScore(score);
 
             score.Statistics[@"300"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze300);
-            //score.Statistics[@"200"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze200);
             score.Statistics[@"100"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze100);
             score.Statistics[@"50"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze50);
             score.Statistics[@"10"] = scoreResultCounts.GetOrDefault(VitaruScoreResult.Graze10);

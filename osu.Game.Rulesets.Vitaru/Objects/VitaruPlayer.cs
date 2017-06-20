@@ -180,7 +180,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects
                             float signDist = ((PlayerSign.Size.Y / 2) - 20) + DrawableBullet.BulletWidth;
 
                             if (PlayerSign.Alpha > 0f && distance < signDist)
+                            {
+                                DrawableBullet.Hit();
                                 DrawableBullet.DeleteBullet();
+                            }
+
 
                             if (distance < minDist)
                             {
