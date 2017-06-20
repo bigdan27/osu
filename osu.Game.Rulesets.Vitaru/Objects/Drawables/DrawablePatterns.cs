@@ -18,7 +18,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private bool patternCreated = false;
 
         public int BulletCount = 0;
-        public int PatternCount = 0;
+        public static int PatternCount = 0;
         public int ScorePattern;
 
         public bool Miss = false;
