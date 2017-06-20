@@ -18,6 +18,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private bool patternCreated = false;
 
         public int BulletCount = 0;
+        public int PatternCount = 0;
+        public int ScorePattern;
 
         public bool Miss = false;
         public bool Hit = false;
@@ -149,7 +151,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             if (patternCreated)
             {
                 if (BulletCount == 0)
+                {
+                    PatternCount--;
                     Dispose();
+                }
             }
         }
 
@@ -175,6 +180,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public void CreatePattern()
         {
             patternCreated = true;
+            PatternCount++;
             int patternID = Pattern.PatternID;
             switch (patternID)
             {
@@ -196,43 +202,60 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             }
         }
 
+        private float calculateDifficulty(float height, float speed, int quantity, bool aiming, int amountpattern, float bonus, int multiplied)
+        {
+            float difficulty = (float)(Math.Pow(1.25, (quantity / 10) + height) * Math.Pow(1.5, speed) * Math.Pow(1.1, amountpattern));
+            if(aiming)
+            {
+                 difficulty /= 1.5f;
+            }
+            difficulty += bonus;
+            difficulty *= multiplied;
+            return difficulty;
+        }
         /// <summary>
         /// These Will be the Base Patterns
         /// </summary>
         public void PatternWave()
         {
-            int numberBullets = (int)Pattern.PatternDifficulty * 2 + 1;
-            float directionModifier = -0.1f * ((numberBullets - 1) / 2);
-            for (int i = 1; i <= numberBullets; i++)
+            int numberbullets = (int)Pattern.PatternDifficulty * 2 + 1;
+            float directionModifier = -0.1f * ((numberbullets - 1) / 2);
+            for (int i = 1; i <= numberbullets; i++)
             {
                 bulletAddRad(Pattern.PatternSpeed, Pattern.PatternAngleRadian + directionModifier);
                 directionModifier += 0.1f;
             }
+            ScorePattern = (int)calculateDifficulty(Pattern.PatternBulletWidth, Pattern.PatternSpeed, numberbullets, true, PatternCount, 0, 1);
         }
         public void PatternLine()
         {
-            for (int i = 1; i <= Pattern.PatternDifficulty + 1; i++)
+            int numberbullets = (int)Pattern.PatternDifficulty + 1;
+            for (int i = 1; i <= numberbullets; i++)
             {
                 bulletAddRad(0.12f + Pattern.PatternSpeed, Pattern.PatternAngleRadian);
                 Pattern.PatternSpeed += 0.02f;
             }
+            ScorePattern = (int)calculateDifficulty(Pattern.PatternBulletWidth, Pattern.PatternSpeed, numberbullets, true, PatternCount, 0, 1);
         }
         public void PatternFlower()
         {
+            int numberbullets = (int)Pattern.PatternDifficulty * 16;
             double timeSaved = Time.Current;
             int a = 0;
-            for (int j = 1; j <= 16 * Pattern.PatternDifficulty; j++)
+            for (int j = 1; j <= numberbullets; j++)
             {
                 a = a + 21;
                 Pattern.PatternAngleRadian = MathHelper.DegreesToRadians(a - 90);
                 bulletAddRad(Pattern.PatternSpeed, a);
             }
+            ScorePattern = (int)calculateDifficulty(Pattern.PatternBulletWidth, Pattern.PatternSpeed, numberbullets, true, PatternCount, 0, 1);
         }
         public void PatternCoolWave()
         {
+            int numberbullets = (int)(Pattern.PatternDifficulty * 2) + 3;
             float speedModifier = 0.01f + 0.01f * (Pattern.PatternDifficulty);
             float directionModifier = -0.075f - 0.075f * (Pattern.PatternDifficulty);
-            for (int i = 1; i <= 3 + (Pattern.PatternDifficulty * 2); i++)
+            for (int i = 1; i <= numberbullets; i++)
             {
                 bulletAddRad(
                     Pattern.PatternSpeed + Math.Abs(speedModifier),
@@ -241,10 +264,11 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 speedModifier -= 0.01f;
                 directionModifier += 0.075f;
             }
+            ScorePattern = (int)calculateDifficulty(Pattern.PatternBulletWidth, Pattern.PatternSpeed, numberbullets, true, PatternCount, 0, 1);
         }
         public void PatternSpin()
         {
-            double numberbullets = 30 * Pattern.PatternDifficulty;
+            int numberbullets = (int)(30 * Pattern.PatternDifficulty);
             int numberspins = (int)(Pattern.PatternDifficulty + 2) / 2;
             float spinModifier = MathHelper.DegreesToRadians((float)(360 / numberspins));
             float directionModifier = (float)(360 / numberbullets);
@@ -268,6 +292,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 }
                 i++;
             }
+            ScorePattern = (int)calculateDifficulty(Pattern.PatternBulletWidth, Pattern.PatternSpeed, numberbullets, true, PatternCount, 0, (int)Pattern.PatternRepeatTimes);
         }
         public void PatternTriangleWave()
         {
@@ -275,11 +300,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             int numberwaves = (int)(Pattern.PatternDifficulty + 2) / 2;
             float originalDirection = 0f;
             int numberbullets;
+            int totalbullets = 0;
             Pattern.PatternDuration /= numberwaves;
             float speedModifier;
             for (int i = 1; i <= numberwaves; i++)
             {
                 numberbullets = i;
+                totalbullets += numberbullets;
                 if (reversed)
                     speedModifier = 0.30f - (i - 1) * 0.03f;
                 else
@@ -293,7 +320,48 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     );
                 }
                 originalDirection = 0.05f * i;
+            } 
+            ScorePattern = (int)calculateDifficulty(Pattern.PatternBulletWidth, Pattern.PatternSpeed, totalbullets, true, PatternCount, 0, 1);
+        }
+
+        public void PatternCurve()
+        {
+            bool lefttoright = true;
+            int numberbullets = (int)(Pattern.PatternDifficulty + 10) / 2;
+            float originalDirection = 0.01f * (numberbullets / 2);
+            float speedModifier = 0f;
+            float directionModifier = 0f;
+            for(int i = 1; i <= numberbullets; i++)
+            {
+                if (lefttoright)
+                {
+                    bulletAddRad(
+                        Pattern.PatternSpeed + speedModifier,
+                        Pattern.PatternAngleRadian - originalDirection + directionModifier
+                    );
+                }
+                else
+                {
+                    bulletAddRad(
+                        Pattern.PatternSpeed + speedModifier,
+                        Pattern.PatternAngleRadian + originalDirection - directionModifier
+                    );
+                }
+                directionModifier += 0.015f;
+                speedModifier -= (i * 0.002f);
             }
+            ScorePattern = (int)calculateDifficulty(Pattern.PatternBulletWidth, Pattern.PatternSpeed, numberbullets, true, PatternCount, 0, 1);
+        }
+        public void PatternCircle()
+        {
+            int numberbullets = (int)(Pattern.PatternDifficulty + 1) * 8;
+            float directionModifier = (float)(360 / numberbullets);
+            directionModifier = MathHelper.DegreesToRadians(directionModifier);
+            for (int i = 1; i <= numberbullets; i++)
+            {
+                bulletAddRad(Pattern.PatternSpeed, Pattern.PatternAngleRadian + (directionModifier * (i - 1)));
+            }
+            ScorePattern = (int)calculateDifficulty(Pattern.PatternBulletWidth, Pattern.PatternSpeed, numberbullets, false, PatternCount, 0, 1);
         }
     }
 }
