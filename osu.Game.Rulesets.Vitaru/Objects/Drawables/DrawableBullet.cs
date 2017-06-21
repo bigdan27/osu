@@ -154,7 +154,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public void Hit()
         {
             pattern.Hit = true;
-            pattern.Score = 10;
+            pattern.Score = 300;
         }
     }
 }
