@@ -11,6 +11,7 @@ using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
 using osu.Game.Graphics.Containers;
 using osu.Framework.Audio.Track;
 using osu.Game.Beatmaps.ControlPoints;
+using osu.Framework.Graphics.Shapes;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
