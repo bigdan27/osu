@@ -8,6 +8,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
+using osu.Framework.Graphics.Shapes;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
