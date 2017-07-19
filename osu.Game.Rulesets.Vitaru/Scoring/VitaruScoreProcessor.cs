@@ -25,11 +25,9 @@ namespace osu.Game.Rulesets.Vitaru.Scoring
         {
             base.Reset();
 
-            VitaruPlayer.PlayerEnergy = 0;
             VitaruPlayer.PlayerHealth = 100;
 
             Health.Value = VitaruPlayer.PlayerHealth / 100;
-            Accuracy.Value = VitaruPlayer.PlayerEnergy / 100;
 
             TotalScore.Value = 0;
 

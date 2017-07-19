@@ -16,7 +16,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
 
         public override bool ProvidingUserCursor => true;
 
-        public static readonly Vector2 BASE_SIZE = new Vector2(512, 820);
+        public static Vector2 BASE_SIZE = new Vector2(512, 384);
         private VitaruUI vitaruUI;
 
         public override Vector2 Size
@@ -24,7 +24,13 @@ namespace osu.Game.Rulesets.Vitaru.UI
             get
             {
                 var parentSize = Parent.DrawSize;
-                var aspectSize = parentSize.X * 0.75f < parentSize.Y ? new Vector2(parentSize.X, parentSize.X * 0.75f) : new Vector2(parentSize.Y * 5f / 8f, parentSize.Y);
+                var aspectSize = parentSize.X * 0.75f < parentSize.Y ? new Vector2(parentSize.X, parentSize.X * 0.75f) : new Vector2(parentSize.Y * 4f / 3f, parentSize.Y);
+
+                if (VitaruRuleset.TouhosuMode)
+                {
+                    aspectSize = parentSize.X * 0.75f < parentSize.Y ? new Vector2(parentSize.X, parentSize.X * 0.75f) : new Vector2(parentSize.Y * 5f / 8f, parentSize.Y);
+                    BASE_SIZE = new Vector2(512, 820);
+                }
 
                 return new Vector2(aspectSize.X / parentSize.X, aspectSize.Y / parentSize.Y) * base.Size;
             }
@@ -35,7 +41,7 @@ namespace osu.Game.Rulesets.Vitaru.UI
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
 
-            Add(new Drawable[]
+            AddRange(new Drawable[]
             {
                 vitaruUI = new VitaruUI
                 {
@@ -43,8 +49,6 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Masking = false,
                     Position = new Vector2(-10),
                     RelativeSizeAxes = Axes.Both,
-                    //magic numbers :P
-                    Size = new Vector2(1.48f , 1.46f),
                     Origin = Anchor.TopLeft,
                     Anchor = Anchor.TopLeft,
                 },
@@ -66,7 +70,9 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 Alpha = 1,
                 AlwaysPresent = true,
             });
-            VitaruPlayer.PlayerPosition = new Vector2(256, 700);
+            VitaruPlayer.PlayerPosition = BASE_SIZE / 2;
+            if (VitaruRuleset.TouhosuMode)
+                VitaruPlayer.PlayerPosition = new Vector2(256, 700);
         }
 
         protected override void LoadComplete()

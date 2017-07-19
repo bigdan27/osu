@@ -54,7 +54,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         internal void DeleteLaser()
         {
-            Dispose();
+            LifetimeEnd = Time.Current + 1;
         }
     }
 }

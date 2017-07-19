@@ -28,62 +28,171 @@ namespace osu.Game.Rulesets.Vitaru.Beatmaps
             bool isLine = samples.Any(s => s.Name == SampleInfo.HIT_WHISTLE);
             bool isTriangleWave = samples.Any(s => s.Name == SampleInfo.HIT_FINISH);
             bool isCoolWave = samples.Any(s => s.Name == SampleInfo.HIT_CLAP);
-
-            if (isLine)
+            if (curveData != null)
             {
-                yield return new Pattern
+                if (isLine)
                 {
-                    StartTime = original.StartTime,
-                    PatternPosition = positionData?.Position ?? Vector2.Zero,
-                    Samples = original.Samples,
-                    PatternID = 2,
-                    PatternAngleDegree = 180,
-                    PatternSpeed = 0.25f,
-                    PatternBulletWidth = 8f,
-                    PatternTeam = 1,
-                };
+                    yield return new Pattern
+                    {
+                        StartTime = original.StartTime,
+                        PatternPosition = positionData?.Position ?? Vector2.Zero,
+                        Samples = original.Samples,
+                        PatternID = 2,
+                        PatternAngleDegree = 180,
+                        PatternSpeed = 0.25f,
+                        PatternBulletWidth = 8f,
+                        PatternTeam = 1,
+                        ControlPoints = curveData.ControlPoints,
+                        CurveType = curveData.CurveType,
+                        Distance = curveData.Distance,
+                        RepeatSamples = curveData.RepeatSamples,
+                        RepeatCount = curveData.RepeatCount,
+                        NewCombo = comboData?.NewCombo ?? false,
+                        IsSlider = true,
+                    };
+                }
+                else if (isTriangleWave)
+                {
+                    yield return new Pattern
+                    {
+                        StartTime = original.StartTime,
+                        PatternPosition = positionData?.Position ?? Vector2.Zero,
+                        Samples = original.Samples,
+                        PatternID = 3,
+                        PatternAngleDegree = 180,
+                        PatternSpeed = 0.25f,
+                        PatternBulletWidth = 8f,
+                        PatternTeam = 1,
+                        ControlPoints = curveData.ControlPoints,
+                        CurveType = curveData.CurveType,
+                        Distance = curveData.Distance,
+                        RepeatSamples = curveData.RepeatSamples,
+                        RepeatCount = curveData.RepeatCount,
+                        NewCombo = comboData?.NewCombo ?? false,
+                        IsSlider = true,
+                    };
+                }
+                else if (isCoolWave)
+                {
+                    yield return new Pattern
+                    {
+                        StartTime = original.StartTime,
+                        PatternPosition = positionData?.Position ?? Vector2.Zero,
+                        Samples = original.Samples,
+                        PatternID = 4,
+                        PatternAngleDegree = 180,
+                        PatternSpeed = 0.25f,
+                        PatternBulletWidth = 8f,
+                        PatternTeam = 1,
+                        ControlPoints = curveData.ControlPoints,
+                        CurveType = curveData.CurveType,
+                        Distance = curveData.Distance,
+                        RepeatSamples = curveData.RepeatSamples,
+                        RepeatCount = curveData.RepeatCount,
+                        NewCombo = comboData?.NewCombo ?? false,
+                        IsSlider = true,
+                    };
+                }
+                else
+                {
+                    yield return new Pattern
+                    {
+                        StartTime = original.StartTime,
+                        PatternPosition = positionData?.Position ?? Vector2.Zero,
+                        Samples = original.Samples,
+                        PatternID = 1,
+                        PatternAngleDegree = 180,
+                        PatternSpeed = 0.25f,
+                        PatternBulletWidth = 8f,
+                        PatternTeam = 1,
+                        ControlPoints = curveData.ControlPoints,
+                        CurveType = curveData.CurveType,
+                        Distance = curveData.Distance,
+                        RepeatSamples = curveData.RepeatSamples,
+                        RepeatCount = curveData.RepeatCount,
+                        NewCombo = comboData?.NewCombo ?? false,
+                        IsSlider = true,
+                    };
+                }
             }
-            if (isTriangleWave)
+            else if (endTimeData != null)
             {
                 yield return new Pattern
                 {
                     StartTime = original.StartTime,
                     PatternPosition = positionData?.Position ?? Vector2.Zero,
                     Samples = original.Samples,
-                    PatternID = 3,
-                    PatternAngleDegree = 180,
+                    IsSpinner = true,
                     PatternSpeed = 0.25f,
                     PatternBulletWidth = 8f,
                     PatternTeam = 1,
-                };
-            }
-            if (isCoolWave)
-            {
-                yield return new Pattern
-                {
-                    StartTime = original.StartTime,
-                    PatternPosition = positionData?.Position ?? Vector2.Zero,
-                    Samples = original.Samples,
-                    PatternID = 4,
-                    PatternAngleDegree = 180,
-                    PatternSpeed = 0.25f,
-                    PatternBulletWidth = 8f,
-                    PatternTeam = 1,
+                    PatternID = 5,
+                    EndTime = endTimeData.EndTime,
+                    PatternDifficulty = 4,
                 };
             }
             else
             {
-                yield return new Pattern
+                if (isLine)
                 {
-                    StartTime = original.StartTime,
-                    PatternPosition = positionData?.Position ?? Vector2.Zero,
-                    Samples = original.Samples,
-                    PatternID = 1,
-                    PatternAngleDegree = 180,
-                    PatternSpeed = 0.25f,
-                    PatternBulletWidth = 8f,
-                    PatternTeam = 1,
-                };
+                    yield return new Pattern
+                    {
+                        StartTime = original.StartTime,
+                        PatternPosition = positionData?.Position ?? Vector2.Zero,
+                        Samples = original.Samples,
+                        PatternID = 2,
+                        PatternAngleDegree = 180,
+                        PatternSpeed = 0.25f,
+                        PatternBulletWidth = 8f,
+                        PatternTeam = 1,
+                        NewCombo = comboData?.NewCombo ?? false
+                    };
+                }
+                else if (isTriangleWave)
+                {
+                    yield return new Pattern
+                    {
+                        StartTime = original.StartTime,
+                        PatternPosition = positionData?.Position ?? Vector2.Zero,
+                        Samples = original.Samples,
+                        PatternID = 3,
+                        PatternAngleDegree = 180,
+                        PatternSpeed = 0.25f,
+                        PatternBulletWidth = 8f,
+                        PatternTeam = 1,
+                        NewCombo = comboData?.NewCombo ?? false
+                    };
+                }
+                else if (isCoolWave)
+                {
+                    yield return new Pattern
+                    {
+                        StartTime = original.StartTime,
+                        PatternPosition = positionData?.Position ?? Vector2.Zero,
+                        Samples = original.Samples,
+                        PatternID = 4,
+                        PatternAngleDegree = 180,
+                        PatternSpeed = 0.25f,
+                        PatternBulletWidth = 8f,
+                        PatternTeam = 1,
+                        NewCombo = comboData?.NewCombo ?? false
+                    };
+                }
+                else
+                {
+                    yield return new Pattern
+                    {
+                        StartTime = original.StartTime,
+                        PatternPosition = positionData?.Position ?? Vector2.Zero,
+                        Samples = original.Samples,
+                        PatternID = 1,
+                        PatternAngleDegree = 180,
+                        PatternSpeed = 0.25f,
+                        PatternBulletWidth = 8f,
+                        PatternTeam = 1,
+                        NewCombo = comboData?.NewCombo ?? false
+                    };
+                }
             }
         }
     }

@@ -12,8 +12,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects
     {
         //Different stats for Hitboxes
         public Color4 HitboxColor { get; set; } = Color4.White;
-        public float HitboxHealth { get; set; } = 100;
         public float HitboxWidth { get; set; } = 8f;
+        public float BorderWidth { get; set; } = 3f;
 
         private Container hitboxContainer;
         
@@ -31,7 +31,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects
                     AutoSizeAxes = Axes.Both,
                     Origin = Anchor.Centre,
                     Anchor = Anchor.Centre,
-                    BorderThickness = 3,
+                    BorderThickness = BorderWidth,
                     Depth = 1,
                     BorderColour = HitboxColor,
                     Alpha = 1f,

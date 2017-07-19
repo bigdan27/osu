@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objects\Characters\Character.cs" />
+    <Compile Include="Objects\Characters\Enemy.cs" />
     <Compile Include="Objects\Drawables\DrawableLaser.cs" />
     <Compile Include="Objects\Projectiles\Pattern.cs" />
     <Compile Include="Beatmaps\VitaruBeatmapConverter.cs" />
@@ -53,11 +55,14 @@
     <Compile Include="Objects\AccurateHitbox.cs" />
     <Compile Include="Objects\Drawables\DrawableBullet.cs" />
     <Compile Include="Objects\Drawables\DrawableVitaruJudgement.cs" />
+    <Compile Include="Objects\Projectiles\SeekingBullet.cs" />
+    <Compile Include="Objects\Totem.cs" />
+    <Compile Include="UI\VitaruSettings.cs" />
     <Compile Include="UI\VitaruUI.cs" />
-    <Compile Include="VitaruAutoReplay.cs" />
+    <Compile Include="Mods\VitaruAutoReplay.cs" />
     <Compile Include="Mods\VitaruMod.cs" />
     <Compile Include="Objects\Drawables\DrawableVitaruHitObject.cs" />
-    <Compile Include="Objects\VitaruPlayer.cs" />
+    <Compile Include="Objects\Characters\VitaruPlayer.cs" />
     <Compile Include="Objects\Hitbox.cs" />
     <Compile Include="Objects\HitObjectType.cs" />
     <Compile Include="Objects\VitaruHitObjectDifficulty.cs" />
@@ -89,10 +94,6 @@
       <Project>{d9a367c9-4c1a-489f-9b05-a0cea2b53b58}</Project>
       <Name>osu.Game.Resources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\osu.Game.Rulesets.Osu\osu.Game.Rulesets.Osu.csproj">
-      <Project>{c92a607b-1fdd-4954-9f92-03ff547d9080}</Project>
-      <Name>osu.Game.Rulesets.Osu</Name>
-    </ProjectReference>
     <ProjectReference Include="..\osu.Game\osu.Game.csproj">
       <Project>{0D3FBF8A-7464-4CF7-8C90-3E7886DF2D4D}</Project>
       <Name>osu.Game</Name>
@@ -110,6 +111,17 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\Textures\playerSign.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Textures\boss.png" />
+    <EmbeddedResource Include="Assets\Textures\bossKiai.png" />
+    <EmbeddedResource Include="Assets\Textures\bossSign.png" />
+    <EmbeddedResource Include="Assets\Textures\enemy.png" />
+    <EmbeddedResource Include="Assets\Textures\enemyKiai.png" />
+    <EmbeddedResource Include="Assets\Textures\enemySign.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Textures\bulletKiai.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using osu.Game.Rulesets.UI;
-using osu.Game.Graphics;
 using osu.Game.Beatmaps;
 using osu.Game.Screens.Play;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.Vitaru.Mods;
+using osu.Game.Rulesets.Vitaru.UI;
 using OpenTK.Input;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.Vitaru.Scoring;
@@ -13,11 +13,17 @@ using osu.Framework.Configuration;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.IO.Stores;
 using osu.Framework.Audio;
+using osu.Game.Overlays.Settings;
 
 namespace osu.Game.Rulesets.Vitaru
 {
     public class VitaruRuleset : Ruleset
     {
+        /// <summary>
+        /// Setting this to true will load a taller playfield, spawn enemies rather than normal BasePatterns and most importantly enable shooting for the player to kill the enemies.
+        /// </summary>
+        public static Bindable<bool> TouhosuMode = new Bindable<bool>(false);
+
         public override HitRenderer CreateHitRendererWith(WorkingBeatmap beatmap, bool isForCurrentRuleset) => new VitaruHitRenderer(beatmap, isForCurrentRuleset);
 
         public override string Description => "vitaru!";
@@ -47,7 +53,14 @@ namespace osu.Game.Rulesets.Vitaru
                     return new Mod[]
                     {
                         new VitaruModHardRock(),
-                        new VitaruModSuddenDeath(),
+                        new MultiMod
+                        {
+                            Mods = new Mod[]
+                            {
+                                new VitaruModSuddenDeath(),
+                                new VitaruModPerfect(),
+                            },
+                        },
                         new MultiMod
                         {
                             Mods = new Mod[]
@@ -88,13 +101,13 @@ namespace osu.Game.Rulesets.Vitaru
         public override IEnumerable<KeyCounter> CreateGameplayKeys() => new KeyCounter[]
         {
             new KeyCounterKeyboard(Key.LShift),
-            //new KeyCounterKeyboard(Key.Z),
-            new KeyCounterKeyboard(Key.X),
             new KeyCounterKeyboard(Key.Up),
             new KeyCounterKeyboard(Key.Right),
             new KeyCounterKeyboard(Key.Left),
             new KeyCounterKeyboard(Key.Down),
         };
+
+        public override SettingsSubsection CreateSettings() => new VitaruSettings();
 
         //public override FontAwesome Icon => VitaruFontAwesome.fa_osu_vitaru_o;
 

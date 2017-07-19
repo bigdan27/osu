@@ -9,6 +9,10 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Vitaru.Objects.Projectiles;
 using osu.Framework.Graphics.Shapes;
+using osu.Game.Rulesets.Objects.Types;
+using osu.Game.Rulesets.Vitaru.Objects.Characters;
+using System.Collections.Generic;
+using osu.Framework.Audio.Sample;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 {
@@ -17,15 +21,21 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         protected Pattern Pattern;
         private bool visable = false;
         private bool patternCreated = false;
+        private Vector2 patternStartPosition;
+        public bool DummyMode = false;
 
         public int BulletCount = 0;
         public static int PatternCount = 0;
         public int ScorePattern;
 
+        private Enemy enemy;
+
         public bool Miss = false;
         public bool Hit = false;
         public bool Ten = false;
         public int Score = 0;
+
+        private bool upwards = false;
 
         public DrawablePattern(Pattern pattern) : base(pattern)
         {
@@ -33,17 +43,34 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             Pattern = pattern;
         }
 
+        public void ForceJudgment()
+        {
+            UpdateJudgement(true);
+        }
+
+        private List<SampleChannel> temporalSamples = new List<SampleChannel>();
+
         protected override void CheckJudgement(bool userTriggered)
         {
             base.CheckJudgement(userTriggered);
-            if (Miss)
+
+            if (enemy != null && enemy.Dead && HitObject.StartTime <= Time.Current)
             {
+                Judgement.Result = HitResult.Hit;
+                Judgement.Score = VitaruScoreResult.Graze300;
+                DeletePattern();
+            }
+            if (Miss && !Judged)
+            {
+                temporalSamples = Samples;
+                Samples = new List<SampleChannel>();
                 Judgement.Result = HitResult.Miss;
                 Judgement.Score = VitaruScoreResult.Miss;
-                BulletCount = 0;
+                DeletePattern();
             }
-            if (Hit)
+            if (Hit && Waiting)
             {
+                Samples = new List<SampleChannel>();
                 Judgement.Result = HitResult.Hit;
                 switch (Score)
                 {
@@ -60,7 +87,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         Judgement.Score = VitaruScoreResult.Graze300;
                         break;
                 }
-                BulletCount = 0;
+                DeletePattern();
             }
         }
 
@@ -76,17 +103,18 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         protected void PatternStart()
         {
-            Children = new Drawable[]
-{
+            if (!VitaruRuleset.TouhosuMode)
+                Children = new Drawable[]
+                {
                 new Container
                 {
                     Masking = true,
                     AutoSizeAxes = Axes.Both,
                     Origin = Anchor.Centre,
                     Anchor = Anchor.Centre,
-                    BorderThickness = 3,
+                    BorderThickness = 10,
                     Depth = 5,
-                    BorderColour = Pattern.PatternColor,
+                    BorderColour = Pattern.ComboColour,
                     Alpha = 1f,
                     CornerRadius = 16,
                     Children = new[]
@@ -112,16 +140,58 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         EdgeEffect = new EdgeEffectParameters
                         {
                             Type = EdgeEffectType.Shadow,
-                            Colour = (Pattern.PatternColor).Opacity(0.5f),
+                            Colour = (Pattern.ComboColour).Opacity(0.5f),
                             Radius = 2f,
                         }
                 }
-            };
+                };
+            else
+            {
+                VitaruPlayfield.vitaruPlayfield.Add(enemy = new Enemy()
+                {
+                    Colour = Pattern.ComboColour,
+                    Alpha = 0,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    Depth = 5,
+                    Team = 1,
+                });
+                enemy.MoveTo(Position);
+                enemy.FadeInFromZero(TIME_FADEIN);
+            }
 
             visable = true;
-            Position = new Vector2(Pattern.PatternPosition.X, Pattern.PatternPosition.Y - 200);
+            GetPatternStartPosition();
+            Position = patternStartPosition;
+            if (patternStartPosition.Y > 512)
+                upwards = true;
             MoveTo(Pattern.PatternPosition, TIME_PREEMPT);
             FadeInFromZero(TIME_FADEIN);
+        }
+
+        protected override void UpdateState(ArmedState state)
+        {
+            base.UpdateState(state);
+
+            if (Pattern.IsSlider)
+                Pattern.EndTime = Pattern.StartTime + Pattern.RepeatCount * Pattern.Curve.Distance / Pattern.Velocity;
+
+            if (Pattern.IsSpinner)
+                Pattern.EndTime = (HitObject as IHasEndTime)?.EndTime ?? Pattern.StartTime;
+        }
+
+        private Vector2 GetPatternStartPosition()
+        {
+            if (Pattern.PatternPosition.X <= (384 / 2) && Pattern.PatternPosition.Y <= (512 / 2))
+                patternStartPosition = Pattern.PatternPosition - new Vector2(384 / 2, 512 / 2);
+            else if (Pattern.PatternPosition.X > (384 / 2) && Pattern.PatternPosition.Y <= (512 / 2))
+                patternStartPosition = new Vector2(Pattern.PatternPosition.X + 384 / 2, Pattern.PatternPosition.Y - 512 / 2);
+            else if (Pattern.PatternPosition.X > (384 / 2) && Pattern.PatternPosition.Y > (512 / 2))
+                patternStartPosition = Pattern.PatternPosition + new Vector2(384 / 2, 512 / 2);
+            else
+                patternStartPosition = new Vector2(Pattern.PatternPosition.X - 384 / 2, Pattern.PatternPosition.Y + 512 / 2);
+
+            return patternStartPosition;
         }
 
         protected void PatternPop()
@@ -129,57 +199,167 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             ScaleTo(0.1f, TIME_PREEMPT / 8);
         }
 
+        public bool Waiting = false;
+
         protected override void Update()
         {
             base.Update();
 
+            if (!sliderDone && Judgement.Result == HitResult.Miss && temporalSamples.Count > 0)
+                Samples = temporalSamples;
+
+            if (enemy != null && !enemy.Dead)
+                enemy.MoveTo(Position);
+
+            if (patternCreated && BulletCount == 0)
+            {
+                PatternCount--;
+                DeletePattern();
+            }
+
+            if (Waiting)
+            {
+
+            }
+
             if (HitObject.StartTime - TIME_PREEMPT <= Time.Current && !visable)
-            {
                 PatternStart();
-            }
 
-            if (HitObject.StartTime - (TIME_PREEMPT / 8) <= Time.Current)
-            {
+            if (!Pattern.IsSlider && !Pattern.IsSpinner && visable)
+                hitcircle();
+
+            if (Pattern.IsSlider && visable)
+                slider();
+
+            if (Pattern.IsSpinner && visable)
+                spinner();
+        }
+
+        private bool hasShot = false;
+        private bool sliderDone = false;
+        private int currentRepeat;
+
+        /// <summary>
+        /// All the hitcircle stuff
+        /// </summary>
+        private void hitcircle()
+        {
+            if (Pattern.StartTime - (TIME_PREEMPT / 8) <= Time.Current && hasShot && !sliderDone)
                 PatternPop();
+
+            if (HitObject.StartTime <= Time.Current && !hasShot)
+            {
+                WaitForJudge();
+                hasShot = true;
+                CreatePattern();
+            }
+        }
+
+        /// <summary>
+        /// All The Slider Stuff
+        /// </summary>
+        private void slider()
+        {
+            if (HitObject.StartTime <= Time.Current && !hasShot)
+            {
+                hasShot = true;
+                CreatePattern();
             }
 
-            if (HitObject.StartTime <= Time.Current && !patternCreated)
+            if (Pattern.EndTime - (TIME_PREEMPT / 8) <= Time.Current && hasShot && !sliderDone)
+                PatternPop();
+
+            if (Pattern.EndTime <= Time.Current && hasShot && !sliderDone)
             {
                 CreatePattern();
-                PlaySamples();
-                Alpha = 0;
+                WaitForJudge();
+                sliderDone = true;
             }
-            if (patternCreated)
+
+            double progress = MathHelper.Clamp((Time.Current - Pattern.StartTime) / Pattern.Duration, 0, 1);
+
+            int repeat = Pattern.RepeatAt(progress);
+            progress = Pattern.ProgressAt(progress);
+
+            if (repeat > currentRepeat)
             {
-                if (BulletCount == 0)
+                if (repeat < Pattern.RepeatCount)
                 {
-                    PatternCount--;
-                    Dispose();
+                    CreatePattern();
+                    if (temporalSamples.Count > 0)
+                        Samples = temporalSamples;
                 }
+                currentRepeat = repeat;
+            }
+            if (!sliderDone && HitObject.StartTime <= Time.Current)
+                UpdateProgress(progress, repeat);
+        }
+
+        public void UpdateProgress(double progress, int repeat)
+        {
+            Position = Pattern.Curve.PositionAt(progress);
+        }
+
+        /// <summary>
+        /// all the spinner stuff
+        /// </summary>
+        private void spinner()
+        {
+            if (Pattern.EndTime - (TIME_PREEMPT / 8) <= Time.Current && hasShot && !sliderDone)
+                PatternPop();
+
+            if (Pattern.StartTime <= Time.Current && !hasShot)
+            {
+                hasShot = true;
+                CreatePattern();
+            }
+            if (Pattern.EndTime <= Time.Current && hasShot)
+                WaitForJudge();
+        }
+
+        public void WaitForJudge()
+        {
+            Waiting = true;
+            FadeOutFromOne(TIME_FADEOUT);
+            ScaleTo(new Vector2(0.1f), TIME_FADEOUT);
+            if (enemy != null)
+            {
+                enemy.FadeOutFromOne(TIME_FADEOUT);
+                enemy.ScaleTo(new Vector2(0.1f), TIME_FADEOUT);
             }
         }
 
         protected void bulletAddRad(float speed, float angle)
         {
+            if (upwards && !VitaruRuleset.TouhosuMode)
+                angle += MathHelper.Pi;
             BulletCount++;
-
             DrawableBullet drawableBullet;
             VitaruPlayfield.vitaruPlayfield.Add(drawableBullet = new DrawableBullet(this)
             {
                 Origin = Anchor.Centre,
                 Depth = 5,
-                BulletColor = Pattern.PatternColor,
+                BulletColor = Pattern.ComboColour,
                 BulletAngleRadian = angle,
                 BulletSpeed = speed,// + PatternSpeed,
                 BulletWidth = Pattern.PatternBulletWidth,
                 BulletDamage = Pattern.PatternDamage,
                 DynamicBulletVelocity = Pattern.DynamicPatternVelocity,
+                Team = 1,
             });
-            drawableBullet.MoveTo(Pattern.PatternPosition);
+            drawableBullet.MoveTo(Position);
+        }
+
+        public void DeletePattern()
+        {
+            if (enemy != null)
+                enemy.LifetimeEnd = Time.Current + 50;
+            LifetimeEnd = Pattern.EndTime + 50;
         }
 
         public void CreatePattern()
         {
+            PlaySamples();
             patternCreated = true;
             PatternCount++;
             int patternID = Pattern.PatternID;
@@ -206,9 +386,9 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private float calculateDifficulty(float height, float speed, int quantity, bool aiming, int amountpattern, float bonus, int multiplied)
         {
             float difficulty = (float)(Math.Pow(1.25, (quantity / 10) + height) * Math.Pow(1.5, speed) * Math.Pow(1.1, amountpattern));
-            if(aiming)
+            if (aiming)
             {
-                 difficulty /= 1.5f;
+                difficulty /= 1.5f;
             }
             difficulty += bonus;
             difficulty *= multiplied;
@@ -269,14 +449,12 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         }
         public void PatternSpin()
         {
-            int numberbullets = (int)(30 * Pattern.PatternDifficulty);
-            int numberspins = (int)(Pattern.PatternDifficulty + 2) / 2;
-            float spinModifier = MathHelper.DegreesToRadians((float)(360 / numberspins));
-            float directionModifier = (float)(360 / numberbullets);
+            int numberbullets = (int)(30 * (Pattern.PatternDifficulty / 3) * (Pattern.PatternDuration / 1000));
+            int numberspirals = (int)Pattern.PatternDifficulty;
+            float spinModifier = MathHelper.DegreesToRadians(360 / numberspirals);
+            float directionModifier = 360 / numberbullets;
             directionModifier = MathHelper.DegreesToRadians(directionModifier);
-            double originalDuration = Pattern.PatternDuration;
-            Pattern.PatternDuration /= numberbullets;
-            Pattern.PatternDuration /= Pattern.PatternRepeatTimes;
+            double modifiedDuration = Pattern.PatternDuration / numberbullets / Pattern.PatternRepeatTimes;
             int i = 1;
             while (i <= Pattern.PatternRepeatTimes)
             {
@@ -285,10 +463,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                 {
                     Scheduler.AddDelayed(() =>
                     {
-                        for (int k = 1; k <= numberspins; k++)
+                        for (int k = 1; k <= numberspirals; k++)
                             bulletAddRad(Pattern.PatternSpeed, Pattern.PatternAngleRadian + (spinModifier * (k - 1)));
                         Pattern.PatternAngleRadian -= directionModifier;
-                    }, Pattern.PatternDuration * (j - 1) + (originalDuration * (i - 1)));
+                    }, modifiedDuration * (j - 1) + (modifiedDuration * (i - 1)));
                     j++;
                 }
                 i++;
@@ -302,7 +480,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             float originalDirection = 0f;
             int numberbullets;
             int totalbullets = 0;
-            Pattern.PatternDuration /= numberwaves;
+            double duration = Pattern.PatternDuration / numberwaves;
             float speedModifier;
             for (int i = 1; i <= numberwaves; i++)
             {
@@ -321,7 +499,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                     );
                 }
                 originalDirection = 0.05f * i;
-            } 
+            }
             ScorePattern = (int)calculateDifficulty(Pattern.PatternBulletWidth, Pattern.PatternSpeed, totalbullets, true, PatternCount, 0, 1);
         }
 
@@ -332,7 +510,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             float originalDirection = 0.01f * (numberbullets / 2);
             float speedModifier = 0f;
             float directionModifier = 0f;
-            for(int i = 1; i <= numberbullets; i++)
+            for (int i = 1; i <= numberbullets; i++)
             {
                 if (lefttoright)
                 {

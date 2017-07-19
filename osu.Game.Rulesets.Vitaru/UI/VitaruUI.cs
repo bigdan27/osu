@@ -17,8 +17,8 @@ namespace osu.Game.Rulesets.Vitaru.UI
         private bool debugInfo = true;
 
         //User stuff
-        private SpriteText energy;
-        private Container energyBar;
+        private SpriteText graze;
+        private Container grazeBar;
         private Container friendlyBar;
         private SpriteText health;
         private Container healthBar;
@@ -26,10 +26,11 @@ namespace osu.Game.Rulesets.Vitaru.UI
         private Triangles energyTriangles;
         private Triangles healthTriangles;
         private float textSize = 40;
-        private Box energyBarBox;
+        private Box grazeBarBox;
         private Box healthBarBox;
         private Box friendlyBarBox;
         private Box opponentBarBox;
+        private Box backBox;
 
         //Debug section
         private Container debugContainer;
@@ -44,27 +45,27 @@ namespace osu.Game.Rulesets.Vitaru.UI
         {
             DrawableBullet.BulletCount = 0;
             base.LoadComplete();
-            RelativeSizeAxes = Axes.Both;
+            Size = new Vector2(512, 384);
             Children = new Drawable[]
             {
-                new Box
+                backBox = new Box
                 {
                     Alpha = 0.25f,
                     Colour = Color4.Black,
                     Depth = 10,
                     Position = new Vector2(10),
-                    Size = new Vector2(512 , 820),
+                    Size = new Vector2(512 , 384),
                     Anchor = Anchor.TopLeft,
                     Origin = Anchor.TopLeft,
                 },
-                energy = new SpriteText
+                graze = new SpriteText
                 {
                     Anchor = Anchor.CentreRight,
                     Origin = Anchor.CentreLeft,
                     Position = new Vector2(10 , 0),
                     TextSize = textSize,
                     Colour = Color4.SkyBlue,
-                    Text = "Energy Value Here",
+                    Text = "Graze Value Here",
                 },
                 health = new SpriteText
                 {
@@ -75,19 +76,19 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Colour = Color4.Green,
                     Text = "Health Value Here",
                 },
-                energyBar = new Container
+                grazeBar = new Container
                 {
                     Masking = true,
                     Alpha = 1f,
                     Depth = 1,
                     Anchor = Anchor.CentreRight,
-                    Origin = Anchor.CentreRight,
+                    Origin = Anchor.CentreLeft,
                     Colour = Color4.SkyBlue,
-                    Size = new Vector2(10,820),
+                    Size = new Vector2(10,384),
                     Position = new Vector2(0),
                     Children = new Drawable[]
                     {
-                        energyBarBox = new Box
+                        grazeBarBox = new Box
                         {
                             RelativeSizeAxes = Axes.Both,
                             Colour = Color4.White,
@@ -114,9 +115,9 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Alpha = 1f,
                     Depth = 0,
                     Anchor = Anchor.CentreLeft,
-                    Origin = Anchor.CentreLeft,
+                    Origin = Anchor.CentreRight,
                     Colour = Color4.LightGreen,
-                    Size = new Vector2(10,820),
+                    Size = new Vector2(10,384),
                     Position = new Vector2(0),
                     Children = new Drawable[]
                     {
@@ -147,9 +148,9 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Alpha = 1f,
                     Depth = 0,
                     Anchor = Anchor.TopCentre,
-                    Origin = Anchor.TopCentre,
-                    Colour = Color4.YellowGreen,
-                    Size = new Vector2(532 , 10),
+                    Origin = Anchor.BottomCentre,
+                    Colour = Color4.DarkGreen,
+                    Size = new Vector2(552 , 10),
                     Children = new Drawable[]
                     {
                         opponentBarBox = new Box
@@ -165,9 +166,9 @@ namespace osu.Game.Rulesets.Vitaru.UI
                     Alpha = 1f,
                     Depth = 0,
                     Anchor = Anchor.BottomCentre,
-                    Origin = Anchor.BottomCentre,
+                    Origin = Anchor.TopCentre,
                     Colour = Color4.Red,
-                    Size = new Vector2(532 , 10),
+                    Size = new Vector2(552 , 10),
                     Children = new Drawable[]
                     {
                         friendlyBarBox = new Box
@@ -220,7 +221,10 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 },
             };
 
-            if(debugInfo)
+            if (VitaruRuleset.TouhosuMode)
+                backBox.Size = new Vector2(512, 820);
+
+            if (debugInfo)
             {
                 frameTime.Alpha = 1;
             }
@@ -242,11 +246,8 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 health.Colour = Color4.Black;
 
             healthBar.Colour = health.Colour;
-            energyBar.ResizeTo(new Vector2(10 , VitaruPlayer.PlayerEnergy * 8.20f) , 100 , EasingTypes.OutCubic);
             healthBar.ResizeTo(new Vector2(10, VitaruPlayer.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
-            energyBarBox.ResizeTo(new Vector2(10, VitaruPlayer.PlayerEnergy * 8.20f), 100, EasingTypes.OutCubic);
             healthBarBox.ResizeTo(new Vector2(10, VitaruPlayer.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
-            energy.Text = (VitaruPlayer.PlayerEnergy).ToString() + "% Charge";
             health.Text = (Math.Floor(VitaruPlayer.PlayerHealth)).ToString() + "% Health";
             frameTime.Text = (Math.Floor((float)Clock.ElapsedFrameTime)).ToString() + "ms Delay";
             bulletsOnScreen.Text = DrawableBullet.BulletCount + " bullets on screen";
