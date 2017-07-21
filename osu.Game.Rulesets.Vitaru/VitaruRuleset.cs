@@ -26,6 +26,8 @@ namespace osu.Game.Rulesets.Vitaru
 
         public override HitRenderer CreateHitRendererWith(WorkingBeatmap beatmap, bool isForCurrentRuleset) => new VitaruHitRenderer(beatmap, isForCurrentRuleset);
 
+        public override int LegacyID => 0;
+
         public override string Description => "vitaru!";
 
         public override DifficultyCalculator CreateDifficultyCalculator(Beatmap beatmap) => new VitaruDifficultyCalculator(beatmap);
