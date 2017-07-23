@@ -29,13 +29,16 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
         public double PatternRepeatDelay { get; set; } = 0;
         public bool DynamicPatternVelocity { get; set; } = false;
         public int PatternTeam { get; set; }
-        public Pattern() : base () { }
+        public Pattern() : base ()
+        {
+
+        }
         public bool IsSlider { get; set; } = false;
         public bool IsSpinner { get; set; } = false;
         public List<SampleInfoList> RepeatSamples { get; set; } = new List<SampleInfoList>();
         private const float base_scoring_distance = 100;
         public readonly SliderCurve Curve = new SliderCurve();
-        public double EndTime;
+        public double EndTime { get; set; }
         public double Duration => EndTime - StartTime;
         public int RepeatCount { get; set; } = 1;
         public double Velocity;

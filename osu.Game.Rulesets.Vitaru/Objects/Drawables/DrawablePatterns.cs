@@ -175,9 +175,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             if (Pattern.IsSlider)
                 Pattern.EndTime = Pattern.StartTime + Pattern.RepeatCount * Pattern.Curve.Distance / Pattern.Velocity;
-
-            if (Pattern.IsSpinner)
-                Pattern.EndTime = (HitObject as IHasEndTime)?.EndTime ?? Pattern.StartTime;
         }
 
         private Vector2 GetPatternStartPosition()
