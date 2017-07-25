@@ -21,7 +21,6 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         protected Pattern Pattern;
         private bool visable = false;
         private bool patternCreated = false;
-        private Vector2 patternStartPosition;
         public bool DummyMode = false;
 
         public int BulletCount = 0;
@@ -106,31 +105,31 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             if (!VitaruRuleset.TouhosuMode)
                 Children = new Drawable[]
                 {
-                new Container
-                {
-                    Masking = true,
-                    AutoSizeAxes = Axes.Both,
-                    Origin = Anchor.Centre,
-                    Anchor = Anchor.Centre,
-                    BorderThickness = 10,
-                    Depth = 5,
-                    BorderColour = Pattern.ComboColour,
-                    Alpha = 1f,
-                    CornerRadius = 16,
-                    Children = new[]
+                    new Container
                     {
-                        new Box
+                        Masking = true,
+                        AutoSizeAxes = Axes.Both,
+                        Origin = Anchor.Centre,
+                        Anchor = Anchor.Centre,
+                        BorderThickness = 10,
+                        Depth = 5,
+                        BorderColour = Pattern.ComboColour,
+                        Alpha = 1f,
+                        CornerRadius = 16,
+                        Children = new[]
                         {
-                            Colour = Color4.White,
-                            Alpha = 1,
-                            Width = 16 * 2,
-                            Height = 16 * 2,
-                            Depth = 5,
+                            new Box
+                            {
+                                Colour = Color4.White,
+                                Alpha = 1,
+                                Width = 16 * 2,
+                                Height = 16 * 2,
+                                Depth = 5,
+                            },
                         },
                     },
-                },
-                new CircularContainer
-                {
+                    new CircularContainer
+                    {
                         Origin = Anchor.Centre,
                         Anchor = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
@@ -143,7 +142,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                             Colour = (Pattern.ComboColour).Opacity(0.5f),
                             Radius = 2f,
                         }
-                }
+                    }
                 };
             else
             {
@@ -161,9 +160,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             }
 
             visable = true;
-            GetPatternStartPosition();
-            Position = patternStartPosition;
-            if (patternStartPosition.Y > 512)
+            Position = GetPatternStartPosition();
+            if (Position.Y > 512)
                 upwards = true;
             MoveTo(Pattern.PatternPosition, TIME_PREEMPT);
             FadeInFromZero(TIME_FADEIN);
@@ -182,16 +180,10 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         private Vector2 GetPatternStartPosition()
         {
-            if (Pattern.PatternPosition.X <= (384 / 2) && Pattern.PatternPosition.Y <= (512 / 2))
-                patternStartPosition = Pattern.PatternPosition - new Vector2(384 / 2, 512 / 2);
-            else if (Pattern.PatternPosition.X > (384 / 2) && Pattern.PatternPosition.Y <= (512 / 2))
-                patternStartPosition = new Vector2(Pattern.PatternPosition.X + 384 / 2, Pattern.PatternPosition.Y - 512 / 2);
-            else if (Pattern.PatternPosition.X > (384 / 2) && Pattern.PatternPosition.Y > (512 / 2))
-                patternStartPosition = Pattern.PatternPosition + new Vector2(384 / 2, 512 / 2);
-            else
-                patternStartPosition = new Vector2(Pattern.PatternPosition.X - 384 / 2, Pattern.PatternPosition.Y + 512 / 2);
+            Vector2 position = Pattern.PatternPosition - VitaruPlayfield.BASE_SIZE / 2;
+            double angle = Math.Atan2(position.X, position.Y);
 
-            return patternStartPosition;
+            return new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * VitaruPlayfield.BASE_SIZE * 2 + VitaruPlayfield.BASE_SIZE / 2;
         }
 
         protected void PatternPop()
