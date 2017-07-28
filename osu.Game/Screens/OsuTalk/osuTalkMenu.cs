@@ -32,6 +32,10 @@ namespace osu.Game.Screens.OsuTalk
 
         private Sprite pippi;
 
+        private DependencyContainer dependencies;
+        protected override IReadOnlyDependencyContainer CreateLocalDependencies(IReadOnlyDependencyContainer parent) =>
+            dependencies = new DependencyContainer(base.CreateLocalDependencies(parent));
+
         [BackgroundDependencyLoader]
         private void load(TextureStore textures)
         {

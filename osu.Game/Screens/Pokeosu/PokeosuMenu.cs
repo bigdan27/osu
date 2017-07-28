@@ -59,8 +59,12 @@ namespace osu.Game.Screens.Pokeosu
         public static ResourceStore<byte[]> PokeosuResources;
         public static TextureStore PokeosuTextures;
 
+        private DependencyContainer dependencies;
+        protected override IReadOnlyDependencyContainer CreateLocalDependencies(IReadOnlyDependencyContainer parent) =>
+            dependencies = new DependencyContainer(base.CreateLocalDependencies(parent));
+
         [BackgroundDependencyLoader]
-        private void load(TextureStore textures, Storage storage, DependencyContainer dependencies, APIAccess api)
+        private void load(TextureStore textures, Storage storage, APIAccess api)
         {
             if (!AssetsLoaded)
             {
