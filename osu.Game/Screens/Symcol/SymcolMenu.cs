@@ -22,6 +22,7 @@ using osu.Game.Screens.Symcol.Screens;
 using osu.Game.Screens.Multiplayer;
 using osu.Game.Screens.Edit;
 using osu.Game.Screens.Select;
+using SQLite.Net;
 
 namespace osu.Game.Screens.Symcol
 {
@@ -44,7 +45,7 @@ namespace osu.Game.Screens.Symcol
         }
 
         [BackgroundDependencyLoader]
-        private void load(BeatmapManager beatmaps, BeatmapStore store, AudioManager audio)
+        private void load(BeatmapManager beatmaps, AudioManager audio)
         {
 
             if (manager == null)
@@ -52,7 +53,7 @@ namespace osu.Game.Screens.Symcol
 
             trackManager = audio.Track;
             if (database == null)
-                database = store;
+                database = BeatmapManager.BeatmapStore;
             preloadSongSelect();
 
             Children = new Drawable[]
@@ -245,7 +246,7 @@ namespace osu.Game.Screens.Symcol
             changeBackground(Beatmap);
             Content.FadeInFromZero(250);
         }
-
+        
         protected override void OnResuming(Screen last)
         {
             preloadSongSelect();
@@ -270,7 +271,6 @@ namespace osu.Game.Screens.Symcol
         }
 
         private ScheduledDelegate selectionChangedDebounce;
-
         private BeatmapInfo selectionChangeNoBounce;
         private BeatSyncedContainer background;
         private BeatmapManager manager;

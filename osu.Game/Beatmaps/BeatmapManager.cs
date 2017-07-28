@@ -51,6 +51,8 @@ namespace osu.Game.Beatmaps
 
         private readonly BeatmapStore beatmaps;
 
+        public static BeatmapStore BeatmapStore;
+
         // ReSharper disable once NotAccessedField.Local (we should keep a reference to this so it is not finalised)
         private BeatmapIPCChannel ipc;
 
@@ -59,6 +61,8 @@ namespace osu.Game.Beatmaps
             beatmaps = new BeatmapStore(connection);
             beatmaps.BeatmapSetAdded += s => BeatmapSetAdded?.Invoke(s);
             beatmaps.BeatmapSetRemoved += s => BeatmapSetRemoved?.Invoke(s);
+            BeatmapStore = beatmaps;
+            
 
             this.storage = storage;
             this.files = files;
