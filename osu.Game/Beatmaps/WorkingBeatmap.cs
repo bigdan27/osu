@@ -70,6 +70,7 @@ namespace osu.Game.Beatmaps
             }
         }
 
+        public static Track PlayingTrack;
         private Track track;
         private readonly object trackLock = new object();
         public Track Track
@@ -82,6 +83,7 @@ namespace osu.Game.Beatmaps
 
                     track = GetTrack();
                     applyRateAdjustments();
+                    PlayingTrack = track;
                     return track;
                 }
             }
@@ -92,7 +94,11 @@ namespace osu.Game.Beatmaps
         public void TransferTo(WorkingBeatmap other)
         {
             if (track != null && BeatmapInfo.AudioEquals(other.BeatmapInfo))
+            {
                 other.track = track;
+                PlayingTrack = track;
+            }
+                
 
             if (background != null && BeatmapInfo.BackgroundEquals(other.BeatmapInfo))
                 other.background = background;
