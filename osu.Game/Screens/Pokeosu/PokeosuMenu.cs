@@ -59,7 +59,7 @@ namespace osu.Game.Screens.Pokeosu
         public static ResourceStore<byte[]> PokeosuResources;
         public static TextureStore PokeosuTextures;
 
-        protected override DependencyContainer CreateLocalDependencies(DependencyContainer parent) => new DependencyContainer(parent);
+        //protected override DependencyContainer CreateLocalDependencies(DependencyContainer parent) => new DependencyContainer(parent);
 
         [BackgroundDependencyLoader]
         private void load(TextureStore textures, Storage storage, DependencyContainer dependencies, APIAccess api)
@@ -429,7 +429,7 @@ namespace osu.Game.Screens.Pokeosu
                                 new Box
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    ColourInfo = ColourInfo.GradientVertical(Color4.DarkBlue , Color4.Blue),
+                                    Colour = ColourInfo.GradientVertical(Color4.DarkBlue , Color4.Blue),
                                 },
                                 new Container
                                 {
@@ -526,19 +526,19 @@ namespace osu.Game.Screens.Pokeosu
 
         private void hiScreen()
         {
-            StartScreen.FadeOutFromOne(1000, EasingTypes.InOutQuad);
-            IntroScreen.FadeInFromZero(1000, EasingTypes.InOutQuad);
+            StartScreen.FadeOutFromOne(1000, Easing.InOutQuad);
+            IntroScreen.FadeInFromZero(1000, Easing.InOutQuad);
         }
         private void welcomeScreen()
         {
-            hi.FadeOutFromOne(500, EasingTypes.InOutQuad);
-            ready.FadeInFromZero(500, EasingTypes.InOutQuad);
+            hi.FadeOutFromOne(500, Easing.InOutQuad);
+            ready.FadeInFromZero(500, Easing.InOutQuad);
             nextButton.Action = playerPage;
         }
         private void playerPage()
         {
-            IntroScreen.FadeOutFromOne(1000, EasingTypes.InOutQuad);
-            PlayerScreen.FadeInFromZero(1000, EasingTypes.InOutQuad);
+            IntroScreen.FadeOutFromOne(1000, Easing.InOutQuad);
+            PlayerScreen.FadeInFromZero(1000, Easing.InOutQuad);
         }
     }
 }

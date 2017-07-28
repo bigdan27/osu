@@ -17,7 +17,7 @@ namespace osu.Game.Screens.OsuTalk
 
             Scale = new Vector2(1);
             using (BeginDelayedSequence(100))
-                ScaleTo(1.005f , Math.Max(0, timingPoint.BeatLength - 100) , EasingTypes.OutQuad);
+                this.ScaleTo(1.005f , Math.Max(0, timingPoint.BeatLength - 100) , Easing.OutQuad);
         }
     }
 }

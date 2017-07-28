@@ -120,7 +120,7 @@ namespace osu.Game.Rulesets.Shape.Objects.Drawables
         private void start()
         {
             started = true;
-            FadeIn(TIME_FADEIN);
+            this.FadeIn(TIME_FADEIN);
             baseDial.StartSpinning(TIME_PREEMPT);
             switch (shape.ShapeID)
             {

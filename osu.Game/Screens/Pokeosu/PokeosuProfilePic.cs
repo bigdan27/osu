@@ -42,7 +42,7 @@ namespace osu.Game.Screens.Pokeosu
 
         protected override bool OnDragEnd(InputState state)
         {
-            dragContainer.MoveTo(Vector2.Zero, 800, EasingTypes.OutElastic);
+            dragContainer.MoveTo(Vector2.Zero, 800, Easing.OutElastic);
             return base.OnDragEnd(state);
         }
 

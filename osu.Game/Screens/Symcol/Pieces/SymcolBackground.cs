@@ -18,7 +18,7 @@ namespace osu.Game.Screens.Symcol.Pieces
             Scale = new Vector2(1);
             Colour = Color4.White;
             using (BeginDelayedSequence(100))
-                ScaleTo(1.0025f , Math.Max(0, timingPoint.BeatLength - 100) , EasingTypes.OutQuad);
+                this.ScaleTo(1.0025f , Math.Max(0, timingPoint.BeatLength - 100) , Easing.OutQuad);
         }
     }
 }

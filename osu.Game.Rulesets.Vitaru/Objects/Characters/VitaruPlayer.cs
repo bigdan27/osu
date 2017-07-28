@@ -75,13 +75,13 @@ namespace osu.Game.Rulesets.Vitaru.Objects
 
             double beat_in_time = 60;
 
-            CharacterSign.ScaleTo(1 - 0.02f * amplitudeAdjust, beat_in_time, EasingTypes.Out);
+            CharacterSign.ScaleTo(1 - 0.02f * amplitudeAdjust, beat_in_time, Easing.Out);
             using (CharacterSign.BeginDelayedSequence(beat_in_time))
-                CharacterSign.ScaleTo(1, beatLength * 2, EasingTypes.OutQuint);
+                CharacterSign.ScaleTo(1, beatLength * 2, Easing.OutQuint);
 
             if (effectPoint.KiaiMode)
             {
-                CharacterSign.FadeTo(0.25f * amplitudeAdjust, beat_in_time, EasingTypes.Out);
+                CharacterSign.FadeTo(0.25f * amplitudeAdjust, beat_in_time, Easing.Out);
                 using (CharacterSign.BeginDelayedSequence(beat_in_time))
                     CharacterSign.FadeOut(beatLength);
             }

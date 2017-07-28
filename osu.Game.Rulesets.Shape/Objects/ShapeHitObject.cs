@@ -4,6 +4,7 @@ using osu.Game.Rulesets.Shape.Objects.Drawables;
 using OpenTK.Graphics;
 using osu.Game.Database;
 using osu.Game.Beatmaps.ControlPoints;
+using osu.Game.Beatmaps;
 
 namespace osu.Game.Rulesets.Shape.Objects
 {

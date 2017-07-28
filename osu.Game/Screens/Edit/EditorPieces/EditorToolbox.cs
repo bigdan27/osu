@@ -78,13 +78,13 @@ namespace osu.Game.Screens.Edit.EditorPieces
         {
             MinimizeButton.Icon = FontAwesome.fa_chevron_right;
             MinimizeButton.Action = Maximize;
-            ResizeTo(new Vector2(120, 30), 400, EasingTypes.OutSine);
+            this.ResizeTo(new Vector2(120, 30), 400, Easing.OutSine);
         }
         public void Maximize()
         {
             MinimizeButton.Icon = FontAwesome.fa_chevron_down;
             MinimizeButton.Action = Minimize;
-            ResizeTo(new Vector2(120, 140), 400, EasingTypes.OutSine);
+            this.ResizeTo(new Vector2(120, 140), 400, Easing.OutSine);
         }
     }
 }

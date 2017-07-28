@@ -1,4 +1,5 @@
 ﻿using osu.Framework.Audio.Track;
+using osu.Framework.Graphics;
 using osu.Game.Beatmaps.ControlPoints;
 using System;
 using System.Collections.Generic;

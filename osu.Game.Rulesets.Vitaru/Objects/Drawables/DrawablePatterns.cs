@@ -165,8 +165,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             Position = patternStartPosition;
             if (patternStartPosition.Y > 512)
                 upwards = true;
-            MoveTo(Pattern.PatternPosition, TIME_PREEMPT);
-            FadeInFromZero(TIME_FADEIN);
+            this.MoveTo(Pattern.PatternPosition, TIME_PREEMPT);
+            this.FadeInFromZero(TIME_FADEIN);
         }
 
         protected override void UpdateState(ArmedState state)
@@ -196,7 +196,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         protected void PatternPop()
         {
-            ScaleTo(0.1f, TIME_PREEMPT / 8);
+            this.ScaleTo(0.1f, TIME_PREEMPT / 8);
         }
 
         public bool Waiting = false;
@@ -320,8 +320,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         public void WaitForJudge()
         {
             Waiting = true;
-            FadeOutFromOne(TIME_FADEOUT);
-            ScaleTo(new Vector2(0.1f), TIME_FADEOUT);
+            this.FadeOutFromOne(TIME_FADEOUT);
+            this.ScaleTo(new Vector2(0.1f), TIME_FADEOUT);
             if (enemy != null)
             {
                 enemy.FadeOutFromOne(TIME_FADEOUT);

@@ -8,6 +8,7 @@ using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Beatmaps.ControlPoints;
 using osu.Game.Database;
 using osu.Game.Rulesets.Objects;
+using osu.Game.Beatmaps;
 
 namespace osu.Game.Rulesets.Vitaru.Objects.Projectiles
 {

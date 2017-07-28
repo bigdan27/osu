@@ -31,7 +31,7 @@ namespace osu.Game.Screens.Symcol
 
         private OsuLogo Logo;
 
-        private BeatmapDatabase database;
+        private BeatmapStore database;
         private TrackManager trackManager;
         private static readonly Vector2 background_blur = new Vector2(10);
         protected override BackgroundScreen CreateBackground() => new BackgroundScreenBeatmap(Beatmap);
@@ -44,11 +44,15 @@ namespace osu.Game.Screens.Symcol
         }
 
         [BackgroundDependencyLoader]
-        private void load(BeatmapDatabase beatmaps, AudioManager audio)
+        private void load(BeatmapManager beatmaps, BeatmapStore store, AudioManager audio)
         {
+
+            if (manager == null)
+                manager = beatmaps;
+
             trackManager = audio.Track;
             if (database == null)
-                database = beatmaps;
+                database = store;
             preloadSongSelect();
 
             Children = new Drawable[]
@@ -196,14 +200,14 @@ namespace osu.Game.Screens.Symcol
         private void open(Container container)
         {
             Logo.Action = () => close(container);
-            container.ScaleTo(new Vector2(0.4f) , animationTime, EasingTypes.InOutBack);
+            container.ScaleTo(new Vector2(0.4f) , animationTime, Easing.InOutBack);
             foreach(Drawable draw in Children)
             {
                 if (draw is SymcolButton)
                 {
                     SymcolButton button = draw as SymcolButton;
-                    button.MoveTo(button.ButtonPosition , animationTime, EasingTypes.InOutBack);
-                    button.ScaleTo(new Vector2(1), animationTime, EasingTypes.InOutBack);
+                    button.MoveTo(button.ButtonPosition , animationTime, Easing.InOutBack);
+                    button.ScaleTo(new Vector2(1), animationTime, Easing.InOutBack);
                 }
             }
         }
@@ -211,14 +215,14 @@ namespace osu.Game.Screens.Symcol
         private void close(Container container)
         {
             Logo.Action = () => open(container);
-            container.ScaleTo(new Vector2(1.2f), animationTime, EasingTypes.InOutBack);
+            container.ScaleTo(new Vector2(1.2f), animationTime, Easing.InOutBack);
             foreach (Drawable draw in Children)
             {
                 if (draw is SymcolButton)
                 {
                     SymcolButton button = draw as SymcolButton;
-                    button.MoveTo(new Vector2(0) , animationTime, EasingTypes.InOutBack);
-                    button.ScaleTo(new Vector2(0.1f), animationTime, EasingTypes.InOutBack);
+                    button.MoveTo(new Vector2(0) , animationTime, Easing.InOutBack);
+                    button.ScaleTo(new Vector2(0.1f), animationTime, Easing.InOutBack);
                 }
             }
         }
@@ -249,12 +253,12 @@ namespace osu.Game.Screens.Symcol
             ensurePlayingSelected();
             base.OnResuming(last);
             Content.FadeIn(250);
-            Content.ScaleTo(1, 250, EasingTypes.OutSine);
+            Content.ScaleTo(1, 250, Easing.OutSine);
         }
 
         protected override void OnSuspending(Screen next)
         {
-            Content.ScaleTo(1.1f, 250, EasingTypes.InSine);
+            Content.ScaleTo(1.1f, 250, Easing.InSine);
             Content.FadeOut(250);
             base.OnSuspending(next);
         }
@@ -269,12 +273,13 @@ namespace osu.Game.Screens.Symcol
 
         private BeatmapInfo selectionChangeNoBounce;
         private BeatSyncedContainer background;
+        private BeatmapManager manager;
 
         private void selectionChanged(BeatmapInfo beatmap)
         {
             selectionChangedDebounce?.Cancel();
 
-            if (beatmap.Equals(Beatmap?.BeatmapInfo))
+            if (beatmap?.Equals(Beatmap.Value.BeatmapInfo) != true)
                 return;
 
             bool beatmapSetChange = false;
@@ -285,20 +290,18 @@ namespace osu.Game.Screens.Symcol
 
             selectionChangedDebounce = Scheduler.AddDelayed(delegate
             {
-                Beatmap = database.GetWorkingBeatmap(beatmap, Beatmap);
+                Beatmap.Value = manager.GetWorkingBeatmap(beatmap, Beatmap);
                 ensurePlayingSelected(beatmapSetChange);
             }, 100);
         }
 
         private void ensurePlayingSelected(bool preview = false)
         {
-            Track track = Beatmap?.Track;
+            Track track = Beatmap.Value.Track;
 
-            if (track != null)
+            if (!track.IsRunning)
             {
-                trackManager.SetExclusive(track);
-                if (preview)
-                    track.Seek(Beatmap.Metadata.PreviewTime);
+                if (preview) track.Seek(Beatmap.Value.Metadata.PreviewTime);
                 track.Start();
             }
         }

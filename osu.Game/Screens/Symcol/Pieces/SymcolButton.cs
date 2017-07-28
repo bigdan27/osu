@@ -74,7 +74,7 @@ namespace osu.Game.Screens.Symcol.Pieces
                         new Box
                         {
                             RelativeSizeAxes = Axes.Both,
-                            ColourInfo = ColourInfo.GradientVertical(ButtonColorTop , ButtonColorBottom),
+                            Colour = ColourInfo.GradientVertical(ButtonColorTop , ButtonColorBottom),
                         },
                         hover = new Box
                         {
@@ -127,9 +127,9 @@ namespace osu.Game.Screens.Symcol.Pieces
 
                 if (beatIndex < 0) return;
 
-                ScaleTo(1 - 0.02f * amplitudeAdjust, early_activation, EasingTypes.Out);
+                this.ScaleTo(1 - 0.02f * amplitudeAdjust, early_activation, Easing.Out);
                 using (BeginDelayedSequence(early_activation))
-                    ScaleTo(1, beatLength * 2, EasingTypes.OutQuint);
+                    this.ScaleTo(1, beatLength * 2, Easing.OutQuint);
             }
         }
 
@@ -143,24 +143,24 @@ namespace osu.Game.Screens.Symcol.Pieces
 
         protected override bool OnHover(InputState state)
         {
-            hover.FadeTo(0.25f , 500, EasingTypes.OutQuint);
+            hover.FadeTo(0.25f , 500, Easing.OutQuint);
             recieveInput = true;
             return base.OnHover(state);
         }
 
         protected override void OnHoverLost(InputState state)
         {
-            hover.FadeOut(500, EasingTypes.OutQuint);
+            hover.FadeOut(500, Easing.OutQuint);
             recieveInput = false;
             base.OnHoverLost(state);
         }
 
         protected override bool OnMouseDown(InputState state, MouseDownEventArgs args)
         {
-            content.ScaleTo(0.75f, 2000, EasingTypes.OutQuint);
+            content.ScaleTo(0.75f, 2000, Easing.OutQuint);
             if (Enabled.Value)
             {
-                hover.FlashColour(Color4.White.Opacity(0.25f), 800, EasingTypes.OutQuint);
+                hover.FlashColour(Color4.White.Opacity(0.25f), 800, Easing.OutQuint);
                 Action?.Invoke();
             }
                 
@@ -169,7 +169,7 @@ namespace osu.Game.Screens.Symcol.Pieces
 
         protected override bool OnMouseUp(InputState state, MouseUpEventArgs args)
         {
-            content.ScaleTo(1, 1000, EasingTypes.OutElastic);
+            content.ScaleTo(1, 1000, Easing.OutElastic);
             return base.OnMouseUp(state, args);
         }
 

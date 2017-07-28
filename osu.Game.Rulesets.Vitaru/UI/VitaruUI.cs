@@ -246,8 +246,8 @@ namespace osu.Game.Rulesets.Vitaru.UI
                 health.Colour = Color4.Black;
 
             healthBar.Colour = health.Colour;
-            healthBar.ResizeTo(new Vector2(10, VitaruPlayer.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
-            healthBarBox.ResizeTo(new Vector2(10, VitaruPlayer.PlayerHealth * 8.20f), 100, EasingTypes.OutCubic);
+            healthBar.ResizeTo(new Vector2(10, VitaruPlayer.PlayerHealth * 8.20f), 100, Easing.OutCubic);
+            healthBarBox.ResizeTo(new Vector2(10, VitaruPlayer.PlayerHealth * 8.20f), 100, Easing.OutCubic);
             health.Text = (Math.Floor(VitaruPlayer.PlayerHealth)).ToString() + "% Health";
             frameTime.Text = (Math.Floor((float)Clock.ElapsedFrameTime)).ToString() + "ms Delay";
             bulletsOnScreen.Text = DrawableBullet.BulletCount + " bullets on screen";

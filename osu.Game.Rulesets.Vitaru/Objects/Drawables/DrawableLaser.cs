@@ -49,7 +49,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
         private void fadeOut()
         {
             if (Alpha == 1)
-                FadeOut(500);
+                this.FadeOut(500);
         }
 
         internal void DeleteLaser()

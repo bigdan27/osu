@@ -57,7 +57,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
             bulletGlow.Alpha = 0.75f;
             using (BeginDelayedSequence(100))
-                bulletGlow.FadeTo(0.25f, Math.Max(0, timingPoint.BeatLength - 100), EasingTypes.OutSine);
+                bulletGlow.FadeTo(0.25f, Math.Max(0, timingPoint.BeatLength - 100), Easing.OutSine);
 
             if (effectPoint.KiaiMode && bulletCircle.Alpha == 1)
             {
@@ -126,8 +126,8 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
                         Texture = VitaruRuleset.VitaruTextures.Get("bulletKiai"),
                 }
             };
-            bulletCircle.FadeInFromZero(pattern.TIME_PREEMPT / 8, EasingTypes.OutCubic);
-            bulletCircle.ScaleTo(new Vector2(1), pattern.TIME_PREEMPT / 8, EasingTypes.OutCubic);
+            bulletCircle.FadeInFromZero(pattern.TIME_PREEMPT / 8, Easing.OutCubic);
+            bulletCircle.ScaleTo(new Vector2(1), pattern.TIME_PREEMPT / 8, Easing.OutCubic);
         }
 
         public Vector2 GetBulletVelocity()
@@ -154,7 +154,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
             {
                 AlwaysPresent = true;
                 BulletDeleteTime = Time.Current + 200;
-                FadeOutFromOne(200);
+                this.FadeOutFromOne(200);
                 Hit();
             }
             MoveBullet();
@@ -162,7 +162,7 @@ namespace osu.Game.Rulesets.Vitaru.Objects.Drawables
 
         public void MoveBullet()
         {
-            MoveToOffset(new Vector2((BulletVelocity.X * BulletSpeedModifier) * (float)Clock.ElapsedFrameTime, (BulletVelocity.Y * BulletSpeedModifier) * (float)Clock.ElapsedFrameTime));
+            this.MoveToOffset(new Vector2((BulletVelocity.X * BulletSpeedModifier) * (float)Clock.ElapsedFrameTime, (BulletVelocity.Y * BulletSpeedModifier) * (float)Clock.ElapsedFrameTime));
         }
 
         public void DeleteBullet(bool miss = false)
