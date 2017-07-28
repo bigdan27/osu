@@ -58,7 +58,7 @@ namespace osu.Game.Overlays.Profile
                         new Box
                         {
                             RelativeSizeAxes = Axes.Both,
-                            ColourInfo = ColourInfo.GradientVertical(Color4.Black.Opacity(0.1f), Color4.Black.Opacity(0.75f))
+                            Colour = ColourInfo.GradientVertical(Color4.Black.Opacity(0.1f), Color4.Black.Opacity(0.75f))
                         },
                         new Container
                         {
@@ -129,7 +129,7 @@ namespace osu.Game.Overlays.Profile
                                             Origin = Anchor.BottomLeft,
                                             Y = -48
                                         },
-                                        countryFlag = new DrawableFlag(user.Country?.FlagName ?? "__")
+                                        countryFlag = new DrawableFlag(user.Country?.FlagName)
                                         {
                                             Anchor = Anchor.BottomLeft,
                                             Origin = Anchor.BottomLeft,
@@ -517,13 +517,13 @@ namespace osu.Game.Overlays.Profile
 
                 protected override bool OnHover(InputState state)
                 {
-                    FadeColour(hoverColour, 500, EasingTypes.OutQuint);
+                    this.FadeColour(hoverColour, 500, Easing.OutQuint);
                     return base.OnHover(state);
                 }
 
                 protected override void OnHoverLost(InputState state)
                 {
-                    FadeColour(Color4.White, 500, EasingTypes.OutQuint);
+                    this.FadeColour(Color4.White, 500, Easing.OutQuint);
                     base.OnHoverLost(state);
                 }
 
