@@ -203,6 +203,10 @@
       <Project>{d9a367c9-4c1a-489f-9b05-a0cea2b53b58}</Project>
       <Name>osu.Game.Resources</Name>
     </ProjectReference>
+    <ProjectReference Include="..\osu.Game.Rulesets.Shape\osu.Game.Rulesets.Shape.csproj">
+      <Project>{baf6d7b6-5e48-4278-ab81-f079af640e31}</Project>
+      <Name>osu.Game.Rulesets.Shape</Name>
+    </ProjectReference>
     <ProjectReference Include="..\osu.Game.Rulesets.Osu\osu.Game.Rulesets.Osu.csproj">
       <Project>{c92a607b-1fdd-4954-9f92-03ff547d9080}</Project>
       <Name>osu.Game.Rulesets.Osu</Name>
@@ -218,6 +222,10 @@
     <ProjectReference Include="..\osu.Game.Rulesets.Taiko\osu.Game.Rulesets.Taiko.csproj">
       <Project>{f167e17a-7de6-4af5-b920-a5112296c695}</Project>
       <Name>osu.Game.Rulesets.Taiko</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\osu.Game.Rulesets.Vitaru\osu.Game.Rulesets.Vitaru.csproj">
+      <Project>{9a615027-b2ab-435e-b865-0c7209933457}</Project>
+      <Name>osu.Game.Rulesets.Vitaru</Name>
     </ProjectReference>
     <ProjectReference Include="..\osu.Game\osu.Game.csproj">
       <Project>{0d3fbf8a-7464-4cf7-8c90-3e7886df2d4d}</Project>

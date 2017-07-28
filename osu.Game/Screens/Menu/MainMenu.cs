@@ -16,6 +16,7 @@ using osu.Game.Screens.Edit;
 using osu.Game.Screens.Multiplayer;
 using osu.Game.Screens.Select;
 using osu.Game.Screens.Tournament;
+using osu.Game.Screens.Symcol;
 
 namespace osu.Game.Screens.Menu
 {
@@ -50,6 +51,7 @@ namespace osu.Game.Screens.Menu
                             OnEdit = delegate { Push(new Editor()); },
                             OnSolo = delegate { Push(consumeSongSelect()); },
                             OnMulti = delegate { Push(new Lobby()); },
+                            OnSymcol = delegate { Push(new SymcolMenu()); },
                             OnExit = delegate { Exit(); },
                         }
                     }

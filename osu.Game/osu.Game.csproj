@@ -119,6 +119,7 @@
     <Compile Include="Overlays\UserProfileOverlay.cs" />
     <Compile Include="Overlays\Profile\ProfileHeader.cs" />
     <Compile Include="Overlays\Profile\ProfileSection.cs" />
+    <Compile Include="Overlays\Toolbar\ToolbarSystemClock.cs" />
     <Compile Include="Overlays\Toolbar\ToolbarSocialButton.cs" />
     <Compile Include="Rulesets\Beatmaps\BeatmapConverter.cs" />
     <Compile Include="Rulesets\Beatmaps\BeatmapProcessor.cs" />
@@ -228,7 +229,14 @@
     <Compile Include="Rulesets\Timing\DrawableTimingSection.cs" />
     <Compile Include="Rulesets\Timing\MultiplierControlPoint.cs" />
     <Compile Include="Rulesets\Timing\SpeedAdjustmentCollection.cs" />
+    <Compile Include="Screens\Edit\EditorPieces\EditorToolbox.cs" />
+    <Compile Include="Screens\OsuTalk\OsuTalkMenu.cs" />
+    <Compile Include="Screens\OsuTalk\OsuTalkBackground.cs" />
+    <Compile Include="Screens\Pokeosu\PokeosuAPI.cs" />
+    <Compile Include="Screens\Pokeosu\PokeosuMenu.cs" />
     <Compile Include="Screens\Menu\MenuSideFlashes.cs" />
+    <Compile Include="Screens\Pokeosu\PokeosuProfilePic.cs" />
+    <Compile Include="Screens\Pokeosu\PokeosuScreens\PokeosuBackground.cs" />
     <Compile Include="Screens\Play\HUD\HealthDisplay.cs" />
     <Compile Include="Screens\Play\HUDOverlay.cs" />
     <Compile Include="Screens\Play\HUD\StandardHealthDisplay.cs" />
@@ -378,6 +386,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\Select\BeatmapInfoWedge.cs" />
     <Compile Include="Screens\Select\WedgeBackground.cs" />
+    <Compile Include="Screens\Symcol\Pieces\SymcolVisualiser.cs" />
+    <Compile Include="Screens\Symcol\Pieces\SymcolBackground.cs" />
+    <Compile Include="Screens\Symcol\Pieces\SymcolButton.cs" />
+    <Compile Include="Screens\Symcol\Screens\SymcolMixer.cs" />
+    <Compile Include="Screens\Symcol\Screens\SymcolTestScreen.cs" />
+    <Compile Include="Screens\Symcol\SymcolMenu.cs" />
     <Compile Include="Screens\Tournament\Components\DrawingsConfigManager.cs" />
     <Compile Include="Screens\Tournament\Components\VisualiserContainer.cs" />
     <Compile Include="Screens\Tournament\Drawings.cs" />
