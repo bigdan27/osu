@@ -19,6 +19,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Game.Graphics.Containers;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Game.Beatmaps.ControlPoints;
+using System;
 
 namespace osu.Game.Screens.Symcol.Screens
 {
@@ -42,7 +43,7 @@ namespace osu.Game.Screens.Symcol.Screens
 
         private SettingsSlider<double> clockSpeed;
         private double pitch = 1;
-        private BindableDouble clockPitch;
+        public static BindableDouble ClockPitch;
 
         [BackgroundDependencyLoader]
         private void load(AudioManager audio)
@@ -64,7 +65,7 @@ namespace osu.Game.Screens.Symcol.Screens
             sClap = audio.Sample.Get($@"Gameplay/soft-hitclap");
             dClap = audio.Sample.Get($@"Gameplay/drum-hitclap");
 
-            clockPitch = new BindableDouble() { MinValue = 0.5f, Value = pitch, MaxValue = 2 };
+            ClockPitch = new BindableDouble() { MinValue = 0.5f, Value = pitch, MaxValue = 2 };
 
             Children = new Drawable[]
             {
@@ -86,7 +87,7 @@ namespace osu.Game.Screens.Symcol.Screens
                             Origin = Anchor.Centre,
                             Anchor = Anchor.Centre,
                             LabelText = "Clock Pitch",
-                            Bindable = clockPitch,
+                            Bindable = ClockPitch,
                         },
                     }
                 },
@@ -111,7 +112,7 @@ namespace osu.Game.Screens.Symcol.Screens
                     ButtonColorTop = Color4.DarkGoldenrod,
                     ButtonColorBottom = Color4.Goldenrod,
                     ButtonSize = 50,
-                    Action = () => clockPitch.Value = 1f,
+                    Action = () => ClockPitch.Value = 1f,
                     Position = new Vector2(0 , 250),
                 },
                 new SymcolButton
@@ -124,7 +125,7 @@ namespace osu.Game.Screens.Symcol.Screens
                     ButtonColorTop = Color4.DarkGoldenrod,
                     ButtonColorBottom = Color4.Goldenrod,
                     ButtonSize = 50,
-                    Action = () => clockPitch.Value = 1.5f,
+                    Action = () => ClockPitch.Value = 1.5f,
                     Position = new Vector2(200 , 250),
                 },
                 new SymcolButton
@@ -137,7 +138,7 @@ namespace osu.Game.Screens.Symcol.Screens
                     ButtonColorTop = Color4.DarkGoldenrod,
                     ButtonColorBottom = Color4.Goldenrod,
                     ButtonSize = 50,
-                    Action = () => clockPitch.Value = 0.75f,
+                    Action = () => ClockPitch.Value = 0.75f,
                     Position = new Vector2(-200, 250),
                 },
 
@@ -368,7 +369,9 @@ namespace osu.Game.Screens.Symcol.Screens
         private Box seekBar;
         private float beatLength = 1;
         private float lastBeatTime = 1;
-        private int measure = 1;
+        private int measure = 0;
+        private float measureLength = 1;
+        private float lastMeasureTime = 1;
 
         protected override void LoadComplete()
         {
@@ -436,53 +439,37 @@ namespace osu.Game.Screens.Symcol.Screens
         {
             base.OnNewBeat(beatIndex, timingPoint, effectPoint, amplitudes);
             beatLength = (float)timingPoint.BeatLength;
-            lastBeatTime = (float)Time.Current;
-            measure++;
+            measureLength = (float)timingPoint.BeatLength * 4;
+            if (lastMeasureTime <= (float)(WorkingBeatmap.PlayingTrack.CurrentTime - measureLength * 0.9f) || lastMeasureTime > (float)WorkingBeatmap.PlayingTrack.CurrentTime)
+                lastMeasureTime = (float)WorkingBeatmap.PlayingTrack.CurrentTime;
+            lastBeatTime = (float)WorkingBeatmap.PlayingTrack.CurrentTime;
+            if(SymcolMixer.ClockPitch.Value > 0)
+                measure++;
+            if (SymcolMixer.ClockPitch.Value < 0)
+                measure--;
             if (measure > 4)
                 measure = 1;
+            if (measure < 1)
+                measure = 4;
         }
 
         protected override void Update()
         {
             base.Update();
-            if(WorkingBeatmap.PlayingTrack.IsRunning)
+
+            if (WorkingBeatmap.PlayingTrack.IsRunning)
                 seekBarPosition();
         }
 
         private Vector2 seekBarPosition()
         {
-            float minX = 0;
-            float maxX = 0;
-            switch (measure)
-            {
-                case 1:
-                    minX = -300;
-                    maxX = -150;
-                    break;
-                case 2:
-                    minX = -150;
-                    maxX = 0;
-                    break;
-                case 3:
-                    minX = 0;
-                    maxX = 150;
-                    break;
-                case 4:
-                    minX = 150;
-                    maxX = 300;
-                    break;
-            }
-
-            Vector2 position = new Vector2((((float)Time.Current - lastBeatTime) / beatLength) * 150, 0);
-            do
-            {
-                position = new Vector2(position.X - 150, 0);
-            } while (position.X > maxX);
-
-            do
-            {
-                position = new Vector2(position.X + 150, 0);
-            } while (position.X < minX);
+            measure = (int)((((float)WorkingBeatmap.PlayingTrack.CurrentTime - lastMeasureTime) / measureLength) * 4);
+            float minX = (measure) * 150;
+            
+            Vector2 position = new Vector2((((((float)WorkingBeatmap.PlayingTrack.CurrentTime - lastBeatTime) / beatLength) * 150) + 300), 0);
+            
+            position.X %= 150;
+            position.X += minX - 300;
 
             seekBar.Position = position;
             return seekBar.Position;
