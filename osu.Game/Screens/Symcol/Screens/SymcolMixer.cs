@@ -13,6 +13,7 @@ using osu.Game.Beatmaps.IO;
 using osu.Game.Database;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Beatmaps;
+using osu.Framework.Screens;
 
 namespace osu.Game.Screens.Symcol.Screens
 {
@@ -308,6 +309,18 @@ namespace osu.Game.Screens.Symcol.Screens
         {
             base.Update();
             applyRateAdjustments();
+        }
+
+        protected override void OnEntering(Screen last)
+        {
+            base.OnEntering(last);
+            setClockSpeed(WorkingBeatmap.PlayingTrack);
+        }
+
+        private void setClockSpeed(IAdjustableClock clock)
+        {
+            var pitchAdjust = clock as IHasPitchAdjust;
+            clockSpeed.Bindable.Value = pitchAdjust.PitchAdjust;
         }
 
         private void applyRateAdjustments()
