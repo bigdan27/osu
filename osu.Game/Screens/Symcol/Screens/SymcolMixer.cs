@@ -14,6 +14,11 @@ using osu.Game.Database;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Beatmaps;
 using osu.Framework.Screens;
+using osu.Game.Screens.Menu;
+using osu.Framework.Graphics.Shapes;
+using osu.Game.Graphics.Containers;
+using osu.Framework.Extensions.Color4Extensions;
+using osu.Game.Beatmaps.ControlPoints;
 
 namespace osu.Game.Screens.Symcol.Screens
 {
@@ -84,6 +89,15 @@ namespace osu.Game.Screens.Symcol.Screens
                             Bindable = clockPitch,
                         },
                     }
+                },
+
+                //Sounds Bar
+                new musicBar
+                {
+                    RelativeSizeAxes = Axes.X,
+                    Origin = Anchor.TopCentre,
+                    Anchor = Anchor.TopCentre,
+                    Position = new Vector2(0 , 100),
                 },
 
                 //Pitch Settings
@@ -346,6 +360,194 @@ namespace osu.Game.Screens.Symcol.Screens
         private void playSample(SampleChannel sample)
         {
             sample.Play();
+        }
+    }
+
+    internal class musicBar : BeatSyncedContainer
+    {
+        private Box seekBar;
+        private float beatLength = 1;
+        private float lastBeatTime = 1;
+        private int measure = 1;
+
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+            Children = new Drawable[]
+            {
+                new Box
+                {
+                    Colour = Color4.White,
+                    Size = new Vector2(600 , 4),
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                },
+                new Box
+                {
+                    Position = new Vector2(300 , 0),
+                    Colour = Color4.White,
+                    Size = new Vector2(4 , 30),
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                },
+                new Box
+                {
+                    Position = new Vector2(-300 , 0),
+                    Colour = Color4.White,
+                    Size = new Vector2(4 , 30),
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                },
+                new Box
+                {
+                    Position = new Vector2(-300 / 2 , 0),
+                    Colour = Color4.White,
+                    Size = new Vector2(3.5f , 22),
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                },
+                new Box
+                {
+                    Position = new Vector2(-0 , 0),
+                    Colour = Color4.White,
+                    Size = new Vector2(4 , 26),
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                },
+                new Box
+                {
+                    Position = new Vector2(300 / 2 , 0),
+                    Colour = Color4.White,
+                    Size = new Vector2(3.5f , 22),
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                },
+                seekBar = new Box
+                {
+                    Position = new Vector2(-300 , 0),
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    Size = new Vector2(2 , 20),
+                },
+            };
+        }
+
+        protected override void OnNewBeat(int beatIndex, TimingControlPoint timingPoint, EffectControlPoint effectPoint, TrackAmplitudes amplitudes)
+        {
+            base.OnNewBeat(beatIndex, timingPoint, effectPoint, amplitudes);
+            beatLength = (float)timingPoint.BeatLength;
+            lastBeatTime = (float)Time.Current;
+            measure++;
+            if (measure > 4)
+                measure = 1;
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            if(WorkingBeatmap.PlayingTrack.IsRunning)
+                seekBarPosition();
+        }
+
+        private Vector2 seekBarPosition()
+        {
+            float minX = 0;
+            float maxX = 0;
+            switch (measure)
+            {
+                case 1:
+                    minX = -300;
+                    maxX = -150;
+                    break;
+                case 2:
+                    minX = -150;
+                    maxX = 0;
+                    break;
+                case 3:
+                    minX = 0;
+                    maxX = 150;
+                    break;
+                case 4:
+                    minX = 150;
+                    maxX = 300;
+                    break;
+            }
+
+            Vector2 position = new Vector2((((float)Time.Current - lastBeatTime) / beatLength) * 150, 0);
+            do
+            {
+                position = new Vector2(position.X - 150, 0);
+            } while (position.X > maxX);
+
+            do
+            {
+                position = new Vector2(position.X + 150, 0);
+            } while (position.X < minX);
+
+            seekBar.Position = position;
+            return seekBar.Position;
+        }
+
+        private void halfBeat()
+        {
+
+        }
+
+        private void quarterBeat()
+        {
+
+        }
+
+        private void generateMeasure(float x)
+        {
+
+        }
+    }
+
+
+
+    internal class musicBarTick : Container
+    {
+        private Box box;
+        private Container glow;
+
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+            Children = new Drawable[]
+            {
+                box = new Box
+                {
+                    Depth = -2,
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                },
+                glow = new Container
+                {
+                    Alpha = 0.25f,
+                    Depth = 0,
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    EdgeEffect = new EdgeEffectParameters
+                    {
+                        Radius = 4,
+                    },
+                    Children = new Drawable[]
+                    {
+                        new Box
+                        {
+                            RelativeSizeAxes = Axes.Both
+                        }
+                    }
+                },
+            };
+        }
+        public void Activate(float beatLength , float flashIntensity)
+        {
+            glow.Alpha = 0.5f * flashIntensity;
+            glow.FadeTo(0.25f, beatLength);
         }
     }
 }
